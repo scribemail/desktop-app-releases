@@ -1,0 +1,115 @@
+$brand-primary-color: #192eee;
+$brand-deep-color: #030626;
+$brand-subtle-color: #6a78fb;
+$brand-light-color: #e0e3ff;
+
+$content-black-color: #21243b;
+$content-dark-color: #535465;
+$content-subtle-color: #878892;
+$content-light-color: #acadb4;
+$content-white-color: #fff;
+
+$surface-dark-color: #dadadd;
+$surface-medium-color: #e7e7e9;
+$surface-light-color: #f4f4f5;
+
+$action-select-color: #17b368;
+$action-delete-color: #d30d2b;
+$action-gold-color: #f8c43e;
+
+$google-workspace-color: #4285f4;
+$office-365-color: #D83B01;
+
+$h1-font-size: 20px;
+// $h1-font-weight: 600;
+// $h1-line-height: 60px;
+$h2-font-size: 18px;
+// $h2-font-weight: bold;
+// $h2-line-height: 40px;
+$h3-font-size: 16px;
+// $h3-font-weight: bold;
+// $h3-line-height: 32px;
+$h4-font-size: 14px;
+// $h4-font-weight: bold;
+// $h4-line-height: 24px;
+
+$body-extra-extra-large-font-size: 22px;
+$body-extra-extra-large-line-height: 26px;
+$body-extra-large-font-size: 20px;
+$body-extra-large-line-height: 24px;
+$body-large-font-size: 18px;
+$body-large-line-height: 22px;
+$body-regular-font-size: 16px;
+$body-regular-line-height: 20px;
+$body-small-font-size: 14px;
+$body-small-line-height: 18px;
+$body-extra-small-font-size: 12px;
+$body-extra-small-line-height: 16px;
+$body-extra-extra-small-font-size: 10px;
+$body-extra-extra-small-line-height: 14px;
+
+$shadow-level-1: 0 1px 6px rgba(33, 36, 59, 0.14),
+  0px 1px 2px rgba(33, 36, 59, 0.08), 0px 0px 2px rgba(33, 36, 59, 0.08);
+$shadow-level-2: 0px 1px 20px rgba(33, 36, 59, 0.14),
+  0px 2px 4px rgba(33, 36, 59, 0.08), 0px 0px 4px rgba(33, 36, 59, 0.08);
+$shadow-level-3: 0px 1px 30px rgba(33, 36, 59, 0.14),
+  0px 3px 8px rgba(33, 36, 59, 0.08), 0px 0px 8px rgba(33, 36, 59, 0.08);
+
+$font-family-base: "Muli", sans-serif;
+
+$google-color: #b23121;
+
+$default-border-radius: 2px;
+
+/* ------------------------------------------
+ * Screen responsive breakpoints
+ *------------------------------------------- */
+$media-queries: (
+  phone : (i : 0px, o : 575px),
+  tablet : (i : 576px, o : 767px),
+  s-desktop : (i : 768px, o : 991px),
+  l-desktop : (i : 992px, o : 1199px),
+  xl-desktop : (i : 1200px, o : 8096px)
+);
+
+/* ------------------------------------------
+ * Grid settings
+ *------------------------------------------- */
+$columnsCount: 12;
+$wrapperWidth: 1170px;
+$gutterWidth: 2%;
+
+/* -------------------------------------------
+ * Custom grid settings
+ *-------------------------------------------- */
+$grid-step-width: 8px;
+$grid-length: 12;
+
+:export {
+  brandPrimaryColor: $brand-primary-color;
+  brandDeepColor: $brand-deep-color;
+  brandSubtleColor: $brand-subtle-color;
+  brandLightColor: $brand-light-color;
+  contentBlackColor: $content-black-color;
+  contentDarkColor: $content-dark-color;
+  contentSubtleColor: $content-subtle-color;
+  contentLightColor: $content-light-color;
+  contentWhiteColor: $content-white-color;
+  surfaceDarkColor: $surface-dark-color;
+  surfaceMediumColor: $surface-medium-color;
+  surfaceLightColor: $surface-light-color;
+  actionSelectColor: $action-select-color;
+  actionDeleteColor: $action-delete-color;
+  actionGoldColor: $action-gold-color;
+  bodyExtraLargeFontSize: $body-extra-large-font-size;
+  bodyExtraLargeLineHeight: $body-extra-large-line-height;
+  bodyLargeFontSize: $body-large-font-size;
+  bodyLargeLineHeight: $body-large-line-height;
+  bodyRegularFontSize: $body-regular-font-size;
+  bodyRegularLineHeight: $body-regular-line-height;
+  bodySmallFontSize: $body-small-font-size;
+  bodySmallLineHeight: $body-small-line-height;
+  bodyExtraFontSize: $body-extra-small-font-size;
+  bodyExtraLineHeight: $body-extra-small-line-height;
+  fontFamilyBase: $font-family-base;
+}

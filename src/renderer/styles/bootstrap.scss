@@ -1,0 +1,76 @@
+@import "mixins";
+
+$primary:                   $brand-primary-color;
+$danger:                    $action-delete-color;
+$info:                      $brand-subtle-color;
+$link-color:                $brand-primary-color;
+$font-family-base:          $font-family-base;
+$navbar-nav-link-padding-x: 30px;
+$body-color:                $content-black-color;
+$navbar-light-color:        $content-black-color;
+$navbar-light-hover-color:  $brand-primary-color;
+$navbar-light-active-color: $brand-primary-color;
+$navbar-light-brand-color:  $content-black-color;
+$h1-font-size:              $h1-font-size;
+$h2-font-size:              $h2-font-size;
+$h3-font-size:              $h3-font-size;
+$h4-font-size:              $h4-font-size;
+// $headings-font-weight:      $h1-font-weight;
+// $headings-line-height:      $h1-line-height;
+$modal-backdrop-bg:         $content-white-color;
+$border-radius:             $default-border-radius;
+$border-radius-lg:          $default-border-radius;
+$border-radius-sm:          $default-border-radius;
+$progress-border-radius:    4px;
+$progress-height:           8px;
+$progress-bar:              $surface-dark-color;
+$progress-bar-bg:           transparent;
+$grid-columns:              24;
+$grid-gutter-width:         24px;
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+
+@import "~bootstrap/scss/utilities/display";
+@import "~bootstrap/scss/utilities/sizing";
+@import "~bootstrap/scss/utilities/text";
+@import "~bootstrap/scss/utilities/flex";
+@import "~bootstrap/scss/utilities/align";
+@import "~bootstrap/scss/utilities/position";
+
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/custom-forms";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/tooltip";
+
+.tooltip.show {
+  opacity: 1 !important;
+}
+
+.tooltip-inner {
+  background-color: #f5f5f5;
+  color: $content-black-color;
+}
+
+.tooltip.bs-tooltip-right .arrow:before {
+  border-right-color: #f5f5f5 !important;
+}
+
+.tooltip.bs-tooltip-left .arrow:before {
+  border-left-color: #f5f5f5 !important;
+}
+
+.tooltip.bs-tooltip-bottom .arrow:before {
+  border-right-color: #f5f5f5 !important;
+}
+
+.tooltip.bs-tooltip-top .arrow:before {
+  border-right-color: #f5f5f5 !important;
+}

@@ -1,0 +1,21 @@
+{
+  "authOptions": {
+    "authority": "https://login.microsoftonline.com/common"
+  },
+  "request": {
+    "authCodeUrlParameters": {
+      "scopes": ["User.Read", "profile", "email", "openid"],
+      "redirectUri": "com.scribe-mail://auth"
+    },
+    "authCodeRequest": {
+      "redirectUri": "com.scribe-mail://auth",
+      "scopes": ["User.Read", "profile", "email", "openid"]
+    }
+  },
+  "resourceApi": {
+    "endpoint": "https://graph.microsoft-ppe.com/v1.0/me"
+  },
+  "fileProtocol": {
+    "name": "com.scribe-mail"
+  }
+}

@@ -1,0 +1,10 @@
+@import "renderer/styles/mixins";
+@import "renderer/styles/variables";
+
+.custom-checkbox-wrapper {
+  label {
+    font-weight: regular;
+    color: $content-black-color;
+    cursor: pointer;
+  }
+}

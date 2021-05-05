@@ -1,0 +1,108 @@
+@import "renderer/styles/variables";
+
+$breakpoints: null sm md lg xl;
+
+@each $breakpoint in $breakpoints {
+
+  $infix: $breakpoint;
+
+  @if ($breakpoint != null) {
+    $infix: -#{$breakpoint};
+  }
+
+  @include media-breakpoint-up($breakpoint) {
+    .m#{$infix}-auto {
+      margin: auto !important;
+    }
+
+    .mt#{$infix}-auto,
+    .mv#{$infix}-auto {
+      margin-top: auto !important;
+    }
+
+    .mr#{$infix}-auto,
+    .mh#{$infix}-auto {
+      margin-right: auto !important;
+    }
+
+    .mb#{$infix}-auto,
+    .mv#{$infix}-auto {
+      margin-bottom: auto !important;
+    }
+
+    .ml#{$infix}-auto,
+    .mh#{$infix}-auto {
+      margin-left: auto !important;
+    }
+  }
+
+  @for $i from 0 through $grid-length {
+    $size: $grid-step-width * $i;
+
+    @include media-breakpoint-up($breakpoint) {
+      .m#{$infix}-#{$i} {
+        margin: #{$size} !important;
+      }
+
+      .mt#{$infix}-#{$i} {
+        margin-top: #{$size} !important;
+      }
+
+      .mb#{$infix}-#{$i} {
+        margin-bottom: #{$size} !important;
+      }
+
+      .mv#{$infix}-#{$i}{
+        margin-top: #{$size} !important;
+        margin-bottom: #{$size} !important;
+      }
+
+      .mr#{$infix}-#{$i} {
+        margin-right: #{$size} !important;
+      }
+
+      .ml#{$infix}-#{$i} {
+        margin-left: #{$size} !important;
+      }
+
+      .mh#{$infix}-#{$i} {
+        margin-right: #{$size} !important;
+        margin-left: #{$size} !important;
+      }
+
+      .p#{$infix}-#{$i} {
+        padding: #{$size} !important;
+      }
+
+      .pt#{$infix}-#{$i} {
+        padding-top: #{$size} !important;
+      }
+
+      .pb#{$infix}-#{$i} {
+        padding-bottom: #{$size} !important;
+      }
+
+      .pv#{$infix}-#{$i} {
+        padding-top: #{$size} !important;
+        padding-bottom: #{$size} !important;
+      }
+
+      .pr#{$infix}-#{$i} {
+        padding-right: #{$size} !important;
+      }
+
+      .pl#{$infix}-#{$i} {
+        padding-left: #{$size} !important;
+      }
+
+      .ph#{$infix}-#{$i} {
+        padding-right: #{$size} !important;
+        padding-left: #{$size} !important;
+      }
+
+      .line-height#{$infix}-#{$i} {
+        line-height: #{$size} !important;
+      }
+    }
+  }
+}

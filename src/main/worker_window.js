@@ -1,0 +1,24 @@
+import { BrowserWindow }       from "electron";
+import * as path               from "path";
+import { format as formatUrl } from "url";
+import isDev                   from "electron-is-dev";
+
+export const createWorkerWindow = () => {
+  const workerWindow = new BrowserWindow({
+    show:           false,
+    webPreferences: { nodeIntegration: true, contextIsolation: false, enableRemoteModule: true }
+  });
+
+  if (isDev) {
+    workerWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/worker.html`);
+    // workerWindow.webContents.openDevTools({ detach: false });
+  } else {
+    workerWindow.loadURL(formatUrl({
+      pathname: path.join(__dirname, "worker.html"),
+      protocol: "file",
+      slashes:  true
+    }));
+  }
+
+  return workerWindow;
+};

@@ -1,0 +1,125 @@
+{
+  "extends": "airbnb",
+  "plugins": [
+    "react-hooks",
+    "align-import"
+  ],
+  "settings": {
+    "import/core-modules": ["electron"]
+  },
+  "rules": {
+    "align-import/align-import": 2,
+    "quotes": ["error", "double"],
+    "react/jsx-props-no-spreading": "off",
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/label-has-associated-control": [2, {
+      "controlComponents": ["Checkbox"]
+    }],
+    "newline-per-chained-call": "off",
+    "comma-dangle": 0,
+    "no-unused-vars": ["error", { "varsIgnorePattern": "PropTypes|React" }],
+    "prefer-promise-reject-errors": "off",
+    "max-len": "off",
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "jsx-a11y/media-has-caption": "off",
+    "key-spacing": [
+      "error",
+      {
+        "mode": "minimum",
+        "align": "value"
+      }
+    ],
+    "arrow-body-style": [
+      "error",
+      "as-needed",
+      {
+        "requireReturnForObjectLiteral": true
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": ["_destroy", "_discard", "__REDUX_DEVTOOLS_EXTENSION__"]
+      }
+    ],
+    "no-multi-spaces": [
+      "error",
+      {
+        "exceptions": {
+          "ImportDeclaration": true,
+          "Property": true,
+          "VariableDeclarator": true,
+          "AssigmentExpression": true
+        }
+      }
+    ],
+    "import/no-absolute-path": [
+      2,
+      {
+        "commonjs": false,
+        "amd": false
+      }
+    ],
+    "react/no-danger": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/no-unescaped-entities": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/forbid-prop-types": 0,
+    "react/no-array-index-key": 0,
+    "react/jsx-curly-spacing": [
+      "error",
+      {
+        "when": "always",
+        "attributes": false,
+        "children": true
+      }
+    ],
+    "camelcase": "off",
+    "import/no-unresolved": 0,
+    "object-curly-newline": "off",
+    "template-curly-spacing": "off",
+    "indent": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*-test.js",
+        "*.spec.js"
+      ]
+    }
+  ],
+  "globals": {
+    "VERSION": "readonly",
+    "Option": true,
+    "google": true,
+    "Canny": true,
+    "I18n": true,
+    "window": true,
+    "error": true,
+    "log": true,
+    "$": true,
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "document": true,
+    "location": true,
+    "fetch": true,
+    "analytics": true,
+    "cy": true,
+    "beforeEach": true,
+    "Cypress": true,
+    "gapi": true,
+    "Image": true
+  }
+}

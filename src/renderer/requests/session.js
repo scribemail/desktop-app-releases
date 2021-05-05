@@ -1,0 +1,51 @@
+import Api from "renderer/services/api";
+
+export const getSession = () => (
+  new Promise((resolve, reject) => {
+    Api.get("/sessions").then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
+
+export const createSession = (attributes) => (
+  new Promise((resolve, reject) => {
+    Api.post("/sessions", { user: attributes, from: "desktop-app" }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
+
+export const createMicrosoftSession = (accessToken) => (
+  new Promise((resolve, reject) => {
+    Api.post("/microsoft/sessions", { user: { access_token: accessToken }, only_login: true, from: "desktop-app" }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
+
+export const createGoogleSession = (token) => (
+  new Promise((resolve, reject) => {
+    Api.post("/google/sessions", { user: { google_access_token: token }, only_login: true, from: "desktop-app" }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
+
+export const destroySession = () => (
+  new Promise((resolve, reject) => {
+    Api.delete("/sessions").then(() => {
+      resolve();
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);

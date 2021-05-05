@@ -1,0 +1,35 @@
+@import "renderer/styles/variables";
+@import "renderer/styles/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$outlook-color: #0072C6;
+
+.app-button.btn {
+  &.btn-outlook {
+    @include button-variant($outlook-color, $outlook-color);
+
+    box-shadow: 0 0 2.15707px rgba(0, 0, 0, 0.12), 0 2.15707px 2.15707px rgba(0, 0, 0, 0.24);
+    color: $content-white-color;
+    border: 1px solid $outlook-color;
+    padding: 0;
+
+    &:hover,
+    &.disabled {
+      color: $content-white-color;
+      border: 1px solid $outlook-color;
+    }
+
+    .btn-outlook-icon {
+      width: 36px;
+      height: 36px;
+      background-color: $content-white-color;
+      color: $outlook-color;
+    }
+
+    .btn-outlook-text {
+      padding: 6px 12px 6px 16px;
+    }
+  }
+}

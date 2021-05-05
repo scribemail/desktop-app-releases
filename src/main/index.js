@@ -1,85 +1,78 @@
-'use strict'
+import { app, ipcMain, BrowserWindow } from "electron";
+import Store                           from "electron-store";
+import isDev                           from "electron-is-dev";
+import unhandled                       from "electron-unhandled";
+import { createWorkerWindow }          from "./worker_window";
+import { createMenuBar }               from "./menubar";
+import AuthProvider                    from "./microsoft_auth/AuthProvider";
 
-import { app, BrowserWindow } from 'electron'
-import * as path from 'path'
-import { format as formatUrl } from 'url'
+Store.initRenderer();
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const store = new Store();
 
-// global reference to mainWindow (necessary to prevent window from being garbage collected)
-let mainWindow
-let workerWindow
+unhandled();
 
-function createMainWindow() {
-  const window = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  })
+let mainWindow;
+let workerWindow;
+let menubar;
 
-  if (isDevelopment) {
-    window.webContents.openDevTools()
+function sendWindowMessage(targetWindow, message, payload) {
+  if (!targetWindow) {
+    return;
   }
-
-  if (isDevelopment) {
-    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/renderer.html`)
-  } else {
-    window.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file',
-      slashes: true
-    }))
-  }
-
-  window.on('closed', () => {
-    mainWindow = null
-  })
-
-  window.webContents.on('devtools-opened', () => {
-    window.focus()
-    setImmediate(() => {
-      window.focus()
-    })
-  })
-
-  return window
+  targetWindow.webContents.send(message, payload);
 }
 
-function createWorkerWindow() {
-  workerWindow = new BrowserWindow({
-    show: false,
-    webPreferences: { nodeIntegration: true }
+function updateMainWindow() {
+  if (isDev) {
+    mainWindow.webContents.openDevTools({ detach: true });
+  }
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
   });
 
-  if (isDevelopment) {
-    workerWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/worker.html`)
-  } else {
-    workerWindow.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'worker.html'),
-      protocol: 'file',
-      slashes: true
-    }))
-  }
+  mainWindow.webContents.on("devtools-opened", () => {
+    mainWindow.focus();
+    setImmediate(() => {
+      mainWindow.focus();
+    });
+  });
+}
+
+const openMicrosoftLoginWindow = () => {
+  const authWindow = new BrowserWindow({ width:  400, height: 600 });
+  const authProvider = new AuthProvider();
+  authProvider.login(authWindow).then((response) => {
+    sendWindowMessage(mainWindow, "logged-in-with-microsoft", { idToken: response.idToken });
+    menubar.showWindow();
+    authWindow.close();
+  });
 };
 
-// quit application when all windows are closed
-app.on('window-all-closed', () => {
-  // on macOS it is common for applications to stay open until the user explicitly quits
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+app.on("ready", () => {
+  menubar = createMenuBar();
 
-app.on('activate', () => {
-  // on macOS it is common to re-create a window even after all windows have been closed
-  if (mainWindow === null) {
-    mainWindow = createMainWindow()
-  }
-})
+  menubar.on("after-create-window", () => {
+    mainWindow = menubar.window;
+    updateMainWindow();
+    ipcMain.on("message-from-worker", (event, arg) => {
+      sendWindowMessage(menubar.window, "message-from-worker", arg);
+    });
+    ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
+    menubar.app.commandLine.appendSwitch("disable-backgrounding-occluded-windows", "true");
+    app.dock.hide();
+  });
 
-// create main BrowserWindow when electron is ready
-app.on('ready', () => {
-  mainWindow = createMainWindow();
-  workerWindow = createWorkerWindow()
-})
+  menubar.on("ready", () => {
+    workerWindow = createWorkerWindow();
+  });
+
+  if (store.get("launch_at_startup") === undefined) {
+    app.setLoginItemSettings({
+      openAtLogin:  true,
+      openAsHidden: true,
+      name:         "Scribe"
+    });
+  }
+});
