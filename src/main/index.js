@@ -41,7 +41,7 @@ function updateMainWindow() {
 }
 
 const openMicrosoftLoginWindow = () => {
-  const authWindow = new BrowserWindow({ width:  400, height: 600 });
+  const authWindow = new BrowserWindow({ width: 400, height: 600 });
   const authProvider = new AuthProvider();
   authProvider.login(authWindow).then((response) => {
     sendWindowMessage(mainWindow, "logged-in-with-microsoft", { idToken: response.idToken });
@@ -64,9 +64,7 @@ app.on("ready", () => {
     app.dock.hide();
   });
 
-  menubar.on("ready", () => {
-    workerWindow = createWorkerWindow();
-  });
+  workerWindow = createWorkerWindow();
 
   if (store.get("launch_at_startup") === undefined) {
     app.setLoginItemSettings({

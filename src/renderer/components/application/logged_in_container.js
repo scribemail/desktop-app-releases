@@ -7,7 +7,7 @@ import { Loader, Icon }                       from "renderer/components/ui";
 import { updateSignature }                    from "renderer/services/signature";
 import { UncontrolledTooltip }                from "reactstrap";
 import { ipcRenderer }                        from "electron";
-import TimeAgo                                from "javascript-time-ago";
+import TimeAgo                                from "timeago-react";
 
 import "./logged_in_container.scss";
 
@@ -16,8 +16,6 @@ const ApplicationLoggedInContainer = () => {
   const [signatureUpdates, setSignatureUpdates] = useState(store.get("signature_updates"));
   const { currentUser, setCurrentUser, setCurrentAccount } = useSession();
   const didRender = useRef();
-
-  const timeAgo = new TimeAgo("en-US");
 
   const emailsWithSignature = currentUser.co_worker.emails.filter((email) => email.has_signature);
 
@@ -75,16 +73,23 @@ const ApplicationLoggedInContainer = () => {
       { !loading && (
         <>
           { emailsWithSignature.map((email) => (
-            <div className="mb-1 d-flex align-items-center">
-              <div key={ `email-${email.id}` }>
+            <div key={ `email-${email.id}` } className="mb-1 d-flex align-items-center">
+              <div>
                 { email.email }
-                <div className="update-date">{ get(signatureUpdates, email.signature_id) ? `Installed ${timeAgo.format(get(signatureUpdates, email.signature_id))}` : "Never updated" }</div>
+                <div className="update-date">
+                  { get(signatureUpdates, email.signature_id) && (
+                    <>
+                      Installed <TimeAgo datetime={ get(signatureUpdates, email.signature_id) } locale="en" />
+                    </>
+                  ) }
+                  { !get(signatureUpdates, email.signature_id) && "Never updated" }
+                </div>
               </div>
               <div className="ml-auto">
                 <a href="#" onClick={ () => { installEmail(email); } } className="ml-1">
                   <Icon icon="desktop-monitor-download" className="icon-install" id={ `install-email-${email.id}` } />
                 </a>
-                <UncontrolledTooltip placement="left" target={ `install-email-${email.id}` }>
+                <UncontrolledTooltip placement="left" target={ `install-email-${email.id}` }>
                   Install signature in Outlook
                 </UncontrolledTooltip>
               </div>

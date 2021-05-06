@@ -1,4 +1,4 @@
-import { Tray, Menu }          from "electron";
+import { Tray, Menu, app }     from "electron";
 import { menubar }             from "menubar";
 import isDev                   from "electron-is-dev";
 import { format as formatUrl } from "url";
@@ -7,7 +7,7 @@ import * as path               from "path";
 let tray;
 
 const contextMenu = Menu.buildFromTemplate([
-  { enabled: false, label: `Scribe v${process.env.npm_package_version}` },
+  { enabled: false, label: `Scribe v${app.getVersion()}` },
   { type: "separator" },
   { role: "quit", label: "Quit Scribe" }
 ]);

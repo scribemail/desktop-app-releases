@@ -39,7 +39,7 @@
     "win": {
       "target": [
         {
-          "target": "msi",
+          "target": "nsis",
           "arch": [
             "x64",
             "ia32"
@@ -78,9 +78,11 @@
     "react-final-form": "^6.5.3",
     "react-loader-spinner": "^4.0.0",
     "react-switch": "^6.0.0",
+    "react-time-ago": "^6.2.2",
     "react-uuid": "^1.0.2",
     "reactstrap": "^8.9.0",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "timeago-react": "^3.0.2"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.13.13",
