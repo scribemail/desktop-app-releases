@@ -1,0 +1,15 @@
+@import "renderer/styles/variables";
+
+.config-container {
+  height: 510px;
+  position: relative;
+
+  .app-version {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: $content-subtle-color;
+  }
+}

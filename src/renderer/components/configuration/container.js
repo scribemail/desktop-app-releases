@@ -41,7 +41,7 @@ const ConfigurationContainer = ({ onHide }) => {
   };
 
   return (
-    <div>
+    <div className="config-container">
       <div className="text-center mt-1 mb-2">
         { currentUser && (
           <p>
@@ -66,6 +66,7 @@ const ConfigurationContainer = ({ onHide }) => {
       </div>
       <h3>Configuration</h3>
       <Checkbox label="Launch at startup" onChange={ handleLaunchAtStartupChange } checked={ launchAtStartup } />
+      <div className="app-version color-content-subtle">Scribe v{ app.getVersion() }</div>
     </div>
   );
 };
