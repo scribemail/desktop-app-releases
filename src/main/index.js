@@ -2,6 +2,7 @@ import { app, ipcMain, BrowserWindow } from "electron";
 import Store                           from "electron-store";
 import isDev                           from "electron-is-dev";
 import unhandled                       from "electron-unhandled";
+import { autoUpdater }                 from "electron-updater";
 import { createWorkerWindow }          from "./worker_window";
 import { createMenuBar }               from "./menubar";
 import AuthProvider                    from "./microsoft_auth/AuthProvider";
@@ -51,6 +52,12 @@ const openMicrosoftLoginWindow = () => {
 };
 
 app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify();
+
+  setInterval(() => {
+    autoUpdater.checkForUpdatesAndNotify();
+  }, 1 * 24 * 60 * 60);
+
   menubar = createMenuBar();
 
   menubar.on("after-create-window", () => {

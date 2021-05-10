@@ -8,9 +8,10 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "dist-win": "yarn compile && electron-builder -w",
-    "dist-mac": "yarn compile && electron-builder -m",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "build-win": "WIN_CSC_LINK=build/certificate.p12 yarn compile && electron-builder -w",
+    "build-mac": "yarn compile && electron-builder -m",
+    "dist-win": "export $(xargs < .aws-credentials) && WIN_CSC_LINK=build/certificate.p12 yarn compile && electron-builder -w --publish always",
+    "dist-mac": "export $(xargs < .aws-credentials) && yarn compile && electron-builder -m --publish always"
   },
   "electronWebpack": {
     "title": "Scribe",
@@ -25,6 +26,11 @@
     ]
   },
   "build": {
+    "publish": {
+      "provider": "s3",
+      "bucket":   "scribe-desktop-app",
+      "region":   "eu-west-3"
+    },
     "productName": "Scribe",
     "mac": {
       "extendInfo": {
@@ -62,6 +68,7 @@
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.0.0",
     "electron-unhandled": "^3.0.2",
+    "electron-updater": "^4.3.8",
     "eslint_d": "^10.0.4",
     "final-form": "^4.20.2",
     "immutability-helper": "^3.1.1",

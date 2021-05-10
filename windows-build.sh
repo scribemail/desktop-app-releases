@@ -9,4 +9,5 @@ docker run --rm -ti \
  electronuserland/builder:wine
 
 
+yarn && yarn build-win
 yarn && yarn dist-win
