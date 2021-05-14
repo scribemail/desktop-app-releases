@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -27,8 +27,9 @@
   "build": {
     "publish": {
       "provider":    "github",
-      "private":     true,
-      "releaseType": "release"
+      "releaseType": "release",
+      "owner":       "scribemail",
+      "repo":        "desktop-app-releases"
     },
     "productName": "Scribe",
     "mac": {
