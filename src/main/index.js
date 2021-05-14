@@ -3,6 +3,8 @@ import Store                           from "electron-store";
 import isDev                           from "electron-is-dev";
 import unhandled                       from "electron-unhandled";
 import { autoUpdater }                 from "electron-updater";
+import Registry                        from "rage-edit";
+import log                             from "electron-log";
 import { createWorkerWindow }          from "./worker_window";
 import { createMenuBar }               from "./menubar";
 import AuthProvider                    from "./microsoft_auth/AuthProvider";
@@ -52,11 +54,15 @@ const openMicrosoftLoginWindow = () => {
 };
 
 app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.checkForUpdatesAndNotify().catch((err) => {
+    log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
+  });
 
   setInterval(() => {
-    autoUpdater.checkForUpdatesAndNotify();
-  }, 1 * 24 * 60 * 60);
+    autoUpdater.checkForUpdatesAndNotify().catch((err) => {
+      log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
+    });
+  }, 1 * 24 * 60 * 60 * 60);
 
   menubar = createMenuBar();
 
@@ -78,6 +84,24 @@ app.on("ready", () => {
       openAtLogin:  true,
       openAsHidden: true,
       name:         "Scribe"
+    });
+  }
+
+  if (store.get("update_outlook") === undefined) {
+    store.set("update_outlook", true);
+  }
+
+  if (store.get("update_apple_mail") === undefined) {
+    store.set("update_apple_mail", false);
+  }
+
+  if (process.platform === "win32") {
+    log.info("Setting registry keys");
+    const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Setup";
+    const keyName = "DisableRoamingSignaturesTemporaryToggle";
+
+    Registry.set(keyPath, keyName, 1).then((response) => {
+      log.error(`Registry.set ${response}`);
     });
   }
 });

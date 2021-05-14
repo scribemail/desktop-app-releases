@@ -12,6 +12,8 @@ const { app } = remote;
 
 const ConfigurationContainer = ({ onHide }) => {
   const [launchAtStartup, setLaunchAtStartup] = useState(store.get("launch_at_startup"));
+  const [updateOutlook, setUpdateOutlook] = useState(store.get("update_outlook"));
+  const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
 
   const { currentUser, deleteCurrentAccount, deleteCurrentUser } = useSession();
 
@@ -40,21 +42,45 @@ const ConfigurationContainer = ({ onHide }) => {
     updateLoginItem(event.target.checked);
   };
 
+  const handleUpdateOutlookChange = (event) => {
+    setUpdateOutlook(event.target.checked);
+    store.set("update_outlook", event.target.checked);
+  };
+
+  const handleUpdateAppleMailChange = (event) => {
+    setUpdateAppleMail(event.target.checked);
+    store.set("update_apple_mail", event.target.checked);
+  };
+
   return (
     <div className="config-container">
-      <div className="text-center mt-1 mb-2">
-        { currentUser && (
-          <p>
-            Logged in as<br />
-            <strong>{ currentUser.email }</strong>
-          </p>
+      <div className="mt-3">
+        { process.platform === "darwin" && (
+          <div className="mb-3">
+            <h3>Update signatures for</h3>
+            <Checkbox label="Microsoft outlook" className="mb-1" onChange={ handleUpdateOutlookChange } checked={ updateOutlook } />
+            <Checkbox label="Apple Mail" onChange={ handleUpdateAppleMailChange } checked={ updateAppleMail } />
+          </div>
         ) }
-        { !currentUser && (
-          <p>
-            Not logged in
-          </p>
-        ) }
-        <p>
+        <h3>Configuration</h3>
+        <Checkbox label="Launch at startup" onChange={ handleLaunchAtStartupChange } checked={ launchAtStartup } />
+      </div>
+      <div className="text-center bottom-block">
+        <div className="mb-1">
+          { currentUser && (
+            <>
+              Logged in as
+              { " " }
+              <strong>{ currentUser.email }</strong>
+            </>
+          ) }
+          { !currentUser && (
+            <>
+              Not logged in
+            </>
+          ) }
+        </div>
+        <div>
           { currentUser && (
             <>
               <a href="#" className="pt-1" onClick={ handleLogout }>Logout</a>
@@ -62,11 +88,9 @@ const ConfigurationContainer = ({ onHide }) => {
             </>
           ) }
           <a href="#" className="pt-1" onClick={ handleQuit }>Quit</a>
-        </p>
+        </div>
+        <div className="app-version color-content-subtle mt-4">Scribe v{ app.getVersion() }</div>
       </div>
-      <h3>Configuration</h3>
-      <Checkbox label="Launch at startup" onChange={ handleLaunchAtStartupChange } checked={ launchAtStartup } />
-      <div className="app-version color-content-subtle">Scribe v{ app.getVersion() }</div>
     </div>
   );
 };

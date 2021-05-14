@@ -1,14 +1,17 @@
 @import "renderer/styles/variables";
 
 .config-container {
-  height: 510px;
+  height: 490px;
   position: relative;
 
-  .app-version {
+  .bottom-block {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
+  }
+
+  .app-version {
     text-align: center;
     color: $content-subtle-color;
   }

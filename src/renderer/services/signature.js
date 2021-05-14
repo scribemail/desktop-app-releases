@@ -1,24 +1,54 @@
-import { getSignatureRawHtml } from "renderer/requests/signature";
-import store                   from "renderer/services/store";
-import fs                      from "fs";
-import { remote }              from "electron";
+import { getSignatureRawHtml }     from "renderer/requests/signature";
+import store                       from "renderer/services/store";
+import { updateSignatureForEmail } from "renderer/services/apple_mail";
+import fs                          from "fs";
+import { remote }                  from "electron";
+import applescript                 from "applescript";
+import log                         from "electron-log";
 
 const { app } = remote;
 
+const getOutlookAppleScript = (email, html) => {
+  const signatureName = `Scribe - ${email}`;
+  const signatureContent = html.replace(/"/g, "\\\"");
+  return `
+    tell application id "com.microsoft.Outlook"
+      set signatureList to every signature whose name is "${signatureName}"
+      if (count signatureList) is 0 then
+        make new signature with properties { name: "${signatureName}", content: "${signatureContent}" }
+      else
+        set counter to 0
+        repeat with signatureItem in signatureList
+          set counter to counter + 1
+          if counter is 1 then
+          set the content of signatureItem to the "${signatureContent}"
+          else
+            delete signatureItem
+          end if
+        end repeat
+      end if
+    end tell
+  `;
+};
+
 const writeFileForSignature = (email, html) => {
   if (process.platform === "darwin") {
-    // const signatureFileName = `Scribe - ${email}.html`;
-    // fs.writeFile(`${app.getPath("home")}/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/Main Profile/Data/Signatures/159/${signatureFileName}`, html, (err) => {
-    //   if (err) {
-    //     return;
-    //   }
-    // });
+    if (store.get("update_outlook")) {
+      applescript.execString(getOutlookAppleScript(email, html), (err) => {
+        if (err) {
+          log.error(err);
+        }
+      });
+    }
+    if (store.get("update_apple_mail")) {
+      updateSignatureForEmail(email, html);
+    }
   }
   if (process.platform === "win32") {
     const signatureFileName = `Scribe - ${email}.htm`;
     fs.writeFile(`${app.getPath("home")}/appdata/roaming/Microsoft/Signatures/${signatureFileName}`, html, (err) => {
       if (err) {
-
+        log.error(err);
       }
     });
   }

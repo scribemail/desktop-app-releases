@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -8,10 +8,10 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "build-win": "WIN_CSC_LINK=build/certificate.p12 yarn compile && electron-builder -w",
-    "build-mac": "yarn compile && electron-builder -m",
-    "dist-win": "export $(xargs < .aws-credentials) && WIN_CSC_LINK=build/certificate.p12 yarn compile && electron-builder -w --publish always",
-    "dist-mac": "export $(xargs < .aws-credentials) && yarn compile && electron-builder -m --publish always"
+    "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis",
+    "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m",
+    "dist-win": "export $(xargs < .dist-env) && yarn compile && electron-builder -w=nsis --publish always",
+    "dist-mac": "export $(xargs < .dist-en) && yarn compile && electron-builder -m --publish always"
   },
   "electronWebpack": {
     "title": "Scribe",
@@ -28,8 +28,8 @@
   "build": {
     "publish": {
       "provider": "s3",
-      "bucket":   "scribe-desktop-app",
-      "region":   "eu-west-3"
+      "bucket": "scribe-desktop-app",
+      "region": "eu-west-3"
     },
     "productName": "Scribe",
     "mac": {
@@ -50,8 +50,22 @@
             "x64",
             "ia32"
           ]
+        },
+        {
+          "target": "appx",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true
+    },
+    "appx": {
+      "publisher": "CN=Scribe SAS"
     }
   },
   "dependencies": {
@@ -61,11 +75,13 @@
     "@microsoft/mgt-electron-provider": "^2.1.0",
     "@microsoft/mgt-element": "^2.1.0",
     "actioncable": "^5.2.5",
+    "applescript": "^1.0.0",
     "auto-launch": "^5.0.5",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "classnames": "^2.3.1",
     "electron-is-dev": "^2.0.0",
+    "electron-log": "^4.3.5",
     "electron-store": "^8.0.0",
     "electron-unhandled": "^3.0.2",
     "electron-updater": "^4.3.8",
@@ -78,7 +94,9 @@
     "lodash": "^4.17.21",
     "menubar": "^9.0.3",
     "msal-electron-poc": "^0.1.0",
+    "plist": "^3.0.2",
     "prop-types": "^15.7.2",
+    "rage-edit": "^1.2.0",
     "rc-switch": "^3.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -89,7 +107,10 @@
     "react-uuid": "^1.0.2",
     "reactstrap": "^8.9.0",
     "source-map-support": "^0.5.16",
-    "timeago-react": "^3.0.2"
+    "timeago-react": "^3.0.2",
+    "uuid": "^8.3.2",
+    "winreg-vbs": "^1.0.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.13.13",

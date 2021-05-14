@@ -3,6 +3,7 @@ import ActionCable               from "actioncable";
 import Store                     from "electron-store";
 import { getAuthorizationToken } from "renderer/services/authorization_token";
 import { updateSignature }       from "renderer/services/signature";
+import log                       from "electron-log";
 
 const store = new Store({ watch: true });
 
@@ -13,19 +14,19 @@ const message2UI = (command, payload) => {
 };
 
 const handleUpdateSignature = (data) => {
-  console.log("received", data);
+  log.info("socket-received");
   updateSignature(data.signature.id, data.signature.email, () => {
     message2UI("signatureUpdated", {});
   });
 };
 
 const handleDisconnected = () => {
-  console.log("disconnected");
+  log.info("socket-disconnected");
   store.set("update_after_socket_connection", true);
 };
 
 const handleConnected = () => {
-  console.log("connected");
+  log.info("socket-connected");
   if (store.get("update_after_socket_connection")) {
     message2UI("updateSignatures", {});
     store.delete("update_after_socket_connection");
