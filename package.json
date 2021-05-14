@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -10,8 +10,7 @@
     "compile": "electron-webpack",
     "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis",
     "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m",
-    "dist-win": "export $(xargs < .dist-env) && yarn compile && electron-builder -w=nsis --publish always",
-    "dist-mac": "export $(xargs < .dist-en) && yarn compile && electron-builder -m --publish always"
+    "dist": "export $(xargs < .dist-env) && yarn compile && electron-builder -w=nsis -m --publish always"
   },
   "electronWebpack": {
     "title": "Scribe",
@@ -27,9 +26,9 @@
   },
   "build": {
     "publish": {
-      "provider": "s3",
-      "bucket": "scribe-desktop-app",
-      "region": "eu-west-3"
+      "provider":    "github",
+      "private":     true,
+      "releaseType": "release"
     },
     "productName": "Scribe",
     "mac": {
@@ -114,8 +113,8 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.13.13",
-    "electron": "^12.0.6",
-    "electron-builder": "^22.11.1",
+    "electron": "^12.0.7",
+    "electron-builder": "^22.10.5",
     "electron-webpack": "^2.8.2",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-align-import": "^1.0.0",
