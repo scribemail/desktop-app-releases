@@ -5,6 +5,7 @@ import unhandled                       from "electron-unhandled";
 import { autoUpdater }                 from "electron-updater";
 import Registry                        from "rage-edit";
 import log                             from "electron-log";
+import { startBugsnag }                from "renderer/services/bugsnag";
 import { createWorkerWindow }          from "./worker_window";
 import { createMenuBar }               from "./menubar";
 import AuthProvider                    from "./microsoft_auth/AuthProvider";
@@ -14,6 +15,8 @@ Store.initRenderer();
 const store = new Store();
 
 unhandled();
+
+startBugsnag(app, { process: { name: "main" } });
 
 let mainWindow;
 let workerWindow;

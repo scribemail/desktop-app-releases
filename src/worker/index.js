@@ -1,9 +1,14 @@
-import { ipcRenderer }           from "electron";
+import { ipcRenderer, remote }   from "electron";
 import ActionCable               from "actioncable";
 import Store                     from "electron-store";
 import { getAuthorizationToken } from "renderer/services/authorization_token";
 import { updateSignature }       from "renderer/services/signature";
 import log                       from "electron-log";
+import { startBugsnag }          from "renderer/services/bugsnag";
+
+const { app } = remote;
+
+startBugsnag(app, { process: { name: "worker" } });
 
 const store = new Store({ watch: true });
 
@@ -42,12 +47,18 @@ const createSocket = (token) => {
   });
 };
 
-if (getAuthorizationToken()) {
+if (getAuthorizationToken() && store.get("is_subscription_active")) {
   createSocket(getAuthorizationToken());
 }
 
 store.onDidChange("authorization_token", (newValue) => {
-  if (newValue) {
+  if (newValue && store.get("is_subscription_active")) {
     createSocket(newValue);
+  }
+});
+
+store.onDidChange("is_subscription_active", (newValue) => {
+  if (getAuthorizationToken() && newValue) {
+    createSocket(getAuthorizationToken());
   }
 });

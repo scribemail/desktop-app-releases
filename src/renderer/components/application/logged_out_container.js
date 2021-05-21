@@ -7,8 +7,10 @@ import SessionGoogleLoginButton    from "renderer/components/session/google_logi
 import SessionMicrosoftLoginButton from "renderer/components/session/microsoft_login_button";
 import SessionForm                 from "renderer/components/session/form";
 import { Button, Icon }            from "renderer/components/ui";
+import { isSubscriptionActive }    from "renderer/services/account";
+import store                       from "renderer/services/store";
+import Bugsnag                     from "@bugsnag/electron";
 import { Alert }                   from "reactstrap";
-
 import "./logged_out_container.scss";
 
 const ApplicationLoggedOutContainer = () => {
@@ -24,18 +26,26 @@ const ApplicationLoggedOutContainer = () => {
     setShowError(true);
   };
 
-  const handleContinue = () => {
-    setCurrentUser(sessionResponse.data.user);
-    setCurrentAccount(sessionResponse.data.account);
+  const handleContinue = (localSessionResponse = null) => {
+    const { user, account } = (localSessionResponse || sessionResponse).data;
+    Bugsnag.setUser(user.id, user.email, user.display_name);
+
+    store.set("is_subscription_active", isSubscriptionActive(account));
+    setCurrentUser(user);
+    setCurrentAccount(account);
   };
 
   const handleLoginSuccess = (response) => {
-    setLoginSuccess(true);
     setAuthorizationToken(response.headers.authorization.split(" ")[1]);
     getSession().then((response2) => {
-      const emailsWithSignature = response2.data.user.co_worker.emails.filter((email) => email.has_signature);
-      emailsWithSignature.map((email) => updateSignature(email.signature_id, email.email));
-      setSessionResponse(response2);
+      if (isSubscriptionActive(response2.data.account)) {
+        const emailsWithSignature = response2.data.user.co_worker.emails.filter((email) => email.has_signature);
+        emailsWithSignature.map((email) => updateSignature(email.signature_id, email.email));
+        setSessionResponse(response2);
+        setLoginSuccess(true);
+      } else {
+        handleContinue(response2);
+      }
     });
   };
 
@@ -46,7 +56,7 @@ const ApplicationLoggedOutContainer = () => {
         You are logged in<br />
         Your signatures have been succcessfully <br />installed on Outlook
         <div className="mt-5">
-          <Button color="primary" padded onClick={ handleContinue }>Continue</Button>
+          <Button color="primary" padded onClick={ () => { handleContinue(); } }>Continue</Button>
         </div>
       </div>
     );

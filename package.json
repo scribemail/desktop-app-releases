@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -26,10 +26,10 @@
   },
   "build": {
     "publish": {
-      "provider":    "github",
+      "provider": "github",
       "releaseType": "release",
-      "owner":       "scribemail",
-      "repo":        "desktop-app-releases"
+      "owner": "scribemail",
+      "repo": "desktop-app-releases"
     },
     "productName": "Scribe",
     "mac": {
@@ -70,6 +70,8 @@
   },
   "dependencies": {
     "@azure/msal-node": "^1.0.3",
+    "@bugsnag/electron": "^7.10.0",
+    "@bugsnag/plugin-react": "^7.10.0",
     "@getstation/electron-google-oauth2": "^2.1.0",
     "@microsoft/mgt-components": "^2.1.0",
     "@microsoft/mgt-electron-provider": "^2.1.0",

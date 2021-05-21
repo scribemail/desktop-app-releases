@@ -21,6 +21,7 @@ const ConfigurationContainer = ({ onHide }) => {
     deleteAuthorizationToken();
     deleteCurrentAccount();
     deleteCurrentUser();
+    store.delete("is_subscription_active");
     onHide();
   };
 
