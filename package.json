@@ -10,7 +10,7 @@
     "compile": "electron-webpack",
     "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w nsis",
     "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m dmg pkg",
-    "dist": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis -m --publish always"
+    "dist": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis -m dmg pkg --publish always"
   },
   "electronWebpack": {
     "title": "Scribe",
@@ -28,7 +28,6 @@
     "appId": "com.scribe-mail.scribe",
     "productName": "Scribe",
     "afterSign": "build/notarize.js",
-    "afterAllArtifactBuild": "build/notarize.js",
     "publish": {
       "provider": "github",
       "releaseType": "release",
