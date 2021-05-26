@@ -27,6 +27,8 @@
   "build": {
     "appId": "com.scribe-mail.scribe",
     "productName": "Scribe",
+    "afterSign": "build/notarize.js",
+    "afterAllArtifactBuild": "build/notarize.js",
     "publish": {
       "provider": "github",
       "releaseType": "release",
