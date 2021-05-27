@@ -6,5 +6,4 @@ thumbs.db
 yarn-error.log
 .build-env
 .dist-env
-.intune.env
-.notarize.env
+.after-sign.env
