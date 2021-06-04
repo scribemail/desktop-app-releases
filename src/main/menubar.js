@@ -1,8 +1,8 @@
-import { Tray, Menu, app }     from "electron";
-import { menubar }             from "menubar";
-import isDev                   from "electron-is-dev";
-import { format as formatUrl } from "url";
-import * as path               from "path";
+import { Tray, Menu, app, nativeTheme } from "electron";
+import { menubar }                      from "menubar";
+import isDev                            from "electron-is-dev";
+import { format as formatUrl }          from "url";
+import * as path                        from "path";
 
 let tray;
 
@@ -13,7 +13,7 @@ const contextMenu = Menu.buildFromTemplate([
 ]);
 
 const createTray = () => {
-  tray = new Tray(path.join(__static, "tray-icon.png"));
+  tray = new Tray(path.join(__static, nativeTheme.shouldUseDarkColors ? "tray-icon.png" : "tray-icon-dark.png"));
   tray.setToolTip("Scribe");
 
   return tray;
@@ -40,6 +40,7 @@ export const createMenuBar = () => {
     tray.on("right-click", () => {
       mb.tray.popUpContextMenu(contextMenu);
     });
+    mb.showWindow();
   });
 
   return mb;

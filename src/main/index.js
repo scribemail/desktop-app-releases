@@ -79,7 +79,9 @@ app.on("ready", () => {
     });
     ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
     menubar.app.commandLine.appendSwitch("disable-backgrounding-occluded-windows", "true");
-    app.dock.hide();
+    if (process.platform === "darwin") {
+      app.dock.hide();
+    }
   });
 
   workerWindow = createWorkerWindow();
