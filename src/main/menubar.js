@@ -13,7 +13,7 @@ const contextMenu = Menu.buildFromTemplate([
 ]);
 
 const createTray = () => {
-  tray = new Tray(path.join(__static, nativeTheme.shouldUseDarkColors ? "tray-icon.png" : "tray-icon-dark.png"));
+  tray = new Tray(path.join(__static, nativeTheme.shouldUseDarkColors || process.platform !== "darwin" ? "tray-icon.png" : "tray-icon-dark.png"));
   tray.setToolTip("Scribe");
 
   return tray;
@@ -40,7 +40,11 @@ export const createMenuBar = () => {
     tray.on("right-click", () => {
       mb.tray.popUpContextMenu(contextMenu);
     });
-    mb.showWindow();
+    if(process.platform === "darwin") {
+      mb.showWindow();
+    } else {
+      setTimeout(() => { mb.showWindow(); }, 500)
+    }
   });
 
   return mb;
