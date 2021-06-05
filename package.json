@@ -47,6 +47,8 @@
       ]
     },
     "win": {
+      "publisherName": "Scribe SAS",
+      "verifyUpdateCodeSignature": false,
       "target": [
         {
           "target": "nsis",
@@ -65,8 +67,6 @@
       ]
     },
     "nsis": {
-      "publisherName": "Scribe SAS",
-      "verifyUpdateCodeSignature": false,
       "oneClick": true,
       "perMachine": true
     },
