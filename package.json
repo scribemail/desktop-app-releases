@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -10,7 +10,7 @@
     "compile": "electron-webpack",
     "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w nsis",
     "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m dmg",
-    "dist": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis -m dmg zip --publish always"
+    "dist": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis -m dmg zip pkg --publish always"
   },
   "electronWebpack": {
     "title": "Scribe",
