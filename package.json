@@ -10,8 +10,8 @@
     "compile": "electron-webpack",
     "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w nsis",
     "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m dmg zip pkg",
-    "dist-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w=nsis --publish always",
-    "dist-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m dmg zip pkg --publish always"
+    "dist-win": "yarn compile && electron-builder -w=nsis --publish onTag",
+    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --publish onTag"
   },
   "electronWebpack": {
     "title": "Scribe",
