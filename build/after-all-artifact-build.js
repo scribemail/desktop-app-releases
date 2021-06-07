@@ -29,5 +29,5 @@ exports.default = async function returnInTuneFiles(context) {
   console.log("win command 3", `${outDir.replace("dist", "build")}/IntuneWinAppUtil.exe -c "${outDir}/intune-source" -s "${exeFileName}" -o ${outDir}`);
   await exec(`${outDir.replace("dist", "build")}/IntuneWinAppUtil.exe -c "${outDir}/intune-source" -s "${exeFileName}" -o ${outDir}`);
 
-  return [`${outDir}/${exePath.gsub(".exe", "")}.intunewin`];
+  return [`${outDir}/${exePath.replace(".exe", "")}.intunewin`];
 };
