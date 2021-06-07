@@ -16,7 +16,7 @@ for:
   init:
     - git config --global core.autocrlf input
   install:
-    - ps: Install-Product node 12 x64
+    - ps: Install-Product node 14 x64
     - yarn
   build_script:
     - yarn dist-win
@@ -27,6 +27,8 @@ for:
   cache:
     - node_modules
     - '~\.electron'
+  install:
+    - yarn
   build_script:
     - yarn dist-mac
 
@@ -35,10 +37,13 @@ test: off
 build: off
 
 artifacts:
+  - path: dist/*.blockmap
+    name: Blockmaps
+  - path: dist/*.exe
+    name: Exe
   - path: dist/*.dmg
     name: Dmg
   - path: dist/*.pkg
     name: Pkg
   - path: dist/*.zip
     name: Zip
-
