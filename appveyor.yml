@@ -1,32 +1,21 @@
-environment:
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      platform:
-        - x64
-      cache:
-        - node_modules
-        - '%USERPROFILE%\.electron'
-      init:
-        - git config --global core.autocrlf input
-      install:
-        - ps: Install-Product node 12 x64
-        - yarn
-      build_script:
-        - yarn dist-win
+image: Visual Studio 2019
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
-      platform:
-        - x64
-      cache:
-        - node_modules
-        - '~/.electron'
-      install:
-        - yarn
-      build_script:
-        - yarn dist-mac
+platform:
+  - x64
 
-matrix:
-  fast_finish: true
+cache:
+  - node_modules
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 12 x64
+  - yarn
+
+build_script:
+  - yarn dist-win
 
 test: off
 
@@ -41,3 +30,4 @@ artifacts:
     name: Pkg
   - path: dist/*.zip
     name: Zip
+
