@@ -1,32 +1,43 @@
-image: Visual Studio 2017
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      platform:
+        - x64
+      cache:
+        - node_modules
+        - '%USERPROFILE%\.electron'
+      init:
+        - git config --global core.autocrlf input
+      install:
+        - ps: Install-Product node 12 x64
+        - yarn
+      build_script:
+        - yarn dist-win
 
-platform:
-  - x64
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+      platform:
+        - x64
+      cache:
+        - node_modules
+        - '~/.electron'
+      install:
+        - yarn
+      build_script:
+        - yarn dist-mac
 
-cache:
-  - node_modules
-  - '%USERPROFILE%\.electron'
-
-init:
-  - git config --global core.autocrlf input
-
-install:
-  - ps: Install-Product node 12 x64
-  - yarn
-
-build_script:
-  - yarn dist-win
+matrix:
+  fast_finish: true
 
 test: off
 
 artifacts:
-  - path: dist\**\*.blockmap
+  - path: dist/*.blockmap
     name: Blockmaps
-  - path: dist\**\*.exe
+  - path: dist/*.exe
     name: Exe
-  - path: dist\**\*.dmg
+  - path: dist/*.dmg
     name: Dmg
-  - path: dist\**\*.pkg
+  - path: dist/*.pkg
     name: Pkg
-  - path: dist\**\*.zip
+  - path: dist/*.zip
     name: Zip
