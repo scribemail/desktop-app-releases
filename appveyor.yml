@@ -18,3 +18,15 @@ build_script:
   - yarn dist-win
 
 test: off
+
+artifacts:
+  - path: dist\**\*.blockmap
+    name: Blockmaps
+  - path: dist\**\*.exe
+    name: Exe
+  - path: dist\**\*.dmg
+    name: Dmg
+  - path: dist\**\*.pkg
+    name: Pkg
+  - path: dist\**\*.zip
+    name: Zip
