@@ -7,7 +7,6 @@ exports.default = async function returnInTuneFiles(context) {
 
   const pkgPath = find(artifactPaths, (localPath) => localPath.includes(".pkg"));
   const exePath = find(context.artifactPaths, (localPath) => localPath.includes("Setup") && !localPath.includes("blockmap"));
-  const exeFileName = path.basename(exePath);
 
   console.log("pkgPath", pkgPath);
   console.log("exePath", exePath);
@@ -19,6 +18,8 @@ exports.default = async function returnInTuneFiles(context) {
 
     return [`${appOutDir}/${pkgPath}.intunemac`];
   }
+
+  const exeFileName = path.basename(exePath);
 
   console.log("win command 1", `mkdir ${appOutDir}/intune-source`);
   await exec(`mkdir ${appOutDir}/intune-source`);
