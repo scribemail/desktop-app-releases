@@ -1,0 +1,33 @@
+image: Visual Studio 2019
+
+platform:
+  - x64
+
+cache:
+  - node_modules
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 12 x64
+  - yarn
+
+build_script:
+  - yarn dist-win
+
+test: off
+
+artifacts:
+  - path: dist/*.blockmap
+    name: Blockmaps
+  - path: dist/*.exe
+    name: Exe
+  - path: dist/*.dmg
+    name: Dmg
+  - path: dist/*.pkg
+    name: Pkg
+  - path: dist/*.zip
+    name: Zip
+
