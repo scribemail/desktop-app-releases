@@ -27,6 +27,7 @@
   },
   "build": {
     "afterSign": "build/after-sign.js",
+    "afterAllArtifactBuild": "build/after-all-artifact-build.js",
     "appId": "com.scribe-mail.scribe",
     "productName": "Scribe",
     "publish": {
