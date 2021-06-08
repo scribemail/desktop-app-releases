@@ -43,3 +43,8 @@ artifacts:
     name: Exe
   - path: dist/*.dmg
     name: Dmg
+  - path: dist/*.intunemac
+    name: intunemac
+  - path: dist/*.intunewin
+    name: Intunewin
+
