@@ -1,42 +1,22 @@
-environment:
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Windows
-      APPVEYOR_BUILD_WORKER_CLOUD: GILVANDENDREA21
-    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+build_cloud: GILVANDENDREA21
+image: Windows
 
 platform:
   - x64
 
-for:
--
-  matrix:
-    only:
-      - image: Visual Studio 2019
-  cache:
-    - node_modules
-    - '%USERPROFILE%\.electron'
-    - "%LOCALAPPDATA%\\Yarn"
-  init:
-    - git config --global credential.helper store
-    - git config --global core.autocrlf input
-    - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n" -NoNewline
-  install:
-    - ps: Install-Product node 14 x64
-    - yarn
-  build_script:
-    - yarn dist-win
--
-  matrix:
-    only:
-      - image: macOS
-  cache:
-    - node_modules
-    - '~\.electron'
-  install:
-    - npm install -g yarn
-    - yarn
-  build_script:
-    - yarn dist-mac
+cache:
+  - node_modules
+  - '%USERPROFILE%\.electron'
+  - "%LOCALAPPDATA%\\Yarn"
+init:
+  - git config --global credential.helper store
+  - git config --global core.autocrlf input
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n" -NoNewline
+install:
+  - ps: Install-Product node 14 x64
+  - yarn
+build_script:
+  - yarn dist-win
 
 test: off
 
