@@ -1,6 +1,6 @@
-image:
-  - Windows
-  - macOS
+configuration:
+  - windows-build
+  - mac-build
 
 platform:
   - x64
@@ -9,7 +9,8 @@ for:
 -
   matrix:
     only:
-      - image: Windows
+      - configuration: windows-build
+  image: Windows
   build_cloud: GILVANDENDREA21
   cache:
     - node_modules
@@ -25,7 +26,8 @@ for:
 -
   matrix:
     only:
-      - image: macOS
+      - configuration: mac-build
+  image: macOS
   cache:
     - node_modules
     - '~\.electron'
