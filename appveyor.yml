@@ -1,5 +1,5 @@
 image:
-  - Visual Studio 2019
+  - Windows
   - macOS
 
 platform:
@@ -9,7 +9,8 @@ for:
 -
   matrix:
     only:
-      - image: Visual Studio 2019
+      - image: Windows
+  build_cloud: GILVANDENDREA21
   cache:
     - node_modules
     - '%USERPROFILE%\.electron'
