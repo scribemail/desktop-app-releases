@@ -10,16 +10,25 @@ exports.default = async function returnInTuneFiles(context) {
 
   if (pkgPath) {
     const command = `${outDir.replace("dist", "build")}/IntuneAppUtil -c ${pkgPath} -o ${outDir}`;
-    await exec(command);
+    const result = await exec(command);
+    console.log(command, result);
 
     return [`${outDir}/${pkgPath}.intunemac`];
   }
 
   const exeFileName = path.basename(exePath);
 
-  await exec(`mkdir ${outDir}/intune-source`);
-  await exec(`copy /B /Y ${exePath} ${exePath.replace("dist", "dist/intune-source")}`);
-  await exec(`${outDir.replace("dist", "build")}/IntuneWinAppUtil.exe -c "${outDir}/intune-source" -s "${exeFileName}" -o ${outDir}`);
+  const mkdirCommand = `mkdir ${outDir}/intune-source`;
+  const mkdirResult = await exec(`mkdir ${outDir}/intune-source`);
+  console.log(mkdirCommand, mkdirResult);
+
+  const copyCommand = `copy /B /Y ${exePath} ${exePath.replace("dist", "dist/intune-source")}`;
+  const copyResult = await exec(`copy /B /Y ${exePath} ${exePath.replace("dist", "dist/intune-source")}`);
+  console.log(copyCommand, copyResult);
+
+  const finalCommand = `${outDir.replace("dist", "build")}/IntuneWinAppUtil.exe -c "${outDir}/intune-source" -s "${exeFileName}" -o ${outDir}`;
+  const finalResult = await exec(finalCommand);
+  console.log(finalCommand, finalResult);
 
   return [`${exePath.replace(".exe", "")}.intunewin`];
 };
