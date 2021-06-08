@@ -1,6 +1,8 @@
-configuration:
-  - windows-build
-  - mac-build
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Windows
+      APPVEYOR_BUILD_WORKER_CLOUD: GILVANDENDREA21
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
 
 platform:
   - x64
@@ -9,9 +11,7 @@ for:
 -
   matrix:
     only:
-      - configuration: windows-build
-  image: Windows
-  build_cloud: GILVANDENDREA21
+      - image: Visual Studio 2019
   cache:
     - node_modules
     - '%USERPROFILE%\.electron'
@@ -26,8 +26,7 @@ for:
 -
   matrix:
     only:
-      - configuration: mac-build
-  image: macOS
+      - image: macOS
   cache:
     - node_modules
     - '~\.electron'
