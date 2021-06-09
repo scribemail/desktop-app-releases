@@ -52,3 +52,7 @@ artifacts:
   - path: dist/*.intunewin
     name: Intunewin
 
+notifications:
+  - provider: Slack
+    incoming_webhook: https://hooks.slack.com/services/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
+    channel: '#app-veyor'
