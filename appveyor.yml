@@ -17,9 +17,9 @@ for:
     - '%USERPROFILE%\.electron'
     - "%LOCALAPPDATA%\\Yarn"
   init:
-    - git config user.name "vddgil"
+    - git config --global user.name "vddgil"
     - echo %GH_TOKEN%
-    - git config user.password "%GH_TOKEN%"
+    - git config --global user.password "%GH_TOKEN%"
   install:
     - yarn
   build_script:
