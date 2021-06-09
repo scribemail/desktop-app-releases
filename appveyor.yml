@@ -1,22 +1,42 @@
-build_cloud: GILVANDENDREA21
-image: Windows
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Windows
+      APPVEYOR_BUILD_WORKER_CLOUD: GILVANDENDREA21
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
 
 platform:
   - x64
 
-cache:
-  - node_modules
-  - '%USERPROFILE%\.electron'
-  - "%LOCALAPPDATA%\\Yarn"
-init:
-  - git config --global credential.helper store
-  - git config --global core.autocrlf input
-  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n" -NoNewline
-install:
-  - ps: Install-Product node 14 x64
-  - yarn
-build_script:
-  - yarn dist-win
+for:
+-
+  matrix:
+    only:
+      - APPVEYOR_BUILD_WORKER_IMAGE: Windows
+  cache:
+    - node_modules
+    - '%USERPROFILE%\.electron'
+    - "%LOCALAPPDATA%\\Yarn"
+  init:
+    - git config --global credential.helper store
+    - git config --global core.autocrlf input
+    - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n" -NoNewline
+  install:
+    - ps: Install-Product node 14 x64
+    - yarn
+  build_script:
+    - yarn dist-win
+-
+  matrix:
+    only:
+      - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+  cache:
+    - node_modules
+    - '~\.electron'
+  install:
+    - npm install -g yarn
+    - yarn
+  build_script:
+    - yarn dist-mac
 
 test: off
 
