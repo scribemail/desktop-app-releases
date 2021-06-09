@@ -17,6 +17,7 @@ for:
     - '%USERPROFILE%\.electron'
     - "%LOCALAPPDATA%\\Yarn"
   init:
+    - set PATH=%PATH%;C:\Program Files\7-Zip\
     - git config --global url."https://api:%GH_TOKEN%@github.com/".insteadOf "https://github.com/"
     - git config --global url."https://ssh:%GH_TOKEN%@github.com/".insteadOf "ssh://git@github.com/"
     - git config --global url."https://git:%GH_TOKEN%@github.com/".insteadOf "git@github.com:"
