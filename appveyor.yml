@@ -17,7 +17,7 @@ for:
     - '%USERPROFILE%\.electron'
     - "%LOCALAPPDATA%\\Yarn"
   init:
-    - git config --global credential.helper store
+    - git config --global credential.helper "store --file $HOME\.git-credentials"
     - git config --global core.autocrlf input
     - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:GH_TOKEN):x-oauth-basic@github.com`n" -NoNewline
   install:
