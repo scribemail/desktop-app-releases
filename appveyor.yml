@@ -17,9 +17,9 @@ for:
     - '%USERPROFILE%\.electron'
     - "%LOCALAPPDATA%\\Yarn"
   init:
-    - git config --global user.name "vddgil"
-    - echo %GH_TOKEN%
-    - git config --global user.password "%GH_TOKEN%"
+    - git config --global url."https://api:%GH_TOKEN%@github.com/".insteadOf "https://github.com/"
+    - git config --global url."https://ssh:%GH_TOKEN%@github.com/".insteadOf "ssh://git@github.com/"
+    - git config --global url."https://git:%GH_TOKEN%@github.com/".insteadOf "git@github.com:"
   install:
     - yarn
   build_script:
