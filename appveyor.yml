@@ -1,8 +1,6 @@
-environment:
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Windows
-      APPVEYOR_BUILD_WORKER_CLOUD: GILVANDENDREA21
-    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+image:
+  - Visual Studio 2019
+  - macOS
 
 platform:
   - x64
@@ -11,26 +9,22 @@ for:
 -
   matrix:
     only:
-      - APPVEYOR_BUILD_WORKER_IMAGE: Windows
+      - image: Visual Studio 2019
   cache:
     - node_modules
     - '%USERPROFILE%\.electron'
     - "%LOCALAPPDATA%\\Yarn"
   init:
-    - set PATH=%PATH%;C:\Program Files\7-Zip\
-    - git config --global url."https://api:%GH_TOKEN%@github.com/".insteadOf "https://github.com/"
-    - git config --global url."https://ssh:%GH_TOKEN%@github.com/".insteadOf "ssh://git@github.com/"
-    - git config --global url."https://git:%GH_TOKEN%@github.com/".insteadOf "git@github.com:"
+    - git config --global core.autocrlf input
   install:
     - ps: Install-Product node 14 x64
-    - npm install -g yarn
     - yarn
   build_script:
     - yarn dist-win
 -
   matrix:
     only:
-      - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+      - image: macOS
   cache:
     - node_modules
     - '~\.electron'
