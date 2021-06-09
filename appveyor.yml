@@ -43,6 +43,10 @@ artifacts:
     name: Exe
   - path: dist/*.dmg
     name: Dmg
+  - path: dist/*.pkg
+    name: Pkg
+  - path: dist/*.zip
+    name: Zip
   - path: dist/*.intunemac
     name: intunemac
   - path: dist/*.intunewin

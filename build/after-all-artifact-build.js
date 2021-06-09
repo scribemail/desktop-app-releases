@@ -18,15 +18,15 @@ exports.default = async function returnInTuneFiles(context) {
 
   const exeFileName = path.basename(exePath);
 
-  const mkdirCommand = `mkdir ${outDir}\intune-source`;
-  const mkdirResult = await exec(`mkdir ${outDir}\intune-source`);
+  const mkdirCommand = `mkdir ${outDir}\\intune-source`;
+  const mkdirResult = await exec(`mkdir ${outDir}\\intune-source`);
   console.log(mkdirCommand, mkdirResult);
 
-  const copyCommand = `copy /B /Y ${exePath} ${exePath.replace("dist", "dist\intune-source")}`;
-  const copyResult = await exec(`copy /B /Y ${exePath} ${exePath.replace("dist", "dist\intune-source")}`);
+  const copyCommand = `copy /B /Y ${exePath} ${exePath.replace("dist", "dist\\intune-source")}`;
+  const copyResult = await exec(`copy /B /Y ${exePath} ${exePath.replace("dist", "dist\\intune-source")}`);
   console.log(copyCommand, copyResult);
 
-  const finalCommand = `${outDir.replace("dist", "build")}\IntuneWinAppUtil.exe -c "${outDir}\intune-source" -s "${exeFileName}" -o ${outDir}`;
+  const finalCommand = `${outDir.replace("dist", "build")}\\IntuneWinAppUtil.exe -c "${outDir}\\intune-source" -s "${exeFileName}" -o ${outDir}`;
   const finalResult = await exec(finalCommand);
   console.log(finalCommand, finalResult);
 
