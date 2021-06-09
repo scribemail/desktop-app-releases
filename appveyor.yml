@@ -15,7 +15,7 @@ for:
   cache:
     - node_modules
     - '%USERPROFILE%\.electron'
-    - "%LOCALAPPDATA%\Yarn"
+    - "%LOCALAPPDATA%\\Yarn"
   init:
     - git config --global credential.helper wincred
   install:
