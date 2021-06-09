@@ -21,6 +21,7 @@ for:
     - git config --global url."https://ssh:%GH_TOKEN%@github.com/".insteadOf "ssh://git@github.com/"
     - git config --global url."https://git:%GH_TOKEN%@github.com/".insteadOf "git@github.com:"
   install:
+    - ps: Install-Product node 14 x64
     - yarn
   build_script:
     - yarn dist-win
