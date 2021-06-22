@@ -54,5 +54,6 @@ artifacts:
 
 notifications:
   - provider: Slack
-    incoming_webhook: https://hooks.slack.com/services/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
+    incoming_webhook:
+      secure: YNo9GMVLtLRa0VS1ijvomJnRbzsgaMHBe8fbEssHEAtLodfBm1PffB2WBqFhux0JG2tuU02XswC9QFE+7iJhW63VJLr5obyi/Yjd0f7Wz7kTUKOocR8JzsGuXItm2Uw8
     channel: '#app-veyor'
