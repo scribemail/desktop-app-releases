@@ -5,6 +5,7 @@ import fs                          from "fs";
 import { remote }                  from "electron";
 import applescript                 from "applescript";
 import log                         from "electron-log";
+import { utf8ToAnsi }              from "utf8-to-ansi";
 
 const { app } = remote;
 
@@ -46,7 +47,7 @@ const writeFileForSignature = (email, html) => {
   }
   if (process.platform === "win32") {
     const signatureFileName = `Scribe - ${email}.htm`;
-    fs.writeFile(`${app.getPath("home")}/appdata/roaming/Microsoft/Signatures/${signatureFileName}`, html, (err) => {
+    fs.writeFile(`${app.getPath("home")}/appdata/roaming/Microsoft/Signatures/${signatureFileName}`, utf8ToAnsi(html), (err) => {
       if (err) {
         log.error(err);
       }
