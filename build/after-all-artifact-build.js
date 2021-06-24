@@ -28,7 +28,7 @@ exports.default = async function returnInTuneFiles(context) {
   const finalCommand = `${outDir.replace("dist", "build")}\\IntuneWinAppUtil.exe -c "${outDir}\\intune-source" -s "${exeFileName}" -o "${outDir}"`;
   await exec(finalCommand);
 
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await new Promise((resolve) => setTimeout(resolve, 20000));
 
   return [`${exePath.replace(".exe", "")}.intunewin`];
 };
