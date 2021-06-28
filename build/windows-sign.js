@@ -3,7 +3,7 @@ const childProcess = require("child_process");
 exports.default = async function (configuration) {
   const { SSL_USERNAME, SSL_PASSWORD, SSL_TOTP_SECRET, APPVEYOR_BUILD_FOLDER } = process.env;
 
-  childProcess.execSync(`cd ${APPVEYOR_BUILD_FOLDER} && dir`, {
+  childProcess.execSync(`cd ${APPVEYOR_BUILD_FOLDER}\\CodeSignTool-v1.2.0-windows && dir`, {
     stdio: "inherit"
   });
 
