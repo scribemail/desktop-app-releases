@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 const find = require("lodash/find");
 const path = require("path");
 
@@ -10,9 +10,9 @@ exports.default = async function returnInTuneFiles(context) {
 
   if (pkgPath) {
     const command = `${outDir.replace("dist", "build")}/IntuneAppUtil -c ${pkgPath} -o ${outDir}`;
-    await exec(command);
+    execSync(command, { stdio: "inherit" });
 
-    await new Promise((resolve) => setTimeout(resolve, 20000));
+    // await new Promise((resolve) => setTimeout(resolve, 20000));
 
     return [`${pkgPath}.intunemac`];
   }
@@ -20,15 +20,15 @@ exports.default = async function returnInTuneFiles(context) {
   const exeFileName = path.basename(exePath);
 
   const mkdirCommand = `mkdir "${outDir}\\intune-source"`;
-  await exec(mkdirCommand);
+  execSync(mkdirCommand, { stdio: "inherit" });
 
   const copyCommand = `copy /B /Y "${exePath}" "${exePath.replace("dist", "dist\\intune-source")}"`;
-  await exec(copyCommand);
+  execSync(copyCommand, { stdio: "inherit" });
 
   const finalCommand = `${outDir.replace("dist", "build")}\\IntuneWinAppUtil.exe -c "${outDir}\\intune-source" -s "${exeFileName}" -o "${outDir}"`;
-  await exec(finalCommand);
+  execSync(finalCommand, { stdio: "inherit" });
 
-  await new Promise((resolve) => setTimeout(resolve, 20000));
+  // await new Promise((resolve) => setTimeout(resolve, 20000));
 
   return [`${exePath.replace(".exe", "")}.intunewin`];
 };
