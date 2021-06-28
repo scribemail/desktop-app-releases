@@ -49,8 +49,10 @@
       ]
     },
     "win": {
-      "publisherName": "Scribe SAS",
+      "publisherName": "Scribe",
+      "certificateSubjectName": "Scribe",
       "verifyUpdateCodeSignature": false,
+      "sign": "build/windows-sign.js",
       "target": [
         {
           "target": "nsis",
@@ -71,9 +73,6 @@
     "nsis": {
       "oneClick": true,
       "perMachine": true
-    },
-    "appx": {
-      "publisher": "CN=Scribe SAS"
     },
     "dmg": {
       "sign": false
