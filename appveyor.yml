@@ -16,8 +16,8 @@ for:
     - "%LOCALAPPDATA%\\Yarn"
   init:
     - git config --global core.autocrlf input
-    - curl -o %LOCALAPPDATA%\\CodeSignTool.zip https://scribe-desktop-app.s3.eu-west-3.amazonaws.com/CodeSignTool-v1.2.0-windows.zip
-    - tar -xf %LOCALAPPDATA%\\CodeSignTool.zip
+    - curl -o %USERPROFILE%\\CodeSignTool.zip https://scribe-desktop-app.s3.eu-west-3.amazonaws.com/CodeSignTool-v1.2.0-windows.zip
+    - tar -xf %USERPROFILE%\\CodeSignTool.zip
   install:
     - ps: Install-Product node 14 x64
     - yarn
