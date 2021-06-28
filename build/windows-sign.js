@@ -7,7 +7,7 @@ exports.default = function (configuration) {
   const fileName = path.basename(configuration.path);
   const filePath = path.dirname(configuration.path);
 
-  childProcess.execSync(`mkdir "${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign"`, { stdio: "inherit" });
+  childProcess.execSync(`mkdir -p "${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign"`, { stdio: "inherit" });
 
   fs.renameSync(configuration.path, `${APPVEYOR_BUILD_FOLDER}/tmp/files-to-sign/${fileName}`);
 
