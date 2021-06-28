@@ -46,6 +46,19 @@ const ApplicationLoggedInContainer = () => {
     });
   };
 
+  const updateMessage = () => {
+    if (store.get("update_apple_mail") && store.get("update_outlook")) {
+      return "Install signature in Outlook and Apple Mail";
+    }
+    if (store.get("update_outlook")) {
+      return "Install signature in Outlook";
+    }
+
+    if (store.get("update_apple_mail")) {
+      return "Install signature in Apple Mail";
+    }
+  };
+
   useEffect(() => {
     ipcRenderer.on("message-from-worker", (event, arg) => {
       if (arg.command === "signatureUpdated") {
@@ -105,7 +118,7 @@ const ApplicationLoggedInContainer = () => {
                       <Icon icon="desktop-monitor-download" className="icon-install" id={ `install-email-${email.id}` } />
                     </a>
                     <UncontrolledTooltip placement="left" target={ `install-email-${email.id}` }>
-                      Install signature in Outlook
+                      { updateMessage() }
                     </UncontrolledTooltip>
                   </div>
                 </div>
