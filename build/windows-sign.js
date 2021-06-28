@@ -7,12 +7,12 @@ exports.default = function (configuration) {
   const fileName = path.basename(configuration.path);
   const filePath = path.dirname(configuration.path);
 
-  childProcess.execSync(`mkdir "${APPVEYOR_BUILD_FOLDER}\\tmp"`, { stdio: "inherit" });
+  childProcess.execSync(`mkdir "${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign"`, { stdio: "inherit" });
 
-  fs.renameSync(configuration.path, `${APPVEYOR_BUILD_FOLDER}/tmp/${fileName}`);
+  fs.renameSync(configuration.path, `${APPVEYOR_BUILD_FOLDER}/tmp/files-to-sign/${fileName}`);
 
   childProcess.execSync(
-    `cd ${APPVEYOR_BUILD_FOLDER}\\CodeSignTool-v1.2.0-windows && CodeSignTool.bat sign -username=${SSL_USERNAME} -password="${SSL_PASSWORD}" -totp_secret="${SSL_TOTP_SECRET}" -input_file_path=${APPVEYOR_BUILD_FOLDER}\\tmp\\${fileName} -output_dir_path=${filePath}`,
+    `cd ${APPVEYOR_BUILD_FOLDER}\\CodeSignTool-v1.2.0-windows && CodeSignTool.bat sign -username=${SSL_USERNAME} -password="${SSL_PASSWORD}" -totp_secret="${SSL_TOTP_SECRET}" -input_file_path=${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign\\${fileName} -output_dir_path=${filePath}`,
     { stdio: "inherit" }
   );
 };
