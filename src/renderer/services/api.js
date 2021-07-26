@@ -3,7 +3,8 @@ import { getAuthorizationHeader } from "renderer/services/authorization_token";
 
 const instance = axios.create({
   headers: {
-    Accept: "application/json"
+    Accept:        "application/json",
+    "Custom-From": "DesktopApp"
   },
   baseURL: process.env.ELECTRON_WEBPACK_APP_API_BASE_URL
 });
