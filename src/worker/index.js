@@ -12,6 +12,9 @@ startBugsnag(app, { process: { name: "worker" } });
 
 const store = new Store({ watch: true });
 
+let currentCable = null;
+let currentCableSubscription = null;
+
 const message2UI = (command, payload) => {
   ipcRenderer.send("message-from-worker", {
     command, payload
@@ -39,8 +42,14 @@ const handleConnected = () => {
 };
 
 const createSocket = (token) => {
-  const cable = ActionCable.createConsumer(`${process.env.ELECTRON_WEBPACK_APP_CABLE_URL}?authorization_token=${token}`);
-  cable.subscriptions.create("SignaturesChannel", {
+  if (currentCableSubscription) {
+    currentCableSubscription.unsubscribe();
+  }
+  if (currentCable) {
+    currentCable.disconnect();
+  }
+  currentCable = ActionCable.createConsumer(`${process.env.ELECTRON_WEBPACK_APP_CABLE_URL}?authorization_token=${token}`);
+  currentCableSubscription = currentCable.subscriptions.create("SignaturesChannel", {
     received:     handleUpdateSignature,
     connected:    handleConnected,
     disconnected: handleDisconnected
