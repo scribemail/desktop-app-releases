@@ -9,3 +9,13 @@ export const getSignatureRawHtml = (id) => (
     });
   })
 );
+
+export const createSignatureInstallation = (id, params) => (
+  new Promise((resolve, reject) => {
+    Api.post(`/signatures/${id}/installations}`, params).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
