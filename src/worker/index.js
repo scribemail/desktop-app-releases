@@ -71,3 +71,7 @@ store.onDidChange("is_subscription_active", (newValue) => {
     createSocket(getAuthorizationToken());
   }
 });
+
+setInterval(() => {
+  message2UI("updateSignatures", {});
+}, 1 * 12 * 60 * 60 * 60);
