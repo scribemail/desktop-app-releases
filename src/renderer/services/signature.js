@@ -36,10 +36,11 @@ const getComputerName = () => os.hostname();
 
 const getMetaData = () => {
   return {
-    type:     os.type(),
-    platform: os.platform(),
-    arch:     os.arch(),
-    release:  os.release()
+    os_type:     os.type(),
+    os_platform: os.platform(),
+    os_arch:     os.arch(),
+    os_release:  os.release(),
+    app_version: app.getVersion()
   };
 };
 
@@ -49,13 +50,17 @@ const writeFileForSignature = (id, email, html) => {
       applescript.execString(getOutlookAppleScript(email, html), (err) => {
         if (err) {
           log.error(err);
+        } else {
+          createSignatureInstallation(id, { email_client: "outlook_mac", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
         }
       });
-      createSignatureInstallation(id, { email_client: "outlook_mac", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
     }
     if (store.get("update_apple_mail")) {
-      updateSignatureForEmail(email, html);
-      createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
+      updateSignatureForEmail(email, html).then(() => {
+        createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
+      }).catch((error) => {
+        log.error(error);
+      });
     }
   }
   if (process.platform === "win32") {
@@ -63,9 +68,10 @@ const writeFileForSignature = (id, email, html) => {
     fs.writeFile(`${app.getPath("home")}/appdata/roaming/Microsoft/Signatures/${signatureFileName}`, `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />${html}`, (err) => {
       if (err) {
         log.error(err);
+      } else {
+        createSignatureInstallation(id, { email_client: "outlook_windows", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
       }
     });
-    createSignatureInstallation(id, { email_client: "outlook_windows", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
   }
 };
 

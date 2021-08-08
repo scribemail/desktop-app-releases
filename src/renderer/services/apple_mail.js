@@ -1,4 +1,5 @@
 import { promises as fs } from "fs";
+import Bugsnag            from "@bugsnag/electron";
 import { remote }         from "electron";
 import log                from "electron-log";
 import plist              from "plist";
@@ -6,6 +7,29 @@ import findIndex          from "lodash/findIndex";
 import { v4 as uuidv4 }   from "uuid";
 
 const { app } = remote;
+
+const sendFileListsToBugsnag = () => {
+  const path1 = `${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data`;
+  fs.readdir(path1).then((files) => {
+    const path2 = `${app.getPath("home")}/Library/Mail`;
+    fs.readdir(path2).then((files2) => {
+      Bugsnag.notify({
+        mobile_documents: files,
+        mail:             files2
+      });
+    }).catch(() => {
+      Bugsnag.notify({
+        mobile_documents: files,
+        mail:             "no-access"
+      });
+    });
+  }).catch(() => {
+    Bugsnag.notify({
+      mobile_documents: "no-access",
+      mail:             "no-access"
+    });
+  });
+};
 
 const signatureName = (email) => (
   `Scribe - ${email}`
@@ -79,12 +103,21 @@ ${html}`;
   return fs.writeFile(path, fileContent);
 };
 
-export const updateSignatureForEmail = (email, html) => {
-  getSignaturesFolder().then((folderPath) => {
-    getSignatureFilePath(folderPath, email).then((filePath) => {
-      writeHtml(filePath, html).catch((error) => {
-        log.error(`writeSignatureFileError ${error}`);
-      });
+export const updateSignatureForEmail = (email, html) => (
+  new Promise((resolve, reject) => {
+    getSignaturesFolder().then((folderPath) => {
+      if (folderPath === undefined) {
+        sendFileListsToBugsnag();
+        reject("No folder for Apple Mail");
+      } else {
+        getSignatureFilePath(folderPath, email).then((filePath) => {
+          writeHtml(filePath, html).then(() => {
+            resolve();
+          }).catch((error) => {
+            reject(`writeSignatureFileError ${error}`);
+          });
+        });
+      }
     });
-  });
-};
+  })
+);
