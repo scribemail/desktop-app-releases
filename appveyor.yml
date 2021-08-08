@@ -28,8 +28,8 @@ for:
     only:
       - image: macOS
   cache:
-    - node_modules
-    - '~\.electron'
+    # - node_modules
+    # - '~\.electron'
   install:
     - nvm use 14.15.3
     - npm install -g yarn
