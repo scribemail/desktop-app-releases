@@ -1,11 +1,24 @@
 image:
-  - Visual Studio 2019
   - macOS
+  - Visual Studio 2019
 
 platform:
   - x64
 
 for:
+-
+  matrix:
+    only:
+      - image: macOS
+  cache:
+    # - node_modules
+    # - '~\.electron'
+  install:
+    - nvm use 14.15.3
+    - npm install -g yarn
+    - yarn
+  build_script:
+    - yarn dist-mac
 -
   matrix:
     only:
@@ -23,19 +36,6 @@ for:
     - yarn
   build_script:
     - yarn dist-win
--
-  matrix:
-    only:
-      - image: macOS
-  cache:
-    # - node_modules
-    # - '~\.electron'
-  install:
-    - nvm use 14.15.3
-    - npm install -g yarn
-    - yarn
-  build_script:
-    - yarn dist-mac
 
 test: off
 
