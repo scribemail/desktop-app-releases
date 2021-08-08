@@ -31,6 +31,7 @@ for:
     - node_modules
     - '~\.electron'
   install:
+    - nvm use 14.15.3
     - npm install -g yarn
     - yarn
   build_script:
