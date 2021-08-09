@@ -1,6 +1,7 @@
 import { getSignatureRawHtml, createSignatureInstallation } from "renderer/requests/signature";
 import store                                                from "renderer/services/store";
 import { updateSignatureForEmail }                          from "renderer/services/apple_mail";
+import Bugsnag                                              from "@bugsnag/electron";
 import fs                                                   from "fs";
 import os                                                   from "os";
 import { remote }                                           from "electron";
@@ -68,8 +69,11 @@ const writeFileForSignature = (id, email, html) => {
     fs.writeFile(`${app.getPath("home")}/appdata/roaming/Microsoft/Signatures/${signatureFileName}`, `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />${html}`, (err) => {
       if (err) {
         log.error(err);
+        Bugsnag.notify(err);
       } else {
-        createSignatureInstallation(id, { email_client: "outlook_windows", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
+        createSignatureInstallation(id, { email_client: "outlook_windows", device_name: getComputerName(), metadata: getMetaData() }).catch((error) => {
+          Bugsnag.notify(error);
+        });
       }
     });
   }
