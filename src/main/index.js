@@ -67,7 +67,7 @@ app.on("ready", () => {
     autoUpdater.checkForUpdatesAndNotify().catch((err) => {
       log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
     });
-  }, 1 * 24 * 60 * 60 * 60);
+  }, 1000 * 60 * 60 * 4);
 
   menubar = createMenuBar();
 

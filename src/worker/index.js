@@ -74,4 +74,4 @@ store.onDidChange("is_subscription_active", (newValue) => {
 
 setInterval(() => {
   message2UI("updateSignatures", {});
-}, 1 * 12 * 60 * 60 * 60);
+}, 1000 * 60 * 60 * 12);
