@@ -1,7 +1,7 @@
 import React                   from "react";
 import PropTypes               from "prop-types";
 import ElectronGoogleOAuth2    from "@getstation/electron-google-oauth2";
-import { createGoogleSession } from "renderer/requests/session";
+import { createGoogleSession } from "requests/session";
 import { GoogleButton }        from "renderer/components/ui";
 
 const SessionGoogleLoginButton = ({ children, block, onError, onLoginSuccess }) => {

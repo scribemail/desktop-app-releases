@@ -1,9 +1,9 @@
 import React, { useState }          from "react";
 import PropTypes                    from "prop-types";
 import { remote }                   from "electron";
-import { deleteAuthorizationToken } from "renderer/services/authorization_token";
+import { deleteAuthorizationToken } from "services/authorization_token";
 import { useSession }               from "renderer/contexts/session/hooks";
-import store                        from "renderer/services/store";
+import store                        from "services/store";
 import { Checkbox }                 from "renderer/components/ui";
 
 import "./container.scss";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes                      from "prop-types";
 import SessionContext                 from "renderer/contexts/session/context";
-import { getSession }                 from "renderer/requests/session";
+import { getSession }                 from "requests/session";
 import { Loader }                     from "renderer/components/ui";
 
 const SessionProvider = ({ children }) => {

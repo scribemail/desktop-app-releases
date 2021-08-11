@@ -1,4 +1,4 @@
-import Api from "renderer/services/api";
+import Api from "services/api";
 
 export const getSession = () => (
   new Promise((resolve, reject) => {

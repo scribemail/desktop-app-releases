@@ -1,5 +1,5 @@
 import axios                                             from "axios";
-import { getAuthorizationHeader, setAuthorizationToken } from "renderer/services/authorization_token";
+import { getAuthorizationHeader, setAuthorizationToken } from "services/authorization_token";
 
 const instance = axios.create({
   headers: {

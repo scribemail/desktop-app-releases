@@ -1,15 +1,15 @@
 import React, { useState }         from "react";
 import { useSession }              from "renderer/contexts/session/hooks";
-import { setAuthorizationToken }   from "renderer/services/authorization_token";
-import { getSession }              from "renderer/requests/session";
-import { updateSignature }         from "renderer/services/signature";
+import { setAuthorizationToken }   from "services/authorization_token";
+import { getSession }              from "requests/session";
+import { updateSignature }         from "services/signature";
 import SessionGoogleLoginButton    from "renderer/components/session/google_login_button";
 import SessionMicrosoftLoginButton from "renderer/components/session/microsoft_login_button";
 import SessionForm                 from "renderer/components/session/form";
 import { Button, Icon }            from "renderer/components/ui";
-import { isSubscriptionActive }    from "renderer/services/account";
-import store                       from "renderer/services/store";
-import { setBugsnagUser }          from "renderer/services/bugsnag";
+import { isSubscriptionActive }    from "services/account";
+import store                       from "services/store";
+import { setBugsnagUser }          from "services/bugsnag";
 import { Alert }                   from "reactstrap";
 import "./logged_out_container.scss";
 

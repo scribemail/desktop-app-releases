@@ -6,7 +6,7 @@ import ApplicationContainer from "renderer/components/application/container";
 import jquery               from "jquery";
 import SessionProvider      from "renderer/contexts/session/provider";
 import TimeAgo              from "javascript-time-ago";
-import { startBugsnag }     from "renderer/services/bugsnag";
+import { startBugsnag }     from "services/bugsnag";
 import BugsnagPluginReact   from "@bugsnag/plugin-react";
 
 import en from "javascript-time-ago/locale/en";

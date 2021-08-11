@@ -1,4 +1,4 @@
-import store from "renderer/services/store";
+import store from "services/store";
 
 export const setAuthorizationToken = (authorizationToken) => (
   store.set("authorization_token", authorizationToken)

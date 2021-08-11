@@ -1,10 +1,10 @@
 import { ipcRenderer, remote }   from "electron";
 import ActionCable               from "actioncable";
 import Store                     from "electron-store";
-import { getAuthorizationToken } from "renderer/services/authorization_token";
-import { updateSignature }       from "renderer/services/signature";
+import { getAuthorizationToken } from "services/authorization_token";
+import { updateSignature }       from "services/signature";
 import log                       from "electron-log";
-import { startBugsnag }          from "renderer/services/bugsnag";
+import { startBugsnag }          from "services/bugsnag";
 
 const { app } = remote;
 

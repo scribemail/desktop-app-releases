@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSession }                         from "renderer/contexts/session/hooks";
-import store                                  from "renderer/services/store";
+import store                                  from "services/store";
 import get                                    from "lodash/get";
-import { getSession }                         from "renderer/requests/session";
+import { getSession }                         from "requests/session";
 import { Loader, Icon }                       from "renderer/components/ui";
-import { updateSignature }                    from "renderer/services/signature";
-import { isSubscriptionActive }               from "renderer/services/account";
+import { updateSignature }                    from "services/signature";
+import { isSubscriptionActive }               from "services/account";
 import { UncontrolledTooltip }                from "reactstrap";
 import { ipcRenderer }                        from "electron";
 import TimeAgo                                from "timeago-react";

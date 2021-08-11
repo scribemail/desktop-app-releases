@@ -1,6 +1,6 @@
 import React, { useState }         from "react";
 import PropTypes                   from "prop-types";
-import { createSession }           from "renderer/requests/session";
+import { createSession }           from "requests/session";
 import { Form, Button }            from "renderer/components/ui";
 import { Input, FormGroup, Label } from "reactstrap";
 

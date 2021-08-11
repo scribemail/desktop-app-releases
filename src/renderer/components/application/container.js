@@ -1,4 +1,5 @@
 import React, { useState }           from "react";
+import { shell }                     from "electron";
 import { useSession }                from "renderer/contexts/session/hooks";
 import { Icon }                      from "renderer/components/ui";
 import ApplicationLoggedOutContainer from "renderer/components/application/logged_out_container";
@@ -17,10 +18,14 @@ const ApplicationContainer = () => {
     setShowConfig((oldValue) => !oldValue);
   };
 
+  const openScribeWesbite = () => {
+    shell.openExternal("https://scribe-mail.com");
+  };
+
   return (
     <div className="application-container p-3">
       <div className="header pb-3 d-flex align-items-center">
-        <a href="#" onClick={ () => { setShowConfig(false); } }>
+        <a href="#" onClick={ openScribeWesbite }>
           <img src={ logo } height="25" alt="Logo" />
         </a>
         <div className="ml-auto">

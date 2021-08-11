@@ -9,7 +9,7 @@ import { v4 as uuidv4 }   from "uuid";
 const { app } = remote;
 
 const sendFileListsToBugsnag = () => {
-  const path1 = `${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data`;
+  const path1 = `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data`;
   fs.readdir(path1).then((files) => {
     const path2 = `${app.getPath("home")}/Library/Mail`;
     fs.readdir(path2).then((files2) => {

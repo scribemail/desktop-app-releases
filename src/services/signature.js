@@ -1,6 +1,6 @@
-import { getSignatureRawHtml, createSignatureInstallation } from "renderer/requests/signature";
-import store                                                from "renderer/services/store";
-import { updateSignatureForEmail }                          from "renderer/services/apple_mail";
+import { getSignatureRawHtml, createSignatureInstallation } from "requests/signature";
+import store                                                from "services/store";
+import { updateSignatureForEmail }                          from "services/apple_mail";
 import Bugsnag                                              from "@bugsnag/electron";
 import fs                                                   from "fs";
 import os                                                   from "os";

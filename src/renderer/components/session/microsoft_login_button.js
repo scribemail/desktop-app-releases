@@ -1,7 +1,7 @@
 import React, { useEffect, useState }     from "react";
 import PropTypes                          from "prop-types";
 import { ipcRenderer }                    from "electron";
-import { createMicrosoftSession }         from "renderer/requests/session";
+import { createMicrosoftSession }         from "requests/session";
 import { Office365Button, OutlookButton } from "renderer/components/ui";
 
 const SessionMicrosoftLoginButton = ({ children, block, provider, onError, onLoginSuccess }) => {
