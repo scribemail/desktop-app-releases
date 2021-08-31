@@ -1,5 +1,6 @@
 import React                   from "react";
 import PropTypes               from "prop-types";
+import { ipcRenderer }         from "electron";
 import ElectronGoogleOAuth2    from "@getstation/electron-google-oauth2";
 import { createGoogleSession } from "requests/session";
 import { GoogleButton }        from "renderer/components/ui";
@@ -8,6 +9,7 @@ const SessionGoogleLoginButton = ({ children, block, onError, onLoginSuccess }) 
   const logInUser = (accessToken) => {
     createGoogleSession(accessToken).then((response) => {
       onLoginSuccess(response);
+      ipcRenderer.send("open-menu-bar-window");
     }).catch(() => {
       onError("Error while login with Google");
     });
@@ -16,7 +18,8 @@ const SessionGoogleLoginButton = ({ children, block, onError, onLoginSuccess }) 
   const myApiOauth = new ElectronGoogleOAuth2(
     process.env.ELECTRON_WEBPACK_APP_GOOGLE_CLIENT_ID,
     process.env.ELECTRON_WEBPACK_APP_GOOGLE_CLIENT_SECRET,
-    ["https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"]
+    ["https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"],
+    { successRedirectURL: `${process.env.ELECTRON_WEBPACK_APP_WEBSITE_BASE_URL}/desktop-app-google-login-success` }
   );
 
   const handleClick = () => {

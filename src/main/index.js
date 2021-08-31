@@ -58,6 +58,10 @@ const openMicrosoftLoginWindow = () => {
   });
 };
 
+const openMenuBarWindow = () => {
+  menubar.showWindow();
+};
+
 app.on("ready", () => {
   autoUpdater.checkForUpdatesAndNotify().catch((err) => {
     log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
@@ -78,6 +82,7 @@ app.on("ready", () => {
       sendWindowMessage(menubar.window, "message-from-worker", arg);
     });
     ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
+    ipcMain.on("open-menu-bar-window", openMenuBarWindow);
     menubar.app.commandLine.appendSwitch("disable-backgrounding-occluded-windows", "true");
     if (process.platform === "darwin") {
       app.dock.hide();

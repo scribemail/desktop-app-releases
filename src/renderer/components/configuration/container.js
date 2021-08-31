@@ -1,6 +1,7 @@
-import React, { useState }          from "react";
-import PropTypes                    from "prop-types";
-import { remote }                   from "electron";
+import React, { useState } from "react";
+import { shell, remote }   from "electron";
+import PropTypes           from "prop-types";
+
 import { deleteAuthorizationToken } from "services/authorization_token";
 import { useSession }               from "renderer/contexts/session/hooks";
 import store                        from "services/store";
@@ -23,6 +24,10 @@ const ConfigurationContainer = ({ onHide }) => {
     deleteCurrentUser();
     store.delete("is_subscription_active");
     onHide();
+  };
+
+  const openScribeWebsite = () => {
+    shell.openExternal(`${process.env.ELECTRON_WEBPACK_APP_WEBSITE_BASE_URL}?utm_source=Scribe+app&utm_medium=scribe+assets&utm_campaign=Scribe+app`);
   };
 
   const handleQuit = () => {
@@ -90,7 +95,7 @@ const ConfigurationContainer = ({ onHide }) => {
           ) }
           <a href="#" className="pt-1" onClick={ handleQuit }>Quit</a>
         </div>
-        <div className="app-version color-content-subtle mt-4">Scribe v{ app.getVersion() }</div>
+        <a className="app-version color-content-subtle mt-4" href="#" onClick={ openScribeWebsite }>Scribe v{ app.getVersion() }</a>
       </div>
     </div>
   );

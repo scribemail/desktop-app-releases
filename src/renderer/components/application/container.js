@@ -18,14 +18,14 @@ const ApplicationContainer = () => {
     setShowConfig((oldValue) => !oldValue);
   };
 
-  const openScribeWesbite = () => {
-    shell.openExternal("https://scribe-mail.com");
+  const openScribeWebsite = () => {
+    shell.openExternal(`${process.env.ELECTRON_WEBPACK_APP_WEBSITE_BASE_URL}?utm_source=Scribe+app&utm_medium=scribe+assets&utm_campaign=Scribe+app`);
   };
 
   return (
     <div className="application-container p-3">
       <div className="header pb-3 d-flex align-items-center">
-        <a href="#" onClick={ openScribeWesbite }>
+        <a href="#" onClick={ openScribeWebsite }>
           <img src={ logo } height="25" alt="Logo" />
         </a>
         <div className="ml-auto">
