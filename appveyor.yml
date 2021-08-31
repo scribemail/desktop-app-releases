@@ -9,7 +9,7 @@ for:
 -
   matrix:
     only:
-      - image: macOS
+      - image: macOS-BigSur
   cache:
     - node_modules
     - '~\.electron'
