@@ -17,6 +17,7 @@ for:
     - nvm install 14.15.3
     - nvm use 14.15.3
     - npm install -g yarn
+    - sudo xcode-select -r
     - yarn
   build_script:
     - yarn dist-mac
