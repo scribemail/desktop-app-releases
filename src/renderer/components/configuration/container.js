@@ -95,7 +95,7 @@ const ConfigurationContainer = ({ onHide }) => {
           ) }
           <a href="#" className="pt-1" onClick={ handleQuit }>Quit</a>
         </div>
-        <a className="app-version color-content-subtle mt-4" href="#" onClick={ openScribeWebsite }>Scribe v{ app.getVersion() }</a>
+        <a className="app-version color-content-subtle mt-3" href="#" onClick={ openScribeWebsite }>Scribe v{ app.getVersion() }</a>
       </div>
     </div>
   );

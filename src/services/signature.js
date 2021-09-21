@@ -2,7 +2,7 @@ import { getSignatureRawHtml, createSignatureInstallation } from "requests/signa
 import store                                                from "services/store";
 import { updateSignatureForEmail }                          from "services/apple_mail";
 import Bugsnag                                              from "@bugsnag/electron";
-import fs                                                   from "fs";
+import { existsSync, mkdirSync, writeFile }                 from "fs";
 import os                                                   from "os";
 import { remote }                                           from "electron";
 import applescript                                          from "applescript";
@@ -66,7 +66,11 @@ const writeFileForSignature = (id, email, html) => {
   }
   if (process.platform === "win32") {
     const signatureFileName = `Scribe - ${email}.htm`;
-    fs.writeFile(`${app.getPath("home")}/appdata/roaming/Microsoft/Signatures/${signatureFileName}`, `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />${html}`, (err) => {
+    const dirPath = `${app.getPath("home")}/appdata/roaming/Microsoft/Signatures`;
+    if (!existsSync(dirPath)) {
+      mkdirSync(dirPath, { recursive: true });
+    }
+    writeFile(`${dirPath}/${signatureFileName}`, `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />${html}`, (err) => {
       if (err) {
         log.error(err);
         Bugsnag.notify(err);
