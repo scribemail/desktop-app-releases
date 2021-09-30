@@ -53,22 +53,19 @@ const ApplicationLoggedInContainer = () => {
     if (store.get("update_outlook")) {
       return "Install signature in Outlook";
     }
-
-    if (store.get("update_apple_mail")) {
-      return "Install signature in Apple Mail";
-    }
+    return "Install signature in Apple Mail";
   };
 
   useEffect(() => {
-    ipcRenderer.on("message-from-worker", (event, arg) => {
-      if (arg.command === "signatureUpdated") {
-        setSignatureUpdates(store.get("signature_updates"));
-      }
-      if (arg.command === "updateSignatures") {
-        handleUpdate();
-      }
-    });
-    if (!didRender) {
+    if (!didRender.current) {
+      ipcRenderer.on("message-from-worker", (event, arg) => {
+        if (arg.command === "signatureUpdated") {
+          setSignatureUpdates(store.get("signature_updates"));
+        }
+        if (arg.command === "updateSignatures") {
+          handleUpdate();
+        }
+      });
       handleUpdate();
       didRender.current = true;
     }

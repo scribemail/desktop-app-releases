@@ -7,8 +7,9 @@ import { Office365Button, OutlookButton } from "renderer/components/ui";
 const SessionMicrosoftLoginButton = ({ children, block, provider, onError, onLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
 
-  const logInUser = (idToken) => {
-    createMicrosoftSession(idToken).then((response) => {
+  const logInUser = (event, args) => {
+    setLoading(true);
+    createMicrosoftSession(args.idToken).then((response) => {
       onLoginSuccess(response);
     }).catch(() => {
       setLoading(false);
@@ -17,10 +18,9 @@ const SessionMicrosoftLoginButton = ({ children, block, provider, onError, onLog
   };
 
   useEffect(() => {
-    ipcRenderer.on("logged-in-with-microsoft", (event, args) => {
-      setLoading(true);
-      logInUser(args.idToken);
-    });
+    if (ipcRenderer.rawListeners("logged-in-with-microsoft").length === 0) {
+      ipcRenderer.on("logged-in-with-microsoft", logInUser);
+    }
   }, []);
 
   const logIn = () => {
