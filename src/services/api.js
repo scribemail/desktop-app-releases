@@ -1,10 +1,14 @@
 import axios                                             from "axios";
+import { remote }                                        from "electron";
 import { getAuthorizationHeader, setAuthorizationToken } from "services/authorization_token";
+
+const { app } = remote;
 
 const instance = axios.create({
   headers: {
-    Accept:          "application/json",
-    "X-Client-Type": "DesktopApplication"
+    Accept:             "application/json",
+    "X-Client-Type":    "DesktopApplication",
+    "X-Client-Version": app.getVersion()
   },
   baseURL: process.env.ELECTRON_WEBPACK_APP_API_BASE_URL
 });
