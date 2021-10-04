@@ -16,12 +16,13 @@ exports.default = async function notarizing(context) {
     console.log("Notarizing mac app");
 
     return notarize({
-      tool:            "notarytool",
+      // tool:            "notarytool",
       appBundleId:     "com.scribe-mail.scribe",
       appPath:         `${appOutDir}/${appName}.app`,
       appleId:         process.env.APPLE_ID,
       appleIdPassword: process.env.APPLE_ID_PASSWORD,
-      teamId:          process.env.APPLE_TEAM_ID
+      ascProvider:     process.env.APPLE_TEAM_ID
+      // teamId:          process.env.APPLE_TEAM_ID
     });
   }
 };
