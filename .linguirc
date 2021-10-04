@@ -1,0 +1,13 @@
+{
+  "locales": ["en", "fr"],
+  "sourceLocale": "en",
+  "catalogs": [{
+    "path": "src/locales/{locale}/messages",
+    "include": ["src"]
+  }],
+  "format": "po",
+  "service": {
+    "name": "TranslationIO",
+    "apiKey": "ade9660995114d5eac5eeb4df3d00831"
+  }
+}

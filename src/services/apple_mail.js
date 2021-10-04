@@ -1,12 +1,10 @@
 import { promises as fs } from "fs";
 import Bugsnag            from "@bugsnag/electron";
-import { remote }         from "electron";
+import { app }            from "@electron/remote";
 import log                from "electron-log";
 import plist              from "plist";
 import findIndex          from "lodash/findIndex";
 import { v4 as uuidv4 }   from "uuid";
-
-const { app } = remote;
 
 const sendFileListsToBugsnag = () => {
   const path1 = `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data`;

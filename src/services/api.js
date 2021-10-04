@@ -1,8 +1,6 @@
 import axios                                             from "axios";
-import { remote }                                        from "electron";
+import { app }                                           from "@electron/remote";
 import { getAuthorizationHeader, setAuthorizationToken } from "services/authorization_token";
-
-const { app } = remote;
 
 const instance = axios.create({
   headers: {

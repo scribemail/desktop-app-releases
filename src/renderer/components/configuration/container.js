@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { shell, remote }   from "electron";
+import { shell }           from "electron";
+import { app }             from "@electron/remote";
 import PropTypes           from "prop-types";
 
 import { deleteAuthorizationToken } from "services/authorization_token";
@@ -8,8 +9,6 @@ import store                        from "services/store";
 import { Checkbox }                 from "renderer/components/ui";
 
 import "./container.scss";
-
-const { app } = remote;
 
 const ConfigurationContainer = ({ onHide }) => {
   const [launchAtStartup, setLaunchAtStartup] = useState(store.get("launch_at_startup"));

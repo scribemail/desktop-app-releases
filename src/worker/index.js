@@ -1,12 +1,11 @@
-import { ipcRenderer, remote }   from "electron";
+import { ipcRenderer }           from "electron";
 import ActionCable               from "actioncable";
+import { app }                   from "@electron/remote";
 import Store                     from "electron-store";
 import { getAuthorizationToken } from "services/authorization_token";
 import { updateSignature }       from "services/signature";
 import log                       from "electron-log";
 import { startBugsnag }          from "services/bugsnag";
-
-const { app } = remote;
 
 startBugsnag(app, { process: { name: "worker" } });
 

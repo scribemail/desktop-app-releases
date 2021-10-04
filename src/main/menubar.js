@@ -1,7 +1,5 @@
 import { Tray, Menu, app, nativeTheme } from "electron";
 import { menubar }                      from "menubar";
-import isDev                            from "electron-is-dev";
-import { format as formatUrl }          from "url";
 import * as path                        from "path";
 
 let tray;
@@ -21,7 +19,7 @@ const createTray = () => {
 
 export const createMenuBar = () => {
   const mb = menubar({
-    index:         isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html` : formatUrl({ pathname: path.join(__dirname, "index.html"), protocol: "file", slashes: true }),
+    index:         false,
     preloadWindow: true,
     tray:          createTray(),
     browserWindow: {
@@ -40,10 +38,10 @@ export const createMenuBar = () => {
     tray.on("right-click", () => {
       mb.tray.popUpContextMenu(contextMenu);
     });
-    if(process.platform === "darwin") {
+    if (process.platform === "darwin") {
       mb.showWindow();
     } else {
-      setTimeout(() => { mb.showWindow(); }, 500)
+      setTimeout(() => { mb.showWindow(); }, 500);
     }
   });
 

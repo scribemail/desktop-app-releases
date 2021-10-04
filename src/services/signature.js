@@ -4,11 +4,9 @@ import { updateSignatureForEmail }                          from "services/apple
 import Bugsnag                                              from "@bugsnag/electron";
 import { existsSync, mkdirSync, writeFile }                 from "fs";
 import os                                                   from "os";
-import { remote }                                           from "electron";
+import { app }                                              from "@electron/remote";
 import applescript                                          from "applescript";
 import log                                                  from "electron-log";
-
-const { app } = remote;
 
 const getOutlookAppleScript = (email, html) => {
   const signatureName = `Scribe - ${email}`;

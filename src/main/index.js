@@ -1,14 +1,18 @@
-import { app, ipcMain, BrowserWindow } from "electron";
-import Store                           from "electron-store";
-import isDev                           from "electron-is-dev";
-import unhandled                       from "electron-unhandled";
-import { autoUpdater }                 from "electron-updater";
-import Registry                        from "rage-edit";
-import log                             from "electron-log";
-import { startBugsnag }                from "services/bugsnag";
-import { createWorkerWindow }          from "./worker_window";
-import { createMenuBar }               from "./menubar";
-import AuthProvider                    from "./microsoft_auth/AuthProvider";
+import { app, ipcMain, BrowserWindow }                            from "electron";
+import { initialize as remoteInitialize, enable as remoteEnable } from "@electron/remote/main";
+import Store                                                      from "electron-store";
+import isDev                                                      from "electron-is-dev";
+import unhandled                                                  from "electron-unhandled";
+import { autoUpdater }                                            from "electron-updater";
+import Registry                                                   from "rage-edit";
+import log                                                        from "electron-log";
+import { startBugsnag }                                           from "services/bugsnag";
+import { format as formatUrl }                                    from "url";
+import { createWorkerWindow }                                     from "./worker_window";
+import { createMenuBar }                                          from "./menubar";
+import AuthProvider                                               from "./microsoft_auth/AuthProvider";
+
+remoteInitialize();
 
 Store.initRenderer();
 
@@ -32,6 +36,8 @@ function sendWindowMessage(targetWindow, message, payload) {
 }
 
 function updateMainWindow() {
+  remoteEnable(mainWindow.webContents);
+
   if (isDev) {
     mainWindow.webContents.openDevTools({ detach: true });
   }
@@ -78,6 +84,7 @@ app.on("ready", () => {
   menubar.on("after-create-window", () => {
     mainWindow = menubar.window;
     updateMainWindow();
+    mainWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html` : formatUrl({ pathname: path.join(__dirname, "index.html"), protocol: "file", slashes: true }),);
     ipcMain.on("message-from-worker", (event, arg) => {
       sendWindowMessage(menubar.window, "message-from-worker", arg);
     });
