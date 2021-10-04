@@ -13,8 +13,8 @@ for:
     only:
       - image: macOS-BigSur
   cache:
-    # - node_modules
-    # - '~\.electron'
+    - node_modules
+    - '~\.electron'
   install:
     - nvm install 14.15.3
     - nvm use 14.15.3
