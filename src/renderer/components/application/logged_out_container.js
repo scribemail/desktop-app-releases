@@ -9,7 +9,6 @@ import SessionForm                 from "renderer/components/session/form";
 import { Button, Icon }            from "renderer/components/ui";
 import { isSubscriptionActive }    from "services/account";
 import store                       from "services/store";
-import { setBugsnagUser }          from "services/bugsnag";
 import { Alert }                   from "reactstrap";
 import "./logged_out_container.scss";
 
@@ -28,7 +27,6 @@ const ApplicationLoggedOutContainer = () => {
 
   const handleContinue = (localSessionResponse = null) => {
     const { user, account } = (localSessionResponse || sessionResponse).data;
-    setBugsnagUser(user.id, user.email, user.display_name);
 
     store.set("is_subscription_active", isSubscriptionActive(account));
     setCurrentUser(user);

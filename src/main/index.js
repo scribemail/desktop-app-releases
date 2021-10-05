@@ -18,9 +18,9 @@ Store.initRenderer();
 
 const store = new Store();
 
-if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
+// if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
   unhandled();
-}
+// }
 
 startBugsnag(app, { process: { name: "main" } });
 

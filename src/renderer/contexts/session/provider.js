@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes                      from "prop-types";
+import { setBugsnagUser }             from "services/bugsnag";
 import SessionContext                 from "renderer/contexts/session/context";
 import { getSession }                 from "requests/session";
 import { Loader }                     from "renderer/components/ui";
@@ -21,6 +22,7 @@ const SessionProvider = ({ children }) => {
     getSession().then((response) => {
       setCurrentUser(response.data.user);
       setCurrentAccount(response.data.account);
+      setBugsnagUser(response.data.user.id, response.data.user.email, response.data.user.display_name);
       setLoading(false);
     }).catch(() => {
       setLoading(false);
