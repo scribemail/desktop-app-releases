@@ -2,6 +2,7 @@ import { app, ipcMain, BrowserWindow }                            from "electron
 import { initialize as remoteInitialize, enable as remoteEnable } from "@electron/remote/main";
 import Store                                                      from "electron-store";
 import isDev                                                      from "electron-is-dev";
+import * as path                                                  from "path";
 import unhandled                                                  from "electron-unhandled";
 import { autoUpdater }                                            from "electron-updater";
 import Registry                                                   from "rage-edit";
@@ -17,7 +18,7 @@ if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
   unhandled();
 }
 
-debug({ isEnabled: true });
+debug({ isEnabled: process.env.ELECTRON_WEBPACK_APP_ENV !== "production" });
 
 remoteInitialize();
 
