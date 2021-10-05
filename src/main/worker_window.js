@@ -14,7 +14,6 @@ export const createWorkerWindow = () => {
 
   if (isDev) {
     workerWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/worker.html`);
-    // workerWindow.webContents.openDevTools({ detach: false });
   } else {
     workerWindow.loadURL(formatUrl({
       pathname: path.join(__dirname, "worker.html"),

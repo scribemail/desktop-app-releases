@@ -5,6 +5,7 @@ import isDev                                                      from "electron
 import unhandled                                                  from "electron-unhandled";
 import { autoUpdater }                                            from "electron-updater";
 import Registry                                                   from "rage-edit";
+import debug                                                      from "electron-debug";
 import log                                                        from "electron-log";
 import { startBugsnag }                                           from "services/bugsnag";
 import { format as formatUrl }                                    from "url";
@@ -12,9 +13,11 @@ import { createWorkerWindow }                                     from "./worker
 import { createMenuBar }                                          from "./menubar";
 import AuthProvider                                               from "./microsoft_auth/AuthProvider";
 
-// if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
+if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
   unhandled();
-// }
+}
+
+debug({ isEnabled: true });
 
 remoteInitialize();
 
@@ -37,10 +40,6 @@ function sendWindowMessage(targetWindow, message, payload) {
 
 function updateMainWindow() {
   remoteEnable(mainWindow.webContents);
-
-  if (isDev) {
-    mainWindow.webContents.openDevTools({ detach: true });
-  }
 
   mainWindow.on("closed", () => {
     mainWindow = null;
