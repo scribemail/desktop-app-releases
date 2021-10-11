@@ -2,9 +2,11 @@ import React, { useState, useEffect }      from "react";
 import PropTypes                           from "prop-types";
 import { getAuthenticationMethod }         from "requests/authentication_method";
 import { createSession, createSsoSession } from "requests/session";
+import { Icon, Form, Button }              from "renderer/components/ui";
 import { ipcRenderer }                     from "electron";
-import { Form, Button }                    from "renderer/components/ui";
 import { Input, FormGroup, Label }         from "reactstrap";
+
+import "./form.scss";
 
 const SessionForm = ({ onError, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
@@ -51,11 +53,21 @@ const SessionForm = ({ onError, onLoginSuccess }) => {
     });
   };
 
+  const handleBackClick = (event) => {
+    event.preventDefault();
+    setStep(1);
+  };
+
   return (
     <Form className="application-form">
       <FormGroup>
         <Label for="email">Email</Label>
-        <Input id="email" type="text" label="Email" value={ email } onChange={ handleEmailChange } placeholder="john.doe@companyname.com" />
+        <div className="email-field-container">
+          <Input id="email" type="text" label="Email" readOnly={ step === 2 } value={ email } onChange={ handleEmailChange } placeholder="john.doe@companyname.com" />
+          { step === 2 && (
+            <a href="#" onClick={ handleBackClick } className="email-field-container-edit" aria-label="Edit"><Icon icon="pencil-1" /></a>
+          ) }
+        </div>
       </FormGroup>
       { step === 1 && (
         <div className="text-center pt-3">

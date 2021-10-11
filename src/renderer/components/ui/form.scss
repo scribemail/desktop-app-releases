@@ -14,6 +14,20 @@
     display: block;
   }
 
+  input.form-control[readonly] {
+    background-color: $surface-dark-color;
+    padding-left: 11px;
+    padding-right: 11px;
+    border: 0;
+
+    &:focus,
+    &.focus {
+      outline: none;
+      border-bottom: 0;
+      box-shadow: none;
+    }
+  }
+
   input.form-control {
     border: 0;
     border-bottom: 1px solid $surface-medium-color;

@@ -9,6 +9,7 @@ $icon-cog: unicode(ea03);
 $icon-button-refresh-arrows: unicode(ea04);
 $icon-desktop-monitor-download: unicode(ea05);
 $icon-check-circle-1: unicode(ea06);
+$icon-pencil-1: unicode(ea07);
 
 .icon-cog::before {
   content: $icon-cog;
@@ -24,5 +25,9 @@ $icon-check-circle-1: unicode(ea06);
 
 .icon-check-circle-1::before {
   content: $icon-check-circle-1;
+}
+
+.icon-pencil-1::before {
+  content: $icon-pencil-1;
 }
 

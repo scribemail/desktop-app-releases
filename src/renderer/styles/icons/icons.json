@@ -1,0 +1,51 @@
+{
+    "icons": [
+        {
+            "style": "outline",
+            "width": 24,
+            "height": 24,
+            "tags": "modify,write,edit,pencil,writing,change",
+            "name": "pencil-1",
+            "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><path class=\"a\" d=\"M22.19 1.81a3.638 3.638 0 0 0-5.169.035l-14.5 14.5L.75 23.25l6.905-1.771 14.5-14.5a3.638 3.638 0 0 0 .035-5.169z\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M16.606 2.26l5.134 5.134\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M14.512 4.354l5.134 5.134\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M2.521 16.345l5.139 5.129\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",
+            "set_id": 1
+        },
+        {
+            "style": "outline",
+            "width": 24,
+            "height": 24,
+            "tags": "checkmark,addition,circle,success,check,validation,add,form",
+            "name": "check-circle-1",
+            "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><path class=\"a\" d=\"M6 13.223L8.45 16.7a1.049 1.049 0 0 0 1.707.051L18 6.828\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><circle class=\"a\" cx=\"12\" cy=\"11.999\" r=\"11.25\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",
+            "set_id": 1
+        },
+        {
+            "style": "outline",
+            "width": 24,
+            "height": 24,
+            "tags": "screen,device,display,computer,download,desktop,monitor,electronics",
+            "name": "desktop-monitor-download",
+            "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><circle class=\"a\" cx=\"17.25\" cy=\"6.75\" r=\"6\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M17.25 3.75v6\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M17.25 9.75L15 7.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M17.25 9.75L19.5 7.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M15.75 23.25h-7.5l.75-3h6l.75 3z\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M6 23.25h12\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M.75 17.25h22.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M23.25 14.25v3a3 3 0 0 1-3 3H3.75a3 3 0 0 1-3-3V6.75a3 3 0 0 1 3-3h4.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",
+            "set_id": 1
+        },
+        {
+            "style": "outline",
+            "width": 24,
+            "height": 24,
+            "tags": "button,multi,reload,multimedia,arrows,media,circle,refresh,controls",
+            "name": "button-refresh-arrows",
+            "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><path class=\"a\" d=\"M5.25 14.248v4.5H.75\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M18.75 9.748v-4.5h4.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M19.032 5.245A9.752 9.752 0 0 1 8.246 21\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M4.967 18.751A9.753 9.753 0 0 1 15.754 3\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",
+            "set_id": 1
+        },
+        {
+            "style": "outline",
+            "width": 24,
+            "height": 24,
+            "tags": "work,loading,cog,gear,settings,machine",
+            "name": "cog",
+            "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><path class=\"a\" d=\"M10.546 2.438a1.957 1.957 0 0 0 2.908 0L14.4 1.4a1.959 1.959 0 0 1 3.41 1.413l-.071 1.4a1.958 1.958 0 0 0 2.051 2.054l1.4-.071a1.959 1.959 0 0 1 1.41 3.41l-1.042.94a1.96 1.96 0 0 0 0 2.909l1.042.94a1.959 1.959 0 0 1-1.413 3.41l-1.4-.071a1.958 1.958 0 0 0-2.056 2.056l.071 1.4A1.959 1.959 0 0 1 14.4 22.6l-.941-1.041a1.959 1.959 0 0 0-2.908 0L9.606 22.6A1.959 1.959 0 0 1 6.2 21.192l.072-1.4a1.958 1.958 0 0 0-2.056-2.056l-1.4.071A1.958 1.958 0 0 1 1.4 14.4l1.041-.94a1.96 1.96 0 0 0 0-2.909L1.4 9.606A1.958 1.958 0 0 1 2.809 6.2l1.4.071a1.958 1.958 0 0 0 2.058-2.06L6.2 2.81A1.959 1.959 0 0 1 9.606 1.4z\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><circle class=\"a\" cx=\"12\" cy=\"12.001\" r=\"4.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",
+            "set_id": 1
+        }
+    ],
+    "sets": [],
+    "groups": []
+}
