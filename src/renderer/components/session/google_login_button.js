@@ -8,7 +8,11 @@ import { GoogleButton }        from "renderer/components/ui";
 const SessionGoogleLoginButton = ({ children, block, onError, onLoginSuccess }) => {
   const logInUser = (accessToken) => {
     createGoogleSession(accessToken).then((response) => {
-      onLoginSuccess(response);
+      if (response.data.method === "sso") {
+        onError("Please login with your email");
+      } else {
+        onLoginSuccess(response);
+      }
       ipcRenderer.send("open-menu-bar-window");
     }).catch(() => {
       onError("Error while login with Google");

@@ -1,4 +1,5 @@
-import Api from "services/api";
+import Api         from "services/api";
+import queryString from "query-string";
 
 export const getSession = () => (
   new Promise((resolve, reject) => {
@@ -33,6 +34,16 @@ export const createMicrosoftSession = (accessToken) => (
 export const createGoogleSession = (token) => (
   new Promise((resolve, reject) => {
     Api.post("/google/sessions", { user: { google_access_token: token }, only_login: true }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
+
+export const createSsoSession = (code, params = {}) => (
+  new Promise((resolve, reject) => {
+    Api.post(`/sso/sessions?${queryString.stringify(params)}`, { code }).then((response) => {
       resolve(response);
     }).catch((error) => {
       reject(error);

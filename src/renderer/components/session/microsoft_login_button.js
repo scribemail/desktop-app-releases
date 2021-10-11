@@ -10,7 +10,11 @@ const SessionMicrosoftLoginButton = ({ children, block, provider, onError, onLog
   const logInUser = (event, args) => {
     setLoading(true);
     createMicrosoftSession(args.idToken).then((response) => {
-      onLoginSuccess(response);
+      if (response.data.method === "sso") {
+        onError("Please login with your email");
+      } else {
+        onLoginSuccess(response);
+      }
     }).catch(() => {
       setLoading(false);
       onError("Error while login with Microsoft");

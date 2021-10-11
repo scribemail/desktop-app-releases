@@ -64,6 +64,18 @@ const openMicrosoftLoginWindow = () => {
   });
 };
 
+const openSsoLoginWindow = (eventj, args) => {
+  const authWindow = new BrowserWindow({ width: 400, height: 600 });
+  authWindow.loadURL(args.redirectUrl);
+  authWindow.webContents.on("will-redirect", (event, responseUrl) => {
+    const parsedUrl = new URL(responseUrl);
+    const code = parsedUrl.searchParams.get("code");
+    sendWindowMessage(mainWindow, "logged-in-with-sso", { code });
+    menubar.showWindow();
+    authWindow.close();
+  });
+};
+
 const openMenuBarWindow = () => {
   menubar.showWindow();
 };
@@ -89,6 +101,7 @@ app.on("ready", () => {
       sendWindowMessage(menubar.window, "message-from-worker", arg);
     });
     ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
+    ipcMain.on("open-sso-login", openSsoLoginWindow);
     ipcMain.on("open-menu-bar-window", openMenuBarWindow);
     menubar.app.commandLine.appendSwitch("disable-backgrounding-occluded-windows", "true");
     if (process.platform === "darwin") {
