@@ -5,7 +5,7 @@ import get                                    from "lodash/get";
 import { getSession }                         from "requests/session";
 import { Loader, Icon }                       from "renderer/components/ui";
 import { updateSignature }                    from "services/signature";
-import { isSubscriptionActive }               from "services/account";
+import { isSubscriptionActive }               from "services/workspace";
 import { UncontrolledTooltip }                from "reactstrap";
 import { ipcRenderer }                        from "electron";
 import TimeAgo                                from "timeago-react";
@@ -15,7 +15,7 @@ import "./logged_in_container.scss";
 const ApplicationLoggedInContainer = () => {
   const [loading, setLoading] = useState(false);
   const [signatureUpdates, setSignatureUpdates] = useState(store.get("signature_updates"));
-  const { currentUser, currentAccount, setCurrentUser, setCurrentAccount } = useSession();
+  const { currentUser, currentWorkspace, setCurrentUser, setCurrentWorkspace } = useSession();
   const didRender = useRef();
 
   const emailsWithSignature = currentUser.co_worker.emails.filter((email) => email.has_signature);
@@ -24,8 +24,8 @@ const ApplicationLoggedInContainer = () => {
     setLoading(true);
     getSession().then((response) => {
       setCurrentUser(response.data.user);
-      setCurrentAccount(response.data.account);
-      store.set("is_subscription_active", isSubscriptionActive(response.data.account));
+      setCurrentWorkspace(response.data.account || response.data.workspace);
+      store.set("is_subscription_active", isSubscriptionActive(response.data.account || response.data.workspace));
       setLoading(false);
     }).catch(() => {
       setLoading(false);
@@ -73,7 +73,7 @@ const ApplicationLoggedInContainer = () => {
 
   return (
     <div className="application-container">
-      { !isSubscriptionActive(currentAccount) && (
+      { !isSubscriptionActive(currentWorkspace) && (
         <>
           { loading && <div className="d-flex align-items-center justify-content-center" style={ { height: "150px" } }><Loader /></div> }
           { !loading && (
@@ -85,7 +85,7 @@ const ApplicationLoggedInContainer = () => {
           ) }
         </>
       ) }
-      { isSubscriptionActive(currentAccount) && (
+      { isSubscriptionActive(currentWorkspace) && (
         <>
           <div className="d-flex mt-2 mb-2 align-items-end">
             <h1 className="mt-0 mb-0">Your signatures</h1>

@@ -15,11 +15,11 @@ const ConfigurationContainer = ({ onHide }) => {
   const [updateOutlook, setUpdateOutlook] = useState(store.get("update_outlook"));
   const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
 
-  const { currentUser, deleteCurrentAccount, deleteCurrentUser } = useSession();
+  const { currentUser, deleteCurrentWorkspace, deleteCurrentUser } = useSession();
 
   const handleLogout = () => {
     deleteAuthorizationToken();
-    deleteCurrentAccount();
+    deleteCurrentWorkspace();
     deleteCurrentUser();
     store.delete("is_subscription_active");
     onHide();

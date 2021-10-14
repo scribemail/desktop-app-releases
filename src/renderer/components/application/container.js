@@ -11,7 +11,7 @@ import logo from "images/logo.png";
 import "./container.scss";
 
 const ApplicationContainer = () => {
-  const { currentUser, currentAccount } = useSession();
+  const { currentUser, currentWorkspace } = useSession();
   const [showConfig, setShowConfig] = useState();
 
   const toggleConfig = () => {
@@ -34,8 +34,8 @@ const ApplicationContainer = () => {
           </a>
         </div>
       </div>
-      { (!currentUser || !currentAccount) && !showConfig && <ApplicationLoggedOutContainer /> }
-      { currentUser && currentAccount && !showConfig && <ApplicationLoggedInContainer /> }
+      { (!currentUser || !currentWorkspace) && !showConfig && <ApplicationLoggedOutContainer /> }
+      { currentUser && currentWorkspace && !showConfig && <ApplicationLoggedInContainer /> }
       { showConfig && <ConfigurationContainer onHide={ () => { setShowConfig(false); } } /> }
     </div>
   );

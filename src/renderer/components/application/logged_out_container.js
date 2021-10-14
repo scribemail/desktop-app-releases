@@ -7,13 +7,13 @@ import SessionGoogleLoginButton    from "renderer/components/session/google_logi
 import SessionMicrosoftLoginButton from "renderer/components/session/microsoft_login_button";
 import SessionForm                 from "renderer/components/session/form";
 import { Button, Icon }            from "renderer/components/ui";
-import { isSubscriptionActive }    from "services/account";
+import { isSubscriptionActive }    from "services/workspace";
 import store                       from "services/store";
 import { Alert }                   from "reactstrap";
 import "./logged_out_container.scss";
 
 const ApplicationLoggedOutContainer = () => {
-  const { setCurrentUser, setCurrentAccount } = useSession();
+  const { setCurrentUser, setCurrentWorkspace } = useSession();
 
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
@@ -26,17 +26,17 @@ const ApplicationLoggedOutContainer = () => {
   };
 
   const handleContinue = (localSessionResponse = null) => {
-    const { user, account } = (localSessionResponse || sessionResponse).data;
+    const { data } = localSessionResponse || sessionResponse;
 
-    store.set("is_subscription_active", isSubscriptionActive(account));
-    setCurrentUser(user);
-    setCurrentAccount(account);
+    store.set("is_subscription_active", isSubscriptionActive(data.account || data.workspace));
+    setCurrentUser(data.user);
+    setCurrentWorkspace(data.account || data.workspace);
   };
 
   const handleLoginSuccess = (response) => {
     setAuthorizationToken(response.headers.authorization.split(" ")[1]);
     getSession().then((response2) => {
-      if (isSubscriptionActive(response2.data.account)) {
+      if (isSubscriptionActive(response2.data.account || response2.data.workspace)) {
         const emailsWithSignature = response2.data.user.co_worker.emails.filter((email) => email.has_signature);
         emailsWithSignature.map((email) => updateSignature(email.signature_id, email.email));
         setSessionResponse(response2);

@@ -8,20 +8,20 @@ import { Loader }                     from "renderer/components/ui";
 const SessionProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState();
-  const [currentAccount, setCurrentAccount] = useState(null);
+  const [currentWorkspace, setCurrentWorkspace] = useState(null);
 
   const deleteCurrentUser = () => {
     setCurrentUser(null);
   };
 
-  const deleteCurrentAccount = () => {
-    setCurrentAccount(null);
+  const deleteCurrentWorkspace = () => {
+    setCurrentWorkspace(null);
   };
 
   useEffect(() => {
     getSession().then((response) => {
       setCurrentUser(response.data.user);
-      setCurrentAccount(response.data.account);
+      setCurrentWorkspace(response.data.account || response.data.workspace);
       setBugsnagUser(response.data.user.id, response.data.user.email, response.data.user.display_name);
       setLoading(false);
     }).catch(() => {
@@ -39,11 +39,11 @@ const SessionProvider = ({ children }) => {
     <SessionContext.Provider
       value={ {
         currentUser,
-        currentAccount,
+        currentWorkspace,
         setCurrentUser,
-        setCurrentAccount,
+        setCurrentWorkspace,
         deleteCurrentUser,
-        deleteCurrentAccount
+        deleteCurrentWorkspace
       } }
     >
       { children }
