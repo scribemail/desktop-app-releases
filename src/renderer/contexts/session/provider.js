@@ -21,7 +21,7 @@ const SessionProvider = ({ children }) => {
   useEffect(() => {
     getSession().then((response) => {
       setCurrentUser(response.data.user);
-      setCurrentWorkspace(response.data.account || response.data.workspace);
+      setCurrentWorkspace(response.data.workspace);
       setBugsnagUser(response.data.user.id, response.data.user.email, response.data.user.display_name);
       setLoading(false);
     }).catch(() => {

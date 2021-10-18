@@ -28,15 +28,15 @@ const ApplicationLoggedOutContainer = () => {
   const handleContinue = (localSessionResponse = null) => {
     const { data } = localSessionResponse || sessionResponse;
 
-    store.set("is_subscription_active", isSubscriptionActive(data.account || data.workspace));
+    store.set("is_subscription_active", isSubscriptionActive(data.workspace));
     setCurrentUser(data.user);
-    setCurrentWorkspace(data.account || data.workspace);
+    setCurrentWorkspace(data.workspace);
   };
 
   const handleLoginSuccess = (response) => {
     setAuthorizationToken(response.headers.authorization.split(" ")[1]);
     getSession().then((response2) => {
-      if (isSubscriptionActive(response2.data.account || response2.data.workspace)) {
+      if (isSubscriptionActive(response2.data.workspace)) {
         const emailsWithSignature = response2.data.user.co_worker.emails.filter((email) => email.has_signature);
         emailsWithSignature.map((email) => updateSignature(email.signature_id, email.email));
         setSessionResponse(response2);

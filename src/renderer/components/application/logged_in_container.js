@@ -24,8 +24,8 @@ const ApplicationLoggedInContainer = () => {
     setLoading(true);
     getSession().then((response) => {
       setCurrentUser(response.data.user);
-      setCurrentWorkspace(response.data.account || response.data.workspace);
-      store.set("is_subscription_active", isSubscriptionActive(response.data.account || response.data.workspace));
+      setCurrentWorkspace(response.data.workspace);
+      store.set("is_subscription_active", isSubscriptionActive(response.data.workspace));
       setLoading(false);
     }).catch(() => {
       setLoading(false);
