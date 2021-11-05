@@ -55,6 +55,8 @@ const createSocket = (token) => {
   });
 };
 
+log.info(`Token: ${getAuthorizationToken()} - is_subscription_active: ${store.get("is_subscription_active")}`);
+
 if (getAuthorizationToken() && store.get("is_subscription_active")) {
   createSocket(getAuthorizationToken());
 }

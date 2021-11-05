@@ -5,7 +5,7 @@ image:
 platform:
   - x64
 
-skip_non_tags: true
+skip_non_tags: false
 
 for:
 -
