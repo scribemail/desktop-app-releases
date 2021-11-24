@@ -4,6 +4,15 @@
             "style": "outline",
             "width": 24,
             "height": 24,
+            "tags": "code,secure,lock,padlock,programming,security,shield",
+            "name": "shield-lock",
+            "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><path class=\"a\" d=\"M2.25 3.923v7.614A11.907 11.907 0 0 0 9.882 22.65l1.041.4a3 3 0 0 0 2.154 0l1.041-.4a11.907 11.907 0 0 0 7.632-11.113V3.923a1.487 1.487 0 0 0-.868-1.362A21.7 21.7 0 0 0 12 .75a21.7 21.7 0 0 0-8.882 1.811 1.487 1.487 0 0 0-.868 1.362z\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><rect class=\"a\" x=\"7.5\" y=\"9.75\" width=\"9\" height=\"7.5\" rx=\"1.5\" ry=\"1.5\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M12 5.25a3 3 0 0 0-3 3v1.5h6v-1.5a3 3 0 0 0-3-3z\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M12 13.154a.375.375 0 1 1-.375.375.375.375 0 0 1 .375-.375\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",
+            "set_id": 1
+        },
+        {
+            "style": "outline",
+            "width": 24,
+            "height": 24,
             "tags": "modify,write,edit,pencil,writing,change",
             "name": "pencil-1",
             "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g class=\"nc-icon-wrapper\"><defs/><path class=\"a\" d=\"M22.19 1.81a3.638 3.638 0 0 0-5.169.035l-14.5 14.5L.75 23.25l6.905-1.771 14.5-14.5a3.638 3.638 0 0 0 .035-5.169z\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M16.606 2.26l5.134 5.134\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M14.512 4.354l5.134 5.134\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/><path class=\"a\" d=\"M2.521 16.345l5.139 5.129\" fill=\"none\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5px\"/></g></svg>",

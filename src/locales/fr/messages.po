@@ -1,8 +1,152 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-10-04 10:47+0200\n"
+"POT-Creation-Date: 2021-11-24 11:24+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: fr\n"
+
+#: src/renderer/components/session/form.js:87
+msgid "6 characters minimum"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:67
+msgid "Apple Mail"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:70
+msgid "Configuration"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:60
+msgid "Continue"
+msgstr ""
+
+#: src/renderer/components/session/form.js:78
+#: src/renderer/components/session/form.js:80
+#: src/renderer/components/session/form.js:87
+msgid "Email"
+msgstr ""
+
+#: src/renderer/components/session/google_login_button.js:19
+msgid "Error while login with Google"
+msgstr ""
+
+#: src/renderer/components/session/microsoft_login_button.js:21
+msgid "Error while login with Microsoft"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:60
+msgid "Install signature in Apple Mail"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:58
+msgid "Install signature in Outlook"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:55
+msgid "Install signature in Outlook and Apple Mail"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:111
+msgid "Installed <0/>"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:71
+msgid "Launch at startup"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:77
+msgid "Logged in as"
+msgstr ""
+
+#: src/renderer/components/session/form.js:90
+#: src/renderer/components/session/form.js:97
+msgid "Login"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:72
+msgid "Login with Office 365"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:75
+msgid "Login with Outlook"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:69
+msgid "Login with google"
+msgstr ""
+
+#: src/renderer/components/application/container.js:30
+msgid "Logo"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:89
+msgid "Logout"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:66
+msgid "Microsoft outlook"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:114
+msgid "Never updated"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:83
+msgid "Not logged in"
+msgstr ""
+
+#: src/renderer/components/session/form.js:86
+msgid "Password"
+msgstr ""
+
+#: src/renderer/components/session/form.js:71
+msgid "Please check your email and password"
+msgstr ""
+
+#: src/renderer/components/session/google_login_button.js:13
+#: src/renderer/components/session/microsoft_login_button.js:15
+msgid "Please login with your email"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:93
+msgid "Quit"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:90
+msgid "Refresh signature list"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:95
+msgid "Scribe v{0}"
+msgstr ""
+
+#: src/renderer/components/session/form.js:101
+msgid "Single sign-on enabled"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:131
+msgid "There is an issue with this workspace subscription<0/> Contact your admin to resolve the issue"
+msgstr ""
+
+#: src/renderer/components/configuration/container.js:65
+msgid "Update signatures for"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:58
+msgid "You are logged in<0/>Your signatures have been succcessfully<1/>installed on Outlook"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:87
+msgid "Your signatures"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:78
+msgid "or"
+msgstr ""
+
+#: src/renderer/components/ui/workspace_image.js:40
+msgid "{0} logo"
+msgstr "{0} logo"

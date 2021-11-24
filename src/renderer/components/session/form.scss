@@ -1,3 +1,6 @@
+@import "renderer/styles/mixins";
+@import "renderer/styles/variables";
+
 .email-field-container {
   position: relative;
 }
@@ -6,4 +9,9 @@
   position: absolute;
   top: 8px;
   right: 15px;
+}
+
+.sso-enabled {
+  color: $content-subtle-color;
+  font-size: 14px;
 }

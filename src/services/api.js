@@ -7,7 +7,7 @@ const instance = axios.create({
     Accept:             "application/json",
     "X-Client-Type":    "DesktopApplication",
     "X-Client-Version": app.getVersion(),
-    "X-Api-Version":    2
+    "X-Api-Version":    3
   },
   baseURL: process.env.ELECTRON_WEBPACK_APP_API_BASE_URL
 });

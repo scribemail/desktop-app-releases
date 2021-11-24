@@ -6,6 +6,7 @@ import OutlookButton   from "renderer/components/ui/buttons/outlook";
 import Form            from "renderer/components/ui/form";
 import Icon            from "renderer/components/ui/icon";
 import Checkbox        from "renderer/components/ui/checkbox";
+import WorkspaceImage  from "renderer/components/ui/workspace_image";
 
 export {
   Loader,
@@ -15,5 +16,6 @@ export {
   OutlookButton,
   Form,
   Icon,
-  Checkbox
+  Checkbox,
+  WorkspaceImage
 };

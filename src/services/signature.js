@@ -8,14 +8,21 @@ import { app }                                              from "@electron/remo
 import applescript                                          from "applescript";
 import log                                                  from "electron-log";
 
-const getOutlookAppleScript = (email, html) => {
-  const signatureName = `Scribe - ${email}`;
+const getOutlookAppleScript = (workspaceId, email, html) => {
+  const oldSignatureName = `Scribe - ${email}`;
+  const signatureName = `Scribe - ${email} - W${workspaceId}`;
   const signatureContent = html.replace(/"/g, "\\\"");
   return `
     tell application id "com.microsoft.Outlook"
-      set signatureList to every signature whose name is "${signatureName}"
+      set oldSignatureList to every signature whose name is "${oldSignatureName}"
+      if (count oldSignatureList) is 0 then
+        set signatureName to "${signatureName}"
+      else
+        set signatureName to "${oldSignatureName}"
+      end
+      set signatureList to every signature whose name is signatureName
       if (count signatureList) is 0 then
-        make new signature with properties { name: "${signatureName}", content: "${signatureContent}" }
+        make new signature with properties { name: signatureName, content: "${signatureContent}" }
       else
         set counter to 0
         repeat with signatureItem in signatureList
@@ -43,10 +50,10 @@ const getMetaData = () => {
   };
 };
 
-const writeFileForSignature = (id, email, html) => {
+const writeFileForSignature = (workspaceId, id, email, html) => {
   if (process.platform === "darwin") {
     if (store.get("update_outlook")) {
-      applescript.execString(getOutlookAppleScript(email, html), (err) => {
+      applescript.execString(getOutlookAppleScript(workspaceId, email, html), (err) => {
         if (err) {
           log.error(err);
         } else {
@@ -55,7 +62,7 @@ const writeFileForSignature = (id, email, html) => {
       });
     }
     if (store.get("update_apple_mail")) {
-      updateSignatureForEmail(email, html).then(() => {
+      updateSignatureForEmail(workspaceId, email, html).then(() => {
         createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).catch(() => {});
       }).catch((error) => {
         log.error(error);
@@ -63,12 +70,16 @@ const writeFileForSignature = (id, email, html) => {
     }
   }
   if (process.platform === "win32") {
-    const signatureFileName = `Scribe - ${email}.htm`;
+    const oldSignatureFileName = `Scribe - ${email}.htm`;
+    const signatureFileName = `Scribe - ${email} - W${workspaceId}.htm`;
     const dirPath = `${app.getPath("home")}/appdata/roaming/Microsoft/Signatures`;
+
+    const finalSignatureFileName = existsSync(`${dirPath}/${oldSignatureFileName}`) ? oldSignatureFileName : signatureFileName;
+
     if (!existsSync(dirPath)) {
       mkdirSync(dirPath, { recursive: true });
     }
-    writeFile(`${dirPath}/${signatureFileName}`, `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />${html}`, (err) => {
+    writeFile(`${dirPath}/${finalSignatureFileName}`, `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />${html}`, (err) => {
       if (err) {
         log.error(err);
         Bugsnag.notify(err);
@@ -81,9 +92,9 @@ const writeFileForSignature = (id, email, html) => {
   }
 };
 
-export const updateSignature = (id, email, callback) => {
+export const updateSignature = (workspaceId, id, email, callback) => {
   getSignatureRawHtml(id).then((response) => {
-    writeFileForSignature(id, email, response.data.raw_html);
+    writeFileForSignature(workspaceId, id, email, response.data.raw_html);
     store.set(`signature_updates.${id}`, Date.now());
     if (callback) {
       callback();

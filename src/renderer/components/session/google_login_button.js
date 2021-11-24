@@ -1,6 +1,7 @@
 import React                   from "react";
 import PropTypes               from "prop-types";
 import { ipcRenderer }         from "electron";
+import { t }                   from "@lingui/macro";
 import ElectronGoogleOAuth2    from "@getstation/electron-google-oauth2";
 import { createGoogleSession } from "requests/session";
 import { GoogleButton }        from "renderer/components/ui";
@@ -9,13 +10,13 @@ const SessionGoogleLoginButton = ({ children, block, onError, onLoginSuccess }) 
   const logInUser = (accessToken) => {
     createGoogleSession(accessToken).then((response) => {
       if (response.data.method === "sso") {
-        onError("Please login with your email");
+        onError(t`Please login with your email`);
       } else {
         onLoginSuccess(response);
       }
       ipcRenderer.send("open-menu-bar-window");
     }).catch(() => {
-      onError("Error while login with Google");
+      onError(t`Error while login with Google`);
     });
   };
 

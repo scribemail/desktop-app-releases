@@ -29,9 +29,15 @@ const sendFileListsToBugsnag = () => {
   });
 };
 
-const signatureName = (email) => (
-  `Scribe - ${email}`
-);
+const signatureName = (plistData, workspaceId, email) => {
+  const oldName = `Scribe - ${email}`;
+  const oldNameSignatureIndex = findIndex(plistData, (plistDataItem) => plistDataItem.SignatureName === oldName);
+  if (oldNameSignatureIndex !== -1) {
+    return oldName;
+  }
+  console.log(workspaceId, email);
+  return `Scribe - ${email} - W${workspaceId}`;
+};
 
 const signatureDirectoryCandidates = () => {
   const directories = [];
@@ -61,20 +67,20 @@ const getSignaturesFolder = async () => {
   }
 };
 
-const getSignatureFilePath = (folderPath, email) => (
+const getSignatureFilePath = (folderPath, workspaceId, email) => (
   new Promise((resolve, reject) => {
     const allSignatureFilePath = `${folderPath}/AllSignatures.plist`;
     fs.readFile(allSignatureFilePath, "utf8").then((data) => {
       let signatureUid = null;
       const plistData = plist.parse(data);
-      const existingSignatureIndex = findIndex(plistData, (plistDataItem) => plistDataItem.SignatureName === signatureName(email));
+      const existingSignatureIndex = findIndex(plistData, (plistDataItem) => plistDataItem.SignatureName === signatureName(plistData, workspaceId, email));
       if (existingSignatureIndex !== -1) {
         signatureUid = plistData[existingSignatureIndex].SignatureUniqueId;
       } else {
         signatureUid = uuidv4();
         plistData.push({
           SignatureIsRich:   true,
-          SignatureName:     signatureName(email),
+          SignatureName:     signatureName(plistData, workspaceId, email),
           SignatureUniqueId: signatureUid
         });
         fs.writeFile(allSignatureFilePath, plist.build(plistData), (writeFileError) => {
@@ -101,14 +107,14 @@ ${html}`;
   return fs.writeFile(path, fileContent);
 };
 
-export const updateSignatureForEmail = (email, html) => (
+export const updateSignatureForEmail = (workspaceId, email, html) => (
   new Promise((resolve, reject) => {
     getSignaturesFolder().then((folderPath) => {
       if (folderPath === undefined) {
         sendFileListsToBugsnag();
         reject("No folder for Apple Mail");
       } else {
-        getSignatureFilePath(folderPath, email).then((filePath) => {
+        getSignatureFilePath(folderPath, workspaceId, email).then((filePath) => {
           writeHtml(filePath, html).then(() => {
             resolve();
           }).catch((error) => {

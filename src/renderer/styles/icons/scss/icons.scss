@@ -10,6 +10,7 @@ $icon-button-refresh-arrows: unicode(ea04);
 $icon-desktop-monitor-download: unicode(ea05);
 $icon-check-circle-1: unicode(ea06);
 $icon-pencil-1: unicode(ea07);
+$icon-shield-lock: unicode(ea08);
 
 .icon-cog::before {
   content: $icon-cog;
@@ -29,5 +30,9 @@ $icon-pencil-1: unicode(ea07);
 
 .icon-pencil-1::before {
   content: $icon-pencil-1;
+}
+
+.icon-shield-lock::before {
+  content: $icon-shield-lock;
 }
 

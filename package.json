@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.4.1",
+  "version": "1.5",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -11,7 +11,9 @@
     "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w nsis",
     "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m dmg zip pkg",
     "dist-win": "yarn compile && electron-builder -w=nsis --publish onTag",
-    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --publish onTag"
+    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --publish onTag",
+    "translation:sync": "NODE_ENV=development lingui extract --overwrite && lingui compile",
+    "translation:sync_and_purge": "NODE_ENV=development lingui extract --overwrite --clean && lingui compile"
   },
   "electronWebpack": {
     "title": "Scribe",
@@ -23,7 +25,10 @@
       "webpackConfig": "renderer.webpack.config.transformer.js"
     },
     "whiteListedModules": [
-      "react-loader-spinner"
+      "react-loader-spinner",
+      "@emotion/react",
+      "@emotion/styled",
+      "@lingui/react"
     ]
   },
   "build": {
@@ -89,6 +94,8 @@
     "@bugsnag/plugin-react": "^7.11.0",
     "@dejay/electron-google-oauth2": "^2.1.1",
     "@electron/remote": "^2.0.1",
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
     "@getstation/electron-google-oauth2": "https://github.com/scribemail/electron-google-oauth2.git",
     "@lingui/babel-preset-react": "^2.9.2",
     "@lingui/cli": "^3.12.1",
@@ -98,6 +105,7 @@
     "@microsoft/mgt-components": "^2.1.0",
     "@microsoft/mgt-electron-provider": "^2.1.0",
     "@microsoft/mgt-element": "^2.1.0",
+    "@mui/material": "^5.2.0",
     "@teamschemaadmin/electron-google-oauth2": "^2.1.0",
     "actioncable": "^5.2.5",
     "applescript": "^1.0.0",
@@ -141,6 +149,7 @@
     "source-map-support": "^0.5.16",
     "timeago-react": "^3.0.2",
     "uuid": "^8.3.2",
+    "validate.js": "^0.13.1",
     "winreg-vbs": "^1.0.0",
     "xml2js": "^0.4.23"
   },
@@ -156,6 +165,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-string-to-lingui": "^0.12.1",
     "sass": "^1.32.12",
     "sass-loader": "^10",
     "stylelint": "^13.13.0",

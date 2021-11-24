@@ -1,7 +1,8 @@
-import { ipcRenderer }           from "electron";
-import ActionCable               from "actioncable";
-import { app }                   from "@electron/remote";
-import Store                     from "electron-store";
+import { ipcRenderer } from "electron";
+import ActionCable     from "actioncable";
+import { app }         from "@electron/remote";
+import Store           from "electron-store";
+
 import { getAuthorizationToken } from "services/authorization_token";
 import { updateSignature }       from "services/signature";
 import log                       from "electron-log";
@@ -14,6 +15,19 @@ const store = new Store({ watch: true });
 let currentCable = null;
 let currentCableSubscription = null;
 
+const isSubscriptionActiveForWorkspaceId = (workspaceId) => {
+  if (!store.get("workspaces")) {
+    return false;
+  }
+
+  const workspaceinfos = store.get("workspaces").filter((storeWorkspace) => storeWorkspace.id === workspaceId)[0];
+  if (!workspaceinfos) {
+    return false;
+  }
+
+  return workspaceinfos.isSubscriptionActive;
+};
+
 const message2UI = (command, payload) => {
   ipcRenderer.send("message-from-worker", {
     command, payload
@@ -22,9 +36,11 @@ const message2UI = (command, payload) => {
 
 const handleUpdateSignature = (data) => {
   log.info("socket-received");
-  updateSignature(data.signature.id, data.signature.email, () => {
-    message2UI("signatureUpdated", {});
-  });
+  if (isSubscriptionActiveForWorkspaceId(data.workspace.id)) {
+    updateSignature(data.signature.id, data.signature.email, data.workspace, () => {
+      message2UI("signatureUpdated", {});
+    });
+  }
 };
 
 const handleDisconnected = () => {
@@ -55,12 +71,12 @@ const createSocket = (token) => {
   });
 };
 
-if (getAuthorizationToken() && store.get("is_subscription_active")) {
+if (getAuthorizationToken()) {
   createSocket(getAuthorizationToken());
 }
 
 store.onDidChange("authorization_token", (newValue) => {
-  if (newValue && store.get("is_subscription_active")) {
+  if (newValue) {
     createSocket(newValue);
   }
 });

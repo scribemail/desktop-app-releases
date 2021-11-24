@@ -1,19 +1,23 @@
-import React, { useState }         from "react";
-import { useSession }              from "renderer/contexts/session/hooks";
-import { setAuthorizationToken }   from "services/authorization_token";
-import { getSession }              from "requests/session";
-import { updateSignature }         from "services/signature";
-import SessionGoogleLoginButton    from "renderer/components/session/google_login_button";
-import SessionMicrosoftLoginButton from "renderer/components/session/microsoft_login_button";
-import SessionForm                 from "renderer/components/session/form";
-import { Button, Icon }            from "renderer/components/ui";
-import { isSubscriptionActive }    from "services/workspace";
-import store                       from "services/store";
-import { Alert }                   from "reactstrap";
+import React, { useState }                  from "react";
+import { useSession }                       from "renderer/contexts/session/hooks";
+import { setAuthorizationToken }            from "services/authorization_token";
+import { getSession }                       from "requests/session";
+import { updateSignature }                  from "services/signature";
+import flatten                              from "lodash/flatten";
+import map                                  from "lodash/map";
+import { Trans }                            from "@lingui/macro";
+import filter                               from "lodash/filter";
+import SessionGoogleLoginButton             from "renderer/components/session/google_login_button";
+import SessionMicrosoftLoginButton          from "renderer/components/session/microsoft_login_button";
+import SessionForm                          from "renderer/components/session/form";
+import { Button, Icon }                     from "renderer/components/ui";
+import { setWorkspaces }                    from "services/store";
+import { isSubscriptionActiveForWorkspace } from "services/workspaces";
+import { Alert }                            from "reactstrap";
 import "./logged_out_container.scss";
 
 const ApplicationLoggedOutContainer = () => {
-  const { setCurrentUser, setCurrentWorkspace } = useSession();
+  const { setCurrentUser, setCurrentWorkspaces } = useSession();
 
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
@@ -28,16 +32,16 @@ const ApplicationLoggedOutContainer = () => {
   const handleContinue = (localSessionResponse = null) => {
     const { data } = localSessionResponse || sessionResponse;
 
-    store.set("is_subscription_active", isSubscriptionActive(data.workspace));
+    setWorkspaces(data.workspaces);
     setCurrentUser(data.user);
-    setCurrentWorkspace(data.workspace);
+    setCurrentWorkspaces(data.workspaces);
   };
 
   const handleLoginSuccess = (response) => {
     setAuthorizationToken(response.headers.authorization.split(" ")[1]);
     getSession().then((response2) => {
-      if (isSubscriptionActive(response2.data.workspace)) {
-        const emailsWithSignature = response2.data.user.co_worker.emails.filter((email) => email.has_signature);
+      const emailsWithSignature = flatten(map(filter(response2.data.workspaces, (workspace) => isSubscriptionActiveForWorkspace(workspace) && workspace.co_worker), (workspace) => workspace.co_worker.emails)).filter((email) => email.has_signature);
+      if (emailsWithSignature.length > 0) {
         emailsWithSignature.map((email) => updateSignature(email.signature_id, email.email));
         setSessionResponse(response2);
         setLoginSuccess(true);
@@ -51,10 +55,9 @@ const ApplicationLoggedOutContainer = () => {
     return (
       <div className="text-center login-success-block">
         <Icon icon="check-circle-1" className="text-success" /><br />
-        You are logged in<br />
-        Your signatures have been succcessfully <br />installed on Outlook
+        <Trans>You are logged in<br />Your signatures have been succcessfully<br />installed on Outlook</Trans>
         <div className="mt-5">
-          <Button color="primary" padded onClick={ () => { handleContinue(); } }>Continue</Button>
+          <Button color="primary" padded onClick={ () => { handleContinue(); } }> <Trans>Continue</Trans></Button>
         </div>
       </div>
     );
@@ -63,16 +66,16 @@ const ApplicationLoggedOutContainer = () => {
   return (
     <>
       <div className="mb-2 mt-2">
-        <SessionGoogleLoginButton block onError={ handleError } onLoginSuccess={ handleLoginSuccess }>Login with google</SessionGoogleLoginButton>
+        <SessionGoogleLoginButton block onError={ handleError } onLoginSuccess={ handleLoginSuccess }><Trans>Login with google</Trans></SessionGoogleLoginButton>
       </div>
       <div className="mb-2">
-        <SessionMicrosoftLoginButton block onError={ handleError } onLoginSuccess={ handleLoginSuccess } provider="office-365">Login with Office 365</SessionMicrosoftLoginButton>
+        <SessionMicrosoftLoginButton block onError={ handleError } onLoginSuccess={ handleLoginSuccess } provider="office-365"><Trans>Login with Office 365</Trans></SessionMicrosoftLoginButton>
       </div>
       <div className="mb-2">
-        <SessionMicrosoftLoginButton block onError={ handleError } onLoginSuccess={ handleLoginSuccess } provider="outlook">Login with Outlook</SessionMicrosoftLoginButton>
+        <SessionMicrosoftLoginButton block onError={ handleError } onLoginSuccess={ handleLoginSuccess } provider="outlook"><Trans>Login with Outlook</Trans></SessionMicrosoftLoginButton>
       </div>
       <div className="or-container">
-        <span>or</span>
+        <span><Trans>or</Trans></span>
       </div>
       { showError && (
         <Alert color="danger">

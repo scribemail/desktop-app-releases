@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "plugins": [
     "react-hooks",
-    "align-import"
+    "align-import",
+    "string-to-lingui"
   ],
   "settings": {
     "import/core-modules": ["electron"]
@@ -25,6 +26,26 @@
     "import/prefer-default-export": "off",
     "no-param-reassign": ["error", { "props": false }],
     "jsx-a11y/media-has-caption": "off",
+    "string-to-lingui/missing-lingui-transformation": [2,
+      {
+        "ignoreAttribute": ["icon"],
+        "ignoreFunction": []
+      }
+    ],
+    "string-to-lingui/t-call-in-function": 2,
+    "string-to-lingui/macro-inside-t-and-i18": 2,
+    "string-to-lingui/t-should-be-before-macro": 2,
+    "string-to-lingui/text-restrictions": [
+      2,
+      {
+        "rules": [
+          {
+            "patterns": ["''", "’", "“"],
+            "message": "Error message"
+          }
+        ]
+      }
+    ],
     "key-spacing": [
       "error",
       {

@@ -166,3 +166,7 @@ icons
     content: "\ea07";
 }
 
+.icon-shield-lock::before {
+    content: "\ea08";
+}
+

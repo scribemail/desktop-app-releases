@@ -1,6 +1,7 @@
 import React, { useEffect, useState }     from "react";
 import PropTypes                          from "prop-types";
 import { ipcRenderer }                    from "electron";
+import { t }                              from "@lingui/macro";
 import { createMicrosoftSession }         from "requests/session";
 import { Office365Button, OutlookButton } from "renderer/components/ui";
 
@@ -11,13 +12,13 @@ const SessionMicrosoftLoginButton = ({ children, block, provider, onError, onLog
     setLoading(true);
     createMicrosoftSession(args.idToken).then((response) => {
       if (response.data.method === "sso") {
-        onError("Please login with your email");
+        onError(t`Please login with your email`);
       } else {
         onLoginSuccess(response);
       }
     }).catch(() => {
       setLoading(false);
-      onError("Error while login with Microsoft");
+      onError(t`Error while login with Microsoft`);
     });
   };
 

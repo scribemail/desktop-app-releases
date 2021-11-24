@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { shell }           from "electron";
-import { app }             from "@electron/remote";
-import PropTypes           from "prop-types";
-
+import React, { useState }          from "react";
+import { shell }                    from "electron";
+import { app }                      from "@electron/remote";
+import PropTypes                    from "prop-types";
+import { Trans, t }                 from "@lingui/macro";
 import { deleteAuthorizationToken } from "services/authorization_token";
 import { useSession }               from "renderer/contexts/session/hooks";
 import store                        from "services/store";
@@ -15,11 +15,11 @@ const ConfigurationContainer = ({ onHide }) => {
   const [updateOutlook, setUpdateOutlook] = useState(store.get("update_outlook"));
   const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
 
-  const { currentUser, deleteCurrentWorkspace, deleteCurrentUser } = useSession();
+  const { currentUser, deleteCurrentWorkspaces, deleteCurrentUser } = useSession();
 
   const handleLogout = () => {
     deleteAuthorizationToken();
-    deleteCurrentWorkspace();
+    deleteCurrentWorkspaces();
     deleteCurrentUser();
     store.delete("is_subscription_active");
     onHide();
@@ -62,39 +62,37 @@ const ConfigurationContainer = ({ onHide }) => {
       <div className="mt-3">
         { process.platform === "darwin" && (
           <div className="mb-3">
-            <h3>Update signatures for</h3>
-            <Checkbox label="Microsoft outlook" className="mb-1" onChange={ handleUpdateOutlookChange } checked={ updateOutlook } />
-            <Checkbox label="Apple Mail" onChange={ handleUpdateAppleMailChange } checked={ updateAppleMail } />
+            <h3><Trans>Update signatures for</Trans></h3>
+            <Checkbox label={ t`Microsoft outlook` } className="mb-1" onChange={ handleUpdateOutlookChange } checked={ updateOutlook } />
+            <Checkbox label={ t`Apple Mail` } onChange={ handleUpdateAppleMailChange } checked={ updateAppleMail } />
           </div>
         ) }
-        <h3>Configuration</h3>
-        <Checkbox label="Launch at startup" onChange={ handleLaunchAtStartupChange } checked={ launchAtStartup } />
+        <h3><Trans>Configuration</Trans></h3>
+        <Checkbox label={ t`Launch at startup` } onChange={ handleLaunchAtStartupChange } checked={ launchAtStartup } />
       </div>
       <div className="text-center bottom-block">
         <div className="mb-1">
           { currentUser && (
             <>
-              Logged in as
+              <Trans>Logged in as</Trans>
               { " " }
               <strong>{ currentUser.email }</strong>
             </>
           ) }
           { !currentUser && (
-            <>
-              Not logged in
-            </>
+            <Trans>Not logged in</Trans>
           ) }
         </div>
         <div>
           { currentUser && (
             <>
-              <a href="#" className="pt-1" onClick={ handleLogout }>Logout</a>
+              <a href="#" className="pt-1" onClick={ handleLogout }><Trans>Logout</Trans></a>
               { " - " }
             </>
           ) }
-          <a href="#" className="pt-1" onClick={ handleQuit }>Quit</a>
+          <a href="#" className="pt-1" onClick={ handleQuit }><Trans>Quit</Trans></a>
         </div>
-        <a className="app-version color-content-subtle mt-3" href="#" onClick={ openScribeWebsite }>Scribe v{ app.getVersion() }</a>
+        <a className="app-version mt-3" href="#" onClick={ openScribeWebsite }><Trans>Scribe v{ app.getVersion() }</Trans></a>
       </div>
     </div>
   );
