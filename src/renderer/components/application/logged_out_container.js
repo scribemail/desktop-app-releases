@@ -3,15 +3,15 @@ import { useSession }                       from "renderer/contexts/session/hook
 import { setAuthorizationToken }            from "services/authorization_token";
 import { getSession }                       from "requests/session";
 import { updateSignature }                  from "services/signature";
-import flatten                              from "lodash/flatten";
+import find                                 from "lodash/find";
+import store, { setWorkspaces }             from "services/store";
 import map                                  from "lodash/map";
-import { Trans }                            from "@lingui/macro";
+import { Trans, t }                         from "@lingui/macro";
 import filter                               from "lodash/filter";
 import SessionGoogleLoginButton             from "renderer/components/session/google_login_button";
 import SessionMicrosoftLoginButton          from "renderer/components/session/microsoft_login_button";
 import SessionForm                          from "renderer/components/session/form";
 import { Button, Icon }                     from "renderer/components/ui";
-import { setWorkspaces }                    from "services/store";
 import { isSubscriptionActiveForWorkspace } from "services/workspaces";
 import { Alert }                            from "reactstrap";
 import "./logged_out_container.scss";
@@ -33,16 +33,20 @@ const ApplicationLoggedOutContainer = () => {
     const { data } = localSessionResponse || sessionResponse;
 
     setWorkspaces(data.workspaces);
-    setCurrentUser(data.user);
     setCurrentWorkspaces(data.workspaces);
+    setCurrentUser(data.user);
   };
 
   const handleLoginSuccess = (response) => {
     setAuthorizationToken(response.headers.authorization.split(" ")[1]);
     getSession().then((response2) => {
-      const emailsWithSignature = flatten(map(filter(response2.data.workspaces, (workspace) => isSubscriptionActiveForWorkspace(workspace) && workspace.co_worker), (workspace) => workspace.co_worker.emails)).filter((email) => email.has_signature);
-      if (emailsWithSignature.length > 0) {
-        emailsWithSignature.map((email) => updateSignature(email.signature_id, email.email));
+      const emailsWithSignature = map(filter(response2.data.workspaces, (workspace) => isSubscriptionActiveForWorkspace(workspace) && workspace.co_worker), (workspace) => { return { workspaceId: workspace.id, emails: workspace.co_worker.emails.filter((email) => email.has_signature) }; });
+      if (find(emailsWithSignature, (tuple) => tuple.emails.length > 0)) {
+        emailsWithSignature.map((tuple) => (
+          tuple.emails.map((email) => (
+            updateSignature(tuple.workspaceId, email.signature_id, email.email)
+          ))
+        ));
         setSessionResponse(response2);
         setLoginSuccess(true);
       } else {
@@ -51,13 +55,23 @@ const ApplicationLoggedOutContainer = () => {
     });
   };
 
+  const updatedMessage = () => {
+    if (store.get("update_apple_mail") && store.get("update_outlook")) {
+      return t`Outlook and Apple Mail`;
+    }
+    if (store.get("update_outlook")) {
+      return t`Outlook`;
+    }
+    return t`Apple Mail`;
+  };
+
   if (loginSuccess) {
     return (
       <div className="text-center login-success-block">
         <Icon icon="check-circle-1" className="text-success" /><br />
-        <Trans>You are logged in<br />Your signatures have been succcessfully<br />installed on Outlook</Trans>
+        <Trans>You are logged in<br />Your signatures have been succcessfully<br />installed on { updatedMessage() }</Trans>
         <div className="mt-5">
-          <Button color="primary" padded onClick={ () => { handleContinue(); } }> <Trans>Continue</Trans></Button>
+          <Button color="primary" padded onClick={ () => { handleContinue(); } }><Trans>Continue</Trans></Button>
         </div>
       </div>
     );

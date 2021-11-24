@@ -37,7 +37,7 @@ const message2UI = (command, payload) => {
 const handleUpdateSignature = (data) => {
   log.info("socket-received");
   if (isSubscriptionActiveForWorkspaceId(data.workspace.id)) {
-    updateSignature(data.signature.id, data.signature.email, data.workspace, () => {
+    updateSignature(data.workspace.id, data.signature.id, data.signature.email, () => {
       message2UI("signatureUpdated", {});
     });
   }

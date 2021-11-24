@@ -3,7 +3,6 @@ import { useSession }                         from "renderer/contexts/session/ho
 import store, { setWorkspaces }               from "services/store";
 import { isSubscriptionActiveForWorkspace }   from "services/workspaces";
 import get                                    from "lodash/get";
-import flatten                                from "lodash/flatten";
 import { Trans, t }                           from "@lingui/macro";
 import map                                    from "lodash/map";
 import filter                                 from "lodash/filter";
@@ -23,7 +22,7 @@ const ApplicationLoggedInContainer = () => {
   const didRender = useRef();
 
   const emailsWithSignature = map(filter(currentWorkspaces, (workspace) => isSubscriptionActiveForWorkspace(workspace) && workspace.co_worker), (workspace) => { return { workspaceId: workspace.id, emails: workspace.co_worker.emails.filter((email) => email.has_signature) }; });
-  const workspacesWithCoWorker = filter(currentWorkspaces, (workspace) => workspace.co_worker);
+  const workspacesWithCoWorker = filter(currentWorkspaces, (workspace) => workspace.co_worker && workspace.co_worker.emails.length > 0);
 
   const handleRefresh = () => {
     setLoading(true);
@@ -38,7 +37,6 @@ const ApplicationLoggedInContainer = () => {
   };
 
   const handleUpdate = () => {
-    console.log(emailsWithSignature);
     emailsWithSignature.map((tuple) => (
       tuple.emails.map((email) => (
         updateSignature(tuple.workspaceId, email.signature_id, email.email, () => {
@@ -49,7 +47,6 @@ const ApplicationLoggedInContainer = () => {
   };
 
   const installEmail = (workspaceId, email) => {
-    console.log(workspaceId, email.signature_id, email);
     updateSignature(workspaceId, email.signature_id, email.email, () => {
       setSignatureUpdates(store.get("signature_updates"));
     });
