@@ -21,9 +21,9 @@ export const createSession = (attributes) => (
   })
 );
 
-export const createWorkspaceTokenSession = (workspaceToken, userName) => (
+export const createDomainTokenSession = (domainToken, userName) => (
   new Promise((resolve, reject) => {
-    Api.post("/workspace_token/sessions", { user: { workspace_token: workspaceToken, name: userName } }).then((response) => {
+    Api.post("domain_token/sessions", { user: { domain_token: domainToken, name: userName } }).then((response) => {
       resolve(response);
     }).catch((error) => {
       reject(error);

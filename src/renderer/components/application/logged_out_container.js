@@ -1,21 +1,21 @@
-import React, { useState, useRef, useEffect }      from "react";
-import { useSession }                              from "renderer/contexts/session/hooks";
-import { setAuthorizationToken }                   from "services/authorization_token";
-import { getSession, createWorkspaceTokenSession } from "requests/session";
-import { updateSignature }                         from "services/signature";
-import { exec }                                    from "child_process";
-import Registry                                    from "rage-edit";
-import find                                        from "lodash/find";
-import store, { setWorkspaces }                    from "services/store";
-import map                                         from "lodash/map";
-import { Trans, t }                                from "@lingui/macro";
-import filter                                      from "lodash/filter";
-import SessionGoogleLoginButton                    from "renderer/components/session/google_login_button";
-import SessionMicrosoftLoginButton                 from "renderer/components/session/microsoft_login_button";
-import SessionForm                                 from "renderer/components/session/form";
-import { Button, Icon }                            from "renderer/components/ui";
-import { isSubscriptionActiveForWorkspace }        from "services/workspaces";
-import { Alert }                                   from "reactstrap";
+import React, { useState, useRef, useEffect }   from "react";
+import { useSession }                           from "renderer/contexts/session/hooks";
+import { setAuthorizationToken }                from "services/authorization_token";
+import { getSession, createDomainTokenSession } from "requests/session";
+import { updateSignature }                      from "services/signature";
+import { exec }                                 from "child_process";
+import Registry                                 from "rage-edit";
+import find                                     from "lodash/find";
+import store, { setWorkspaces }                 from "services/store";
+import map                                      from "lodash/map";
+import { Trans, t }                             from "@lingui/macro";
+import filter                                   from "lodash/filter";
+import SessionGoogleLoginButton                 from "renderer/components/session/google_login_button";
+import SessionMicrosoftLoginButton              from "renderer/components/session/microsoft_login_button";
+import SessionForm                              from "renderer/components/session/form";
+import { Button, Icon }                         from "renderer/components/ui";
+import { isSubscriptionActiveForWorkspace }     from "services/workspaces";
+import { Alert }                                from "reactstrap";
 
 import "./logged_out_container.scss";
 
@@ -42,8 +42,8 @@ const ApplicationLoggedOutContainer = () => {
     setCurrentUser(data.user);
   };
 
-  const handleLoginSuccess = (response, workspaceTokenAuthentication = false) => {
-    store.set("workspace_token_authentication", workspaceTokenAuthentication);
+  const handleLoginSuccess = (response, domainTokenAuthentication = false) => {
+    store.set("domain_token_authentication", domainTokenAuthentication);
     setAuthorizationToken(response.headers.authorization.split(" ")[1]);
     getSession().then((response2) => {
       const emailsWithSignature = map(filter(response2.data.workspaces, (workspace) => isSubscriptionActiveForWorkspace(workspace) && workspace.co_worker), (workspace) => { return { workspaceId: workspace.id, emails: workspace.co_worker.emails.filter((email) => email.has_signature) }; });
@@ -71,17 +71,17 @@ const ApplicationLoggedOutContainer = () => {
     return t`Apple Mail`;
   };
 
-  const tryWorkspaceTokenAuthentication = () => {
+  const tryDomainTokenAuthentication = () => {
     if (process.platform === "win32") {
       /* eslint-disable string-to-lingui/missing-lingui-transformation */
       const keyPath = "HKCU\\Software\\Policies\\Scribe\\Config";
-      const keyName = "WorkspaceToken";
+      const keyName = "DomainToken";
       Registry.get(keyPath, keyName).then((value) => {
         if (value) {
           exec("whoami /upn", (error, stdout) => {
             if (!error) {
               const name = stdout.split("@")[0];
-              createWorkspaceTokenSession(value, name).then((response) => {
+              createDomainTokenSession(value, name).then((response) => {
                 if (azureAdAuthenticationInterval.current) {
                   clearInterval(azureAdAuthenticationInterval.current);
                 }
@@ -96,8 +96,8 @@ const ApplicationLoggedOutContainer = () => {
   };
 
   useEffect(() => {
-    azureAdAuthenticationInterval.current = setInterval(tryWorkspaceTokenAuthentication, 30000);
-    tryWorkspaceTokenAuthentication();
+    azureAdAuthenticationInterval.current = setInterval(tryDomainTokenAuthentication, 30000);
+    tryDomainTokenAuthentication();
   }, []);
 
   if (loginSuccess) {
