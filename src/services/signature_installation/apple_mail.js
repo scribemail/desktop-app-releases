@@ -107,7 +107,7 @@ ${html}`;
   return fs.writeFile(path, fileContent);
 };
 
-export const updateSignatureForEmail = (workspaceId, email, html) => (
+export const installOnAppleMail = (workspaceId, email, html) => (
   new Promise((resolve, reject) => {
     getSignaturesFolder().then((folderPath) => {
       if (folderPath === undefined) {

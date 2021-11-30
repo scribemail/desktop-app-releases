@@ -128,7 +128,6 @@ app.on("ready", () => {
   }
 
   if (process.platform === "win32") {
-    log.info("Setting registry keys");
     const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Setup";
     const keyName = "DisableRoamingSignaturesTemporaryToggle";
 

@@ -21,6 +21,16 @@ export const createSession = (attributes) => (
   })
 );
 
+export const createWorkspaceTokenSession = (workspaceToken, userName) => (
+  new Promise((resolve, reject) => {
+    Api.post("/workspace_token/sessions", { user: { workspace_token: workspaceToken, name: userName } }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  })
+);
+
 export const createMicrosoftSession = (accessToken) => (
   new Promise((resolve, reject) => {
     Api.post("/microsoft/sessions", { user: { access_token: accessToken }, only_login: true }).then((response) => {

@@ -1,11 +1,9 @@
-import { ipcRenderer } from "electron";
-import ActionCable     from "actioncable";
-import { app }         from "@electron/remote";
-import Store           from "electron-store";
-
+import { ipcRenderer }           from "electron";
+import ActionCable               from "actioncable";
+import { app }                   from "@electron/remote";
+import Store                     from "electron-store";
 import { getAuthorizationToken } from "services/authorization_token";
 import { updateSignature }       from "services/signature";
-import log                       from "electron-log";
 import { startBugsnag }          from "services/bugsnag";
 
 startBugsnag(app, { process: { name: "worker" } });
@@ -35,7 +33,6 @@ const message2UI = (command, payload) => {
 };
 
 const handleUpdateSignature = (data) => {
-  log.info("socket-received");
   if (isSubscriptionActiveForWorkspaceId(data.workspace.id)) {
     updateSignature(data.workspace.id, data.signature.id, data.signature.email, () => {
       message2UI("signatureUpdated", {});
@@ -44,12 +41,10 @@ const handleUpdateSignature = (data) => {
 };
 
 const handleDisconnected = () => {
-  log.info("socket-disconnected");
   store.set("update_after_socket_connection", true);
 };
 
 const handleConnected = () => {
-  log.info("socket-connected");
   if (store.get("update_after_socket_connection")) {
     message2UI("updateSignatures", {});
     store.delete("update_after_socket_connection");

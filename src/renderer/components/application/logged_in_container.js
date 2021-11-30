@@ -41,7 +41,7 @@ const ApplicationLoggedInContainer = () => {
       tuple.emails.map((email) => (
         updateSignature(tuple.workspaceId, email.signature_id, email.email, () => {
           setSignatureUpdates(store.get("signature_updates"));
-        })
+        }).catch(() => {})
       ))
     ));
   };
@@ -49,7 +49,7 @@ const ApplicationLoggedInContainer = () => {
   const installEmail = (workspaceId, email) => {
     updateSignature(workspaceId, email.signature_id, email.email, () => {
       setSignatureUpdates(store.get("signature_updates"));
-    });
+    }).catch(() => {});
   };
 
   const updateMessage = () => {

@@ -84,7 +84,7 @@ const ConfigurationContainer = ({ onHide }) => {
           ) }
         </div>
         <div>
-          { currentUser && (
+          { currentUser && !store.get("workspace_token_authentication") && (
             <>
               <a href="#" className="pt-1" onClick={ handleLogout }><Trans>Logout</Trans></a>
               { " - " }
