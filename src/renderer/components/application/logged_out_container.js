@@ -74,7 +74,7 @@ const ApplicationLoggedOutContainer = () => {
   const tryDomainTokenAuthentication = () => {
     if (process.platform === "win32") {
       /* eslint-disable string-to-lingui/missing-lingui-transformation */
-      const keyPath = "HKCU\\Software\\Policies\\Scribe\\Config";
+      const keyPath = "HKLM\\Software\\Policies\\Scribe\\Config";
       const keyName = "DomainToken";
       Registry.get(keyPath, keyName).then((value) => {
         if (value) {
