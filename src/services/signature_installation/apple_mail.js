@@ -44,7 +44,7 @@ const signatureDirectoryCandidates = () => {
   [6, 5, 4, 3].forEach((version) => {
     directories.push(`${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data/V${version}/Signatures`);
   });
-  [8, 7, 6, 5, 4, 3].forEach((version) => {
+  [9, 8, 7, 6, 5, 4, 3].forEach((version) => {
     directories.push(`${app.getPath("home")}/Library/Mail/V${version}/MailData/Signatures`);
   });
   return directories;
