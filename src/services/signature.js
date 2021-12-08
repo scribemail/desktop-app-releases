@@ -59,5 +59,5 @@ export const updateSignature = (workspaceId, id, email, callback) => {
     if (callback) {
       callback();
     }
-  });
+  }).catch(() => {});
 };

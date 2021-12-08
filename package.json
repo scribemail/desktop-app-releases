@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -155,7 +155,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",
-    "electron": "^15.1.0",
+    "electron": "^16.0.4",
     "electron-builder": "22.11.8",
     "electron-notarize": "^1.1.1",
     "electron-webpack": "^2.8.2",

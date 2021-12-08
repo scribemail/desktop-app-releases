@@ -15,6 +15,7 @@ import { createMenuBar }                                          from "./menuba
 import AuthProvider                                               from "./microsoft_auth/AuthProvider";
 
 if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
+  app.commandLine.appendSwitch("ignore-certificate-errors");
   unhandled();
 }
 

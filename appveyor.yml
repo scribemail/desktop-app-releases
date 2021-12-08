@@ -16,8 +16,8 @@ for:
     - node_modules
     - '~\.electron'
   install:
-    - nvm install 14.15.3
-    - nvm use 14.15.3
+    - nvm install 14.18.2
+    - nvm use 14.18.2
     - npm install -g yarn
     - sudo xcode-select -r
     - yarn
