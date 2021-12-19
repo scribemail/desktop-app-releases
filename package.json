@@ -8,10 +8,8 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "build-win": "export $(xargs < .build-env) && yarn compile && electron-builder -w nsis",
-    "build-mac": "export $(xargs < .build-env) && yarn compile && electron-builder -m dmg zip pkg --x64 --arm64",
     "dist-win": "yarn compile && electron-builder -w=nsis --publish onTag",
-    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --publish onTag",
+    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --x64 --arm64 --publish onTag",
     "translation:sync": "NODE_ENV=development lingui extract --overwrite && lingui compile",
     "translation:sync_and_purge": "NODE_ENV=development lingui extract --overwrite --clean && lingui compile"
   },
@@ -94,6 +92,7 @@
     "@bugsnag/plugin-react": "^7.11.0",
     "@dejay/electron-google-oauth2": "^2.1.1",
     "@electron/remote": "^2.0.1",
+    "@electron/universal": "^1.1.0",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
     "@getstation/electron-google-oauth2": "https://github.com/scribemail/electron-google-oauth2.git",
