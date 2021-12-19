@@ -35,7 +35,6 @@ const signatureName = (plistData, workspaceId, email) => {
   if (oldNameSignatureIndex !== -1) {
     return oldName;
   }
-  console.log(workspaceId, email);
   return `Scribe - ${email} - W${workspaceId}`;
 };
 
