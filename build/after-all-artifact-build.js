@@ -6,18 +6,18 @@ const path = require("path");
 exports.default = async function returnInTuneFiles(context) {
   const { outDir, artifactPaths } = context;
 
-  const pkgPath = find(artifactPaths, (localPath) => localPath.includes(".pkg"));
+  const pkgPath = find(artifactPaths, (localPath) => localPath.includes("universal.pkg"));
   const exePath = find(context.artifactPaths, (localPath) => localPath.includes("Setup") && !localPath.includes("blockmap"));
 
   if (pkgPath) {
-    log.info({ preset: "react-cra" }, "Creating .intunemac file");
+    log.info({ platform: "mac" }, "Creating .intunemac file");
     const command = `${outDir.replace("dist", "build")}/IntuneAppUtil -c ${pkgPath} -o ${outDir}`;
     execSync(command, { stdio: "inherit" });
-    log.info({ preset: "react-cra" }, ".intunemac file created");
+    log.info({ platform: "mac" }, ".intunemac file created");
     return [`${pkgPath}.intunemac`];
   }
 
-  log.info({ preset: "react-cra" }, "Creating .intunewin file");
+  log.info({ platform: "windows" }, "Creating .intunewin file");
   const exeFileName = path.basename(exePath);
 
   const mkdirCommand = `mkdir "${outDir}\\intune-source"`;
@@ -29,6 +29,6 @@ exports.default = async function returnInTuneFiles(context) {
   const finalCommand = `${outDir.replace("dist", "build")}\\IntuneWinAppUtil.exe -c "${outDir}\\intune-source" -s "${exeFileName}" -o "${outDir}"`;
   execSync(finalCommand, { stdio: "inherit" });
 
-  log.info({ preset: "react-cra" }, ".intunewin file created");
+  log.info({ platform: "windows" }, ".intunewin file created");
   return [`${exePath.replace(".exe", "")}.intunewin`];
 };
