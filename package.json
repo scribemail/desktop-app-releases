@@ -9,7 +9,7 @@
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist-win": "yarn compile && electron-builder -w=nsis --publish onTag",
-    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --universal --publish onTag",
+    "dist-mac": "yarn compile && electron-builder -m dmg zip pkg --x64 --universal --publish onTag",
     "translation:sync": "NODE_ENV=development lingui extract --overwrite && lingui compile",
     "translation:sync_and_purge": "NODE_ENV=development lingui extract --overwrite --clean && lingui compile"
   },
