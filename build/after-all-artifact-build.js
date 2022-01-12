@@ -12,8 +12,6 @@ exports.default = async function returnInTuneFiles(context) {
     const command = `${outDir.replace("dist", "build")}/IntuneAppUtil -c ${pkgPath} -o ${outDir}`;
     execSync(command, { stdio: "inherit" });
 
-    // await new Promise((resolve) => setTimeout(resolve, 20000));
-
     return [`${pkgPath}.intunemac`];
   }
 
