@@ -141,6 +141,7 @@
     "beforeEach": true,
     "Cypress": true,
     "gapi": true,
-    "Image": true
+    "Image": true,
+    "Notification": true
   }
 }

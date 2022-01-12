@@ -82,16 +82,59 @@ const openMenuBarWindow = () => {
 };
 
 app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify().catch((err) => {
-    log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
-  });
+  ///
+  // Auto update configuration
+  ///
+  if (!isDev) {
+    autoUpdater.logger = log;
+    autoUpdater.logger.transports.file.level = "info";
 
-  setInterval(() => {
-    autoUpdater.checkForUpdatesAndNotify().catch((err) => {
-      log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
+    autoUpdater.on("update-available", () => {
+      sendWindowMessage(mainWindow, "update-available");
     });
-  }, 1000 * 60 * 60 * 4);
 
+    autoUpdater.on("update-not-available", () => {
+      sendWindowMessage(mainWindow, "update-not-available");
+    });
+
+    autoUpdater.on("download-progress", (progressObj) => {
+      sendWindowMessage(mainWindow, "update-download-progress", { progressPercentage: progressObj.percent });
+    });
+
+    autoUpdater.on("update-downloaded", () => {
+      sendWindowMessage(mainWindow, "update-downloaded");
+    });
+
+    setTimeout(() => {
+      autoUpdater.checkForUpdates().catch((err) => {
+        log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
+      });
+    }, 30000);
+
+    setInterval(() => {
+      autoUpdater.checkForUpdates().catch((err) => {
+        log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
+      });
+    }, 1000 * 60 * 60 * 24); // Check every 24 hours
+  }
+
+  // setTimeout(() => {
+  //   sendWindowMessage(mainWindow, "update-not-available");
+  //   sendWindowMessage(mainWindow, "update-available");
+  //   let percentage = 0;
+  //   const interval = setInterval(() => {
+  //     sendWindowMessage(mainWindow, "update-download-progress", { progressPercentage: percentage });
+  //     percentage += 1;
+  //     if (percentage === 100) {
+  //       sendWindowMessage(mainWindow, "update-downloaded");
+  //       clearInterval(interval);
+  //     }
+  //   }, 100);
+  // }, 5000);
+
+  ///
+  // Menu bar configuration
+  ///
   menubar = createMenuBar();
 
   menubar.on("after-create-window", () => {
@@ -118,6 +161,7 @@ app.on("ready", () => {
       openAsHidden: true,
       name:         "Scribe"
     });
+    store.set("launch_at_startup", true);
   }
 
   if (store.get("update_outlook") === undefined) {

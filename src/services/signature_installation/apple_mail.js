@@ -1,10 +1,10 @@
-import { promises as fs } from "fs";
-import Bugsnag            from "@bugsnag/electron";
-import { app }            from "@electron/remote";
-import log                from "electron-log";
-import plist              from "plist";
-import findIndex          from "lodash/findIndex";
-import { v4 as uuidv4 }   from "uuid";
+import { promises as fs, existsSync, mkdirSync } from "fs";
+import Bugsnag                                   from "@bugsnag/electron";
+import { app }                                   from "@electron/remote";
+import log                                       from "electron-log";
+import plist                                     from "plist";
+import findIndex                                 from "lodash/findIndex";
+import { v4 as uuidv4 }                          from "uuid";
 
 const sendFileListsToBugsnag = () => {
   const path1 = `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data`;
@@ -41,10 +41,10 @@ const signatureName = (plistData, workspaceId, email) => {
 const signatureDirectoryCandidates = () => {
   const directories = [];
   [6, 5, 4, 3].forEach((version) => {
-    directories.push(`${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data/V${version}/Signatures`);
+    directories.push(`${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data/V${version}`);
   });
   [9, 8, 7, 6, 5, 4, 3].forEach((version) => {
-    directories.push(`${app.getPath("home")}/Library/Mail/V${version}/MailData/Signatures`);
+    directories.push(`${app.getPath("home")}/Library/Mail/V${version}/MailData`);
   });
   return directories;
 };
@@ -66,9 +66,22 @@ const getSignaturesFolder = async () => {
   }
 };
 
+const createAllSignatureFileIfNotExisting = (folderPath, path) => {
+  if (!existsSync(folderPath)) {
+    mkdirSync(folderPath);
+  }
+  const fileContent = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array/>
+</plist>`;
+  return fs.writeFile(path, fileContent);
+};
+
 const getSignatureFilePath = (folderPath, workspaceId, email) => (
   new Promise((resolve, reject) => {
-    const allSignatureFilePath = `${folderPath}/AllSignatures.plist`;
+    const allSignatureFilePath = `${folderPath}/Signatures/AllSignatures.plist`;
+    createAllSignatureFileIfNotExisting(`${folderPath}/Signatures`, allSignatureFilePath);
     fs.readFile(allSignatureFilePath, "utf8").then((data) => {
       let signatureUid = null;
       const plistData = plist.parse(data);
@@ -87,7 +100,7 @@ const getSignatureFilePath = (folderPath, workspaceId, email) => (
           reject(writeFileError);
         });
       }
-      resolve(`${folderPath}/${signatureUid}.mailsignature`);
+      resolve(`${folderPath}/Signatures/${signatureUid}.mailsignature`);
     }).catch((error) => {
       log.error(`OpeningAllSignatureFile ${error}`);
       reject(error);

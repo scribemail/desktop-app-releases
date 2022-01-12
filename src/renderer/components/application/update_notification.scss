@@ -1,0 +1,12 @@
+@import "renderer/styles/variables";
+
+.update-notification {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  padding: 10px 20px;
+  background-color: $brand-light-color;
+  font-size: $body-small-font-size;
+}

@@ -5,6 +5,7 @@ import { t }                         from "@lingui/macro";
 import { Icon }                      from "renderer/components/ui";
 import ApplicationLoggedOutContainer from "renderer/components/application/logged_out_container";
 import ApplicationLoggedInContainer  from "renderer/components/application/logged_in_container";
+import ApplicationUpdateNotification from "renderer/components/application/update_notification";
 import ConfigurationContainer        from "renderer/components/configuration/container";
 
 import logo from "images/logo.png";
@@ -35,8 +36,13 @@ const ApplicationContainer = () => {
           </a>
         </div>
       </div>
-      { (!currentUser || currentWorkspaces.length === 0) && !showConfig && <ApplicationLoggedOutContainer /> }
-      { currentUser && currentWorkspaces.length > 0 && !showConfig && <ApplicationLoggedInContainer /> }
+      { !showConfig && (
+        <>
+          { (!currentUser || currentWorkspaces.length === 0) && !showConfig && <ApplicationLoggedOutContainer /> }
+          { currentUser && currentWorkspaces.length > 0 && !showConfig && <ApplicationLoggedInContainer /> }
+          <ApplicationUpdateNotification />
+        </>
+      ) }
       { showConfig && <ConfigurationContainer onHide={ () => { setShowConfig(false); } } /> }
     </div>
   );

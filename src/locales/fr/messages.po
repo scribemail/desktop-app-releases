@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2021-11-24 11:24+0100\n"
+"POT-Creation-Date: 2022-01-12 12:28+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,6 +11,15 @@ msgstr ""
 msgid "6 characters minimum"
 msgstr ""
 
+#: src/renderer/components/application/update_notification.js:33
+msgid "A new Scribe update has been downloaded and will be automatically installed on exit"
+msgstr ""
+
+#: src/renderer/components/application/update_notification.js:70
+msgid "A new version of Scribe is available"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:71
 #: src/renderer/components/configuration/container.js:67
 msgid "Apple Mail"
 msgstr ""
@@ -19,8 +28,12 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: src/renderer/components/application/logged_out_container.js:60
+#: src/renderer/components/application/logged_out_container.js:109
 msgid "Continue"
+msgstr ""
+
+#: src/renderer/components/application/update_notification.js:71
+msgid "Downloading {downloadProgressPercentage}%"
 msgstr ""
 
 #: src/renderer/components/session/form.js:78
@@ -37,19 +50,23 @@ msgstr ""
 msgid "Error while login with Microsoft"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:60
+#: src/renderer/components/application/update_notification.js:72
+msgid "Install and restart now"
+msgstr ""
+
+#: src/renderer/components/application/logged_in_container.js:62
 msgid "Install signature in Apple Mail"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:58
+#: src/renderer/components/application/logged_in_container.js:60
 msgid "Install signature in Outlook"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:55
+#: src/renderer/components/application/logged_in_container.js:57
 msgid "Install signature in Outlook and Apple Mail"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:111
+#: src/renderer/components/application/logged_in_container.js:113
 msgid "Installed <0/>"
 msgstr ""
 
@@ -66,19 +83,19 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: src/renderer/components/application/logged_out_container.js:72
+#: src/renderer/components/application/logged_out_container.js:121
 msgid "Login with Office 365"
 msgstr ""
 
-#: src/renderer/components/application/logged_out_container.js:75
+#: src/renderer/components/application/logged_out_container.js:124
 msgid "Login with Outlook"
 msgstr ""
 
-#: src/renderer/components/application/logged_out_container.js:69
+#: src/renderer/components/application/logged_out_container.js:118
 msgid "Login with google"
 msgstr ""
 
-#: src/renderer/components/application/container.js:30
+#: src/renderer/components/application/container.js:31
 msgid "Logo"
 msgstr ""
 
@@ -90,12 +107,24 @@ msgstr ""
 msgid "Microsoft outlook"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:114
+#: src/renderer/components/application/logged_in_container.js:116
 msgid "Never updated"
+msgstr ""
+
+#: src/renderer/components/application/update_notification.js:33
+msgid "New Scribe update"
 msgstr ""
 
 #: src/renderer/components/configuration/container.js:83
 msgid "Not logged in"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:69
+msgid "Outlook"
+msgstr ""
+
+#: src/renderer/components/application/logged_out_container.js:66
+msgid "Outlook and Apple Mail"
 msgstr ""
 
 #: src/renderer/components/session/form.js:86
@@ -115,7 +144,7 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:90
+#: src/renderer/components/application/logged_in_container.js:92
 msgid "Refresh signature list"
 msgstr ""
 
@@ -127,7 +156,7 @@ msgstr ""
 msgid "Single sign-on enabled"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:131
+#: src/renderer/components/application/logged_in_container.js:133
 msgid "There is an issue with this workspace subscription<0/> Contact your admin to resolve the issue"
 msgstr ""
 
@@ -135,15 +164,15 @@ msgstr ""
 msgid "Update signatures for"
 msgstr ""
 
-#: src/renderer/components/application/logged_out_container.js:58
-msgid "You are logged in<0/>Your signatures have been succcessfully<1/>installed on Outlook"
+#: src/renderer/components/application/logged_out_container.js:107
+msgid "You are logged in<0/>Your signatures have been succcessfully<1/>installed on {0}"
 msgstr ""
 
-#: src/renderer/components/application/logged_in_container.js:87
+#: src/renderer/components/application/logged_in_container.js:89
 msgid "Your signatures"
 msgstr ""
 
-#: src/renderer/components/application/logged_out_container.js:78
+#: src/renderer/components/application/logged_out_container.js:127
 msgid "or"
 msgstr ""
 
