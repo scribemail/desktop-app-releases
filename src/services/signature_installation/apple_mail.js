@@ -70,12 +70,14 @@ const createAllSignatureFileIfNotExisting = (folderPath, path) => {
   if (!existsSync(folderPath)) {
     mkdirSync(folderPath);
   }
-  const fileContent = `<?xml version="1.0" encoding="UTF-8"?>
+  if (!existsSync(path)) {
+    const fileContent = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array/>
 </plist>`;
-  return fs.writeFile(path, fileContent);
+    return fs.writeFile(path, fileContent);
+  }
 };
 
 const getSignatureFilePath = (folderPath, workspaceId, email) => (

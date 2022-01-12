@@ -10,7 +10,7 @@ exports.default = async function notarizing(context) {
   const appName = context.packager.appInfo.productFilename;
 
   if (electronPlatformName === "darwin") {
-    log.info({ bundleId: "com.scribe-mail.scribe" }, "Notarizing mac app");
+    log.info({ bundleId: "com.scribe-mail.scribe", app: appName }, "Notarizing mac app");
     notarize({
       tool:            "notarytool",
       appBundleId:     "com.scribe-mail.scribe",
@@ -19,7 +19,7 @@ exports.default = async function notarizing(context) {
       appleIdPassword: process.env.APPLE_ID_PASSWORD,
       teamId:          process.env.APPLE_TEAM_ID
     });
-    log.info({ bundleId: "com.scribe-mail.scribe" }, "Mac app notarized");
+    log.info({ bundleId: "com.scribe-mail.scribe", app: appName }, "Mac app notarized");
     return true;
   }
 };
