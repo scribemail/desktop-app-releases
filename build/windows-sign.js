@@ -10,16 +10,9 @@ exports.default = function (configuration) {
   childProcess.execSync(`if not exist "${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign" mkdir -p "${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign"`, { stdio: "inherit" });
 
   fs.renameSync(configuration.path, `${APPVEYOR_BUILD_FOLDER}/tmp/files-to-sign/${fileName}`);
+
   childProcess.execSync(
-    `dir ${APPVEYOR_BUILD_FOLDER}`,
-    { stdio: "inherit" }
-  );
-  childProcess.execSync(
-    `dir ${APPVEYOR_BUILD_FOLDER}\\CodeSignTool`,
-    { stdio: "inherit" }
-  );
-  childProcess.execSync(
-    `${APPVEYOR_BUILD_FOLDER}\\CodeSignTool\\CodeSignTool sign -username=${SSL_USERNAME} -password="${SSL_PASSWORD}" -totp_secret="${SSL_TOTP_SECRET}" -input_file_path="${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign\\${fileName}" -output_dir_path="${filePath}"`,
+    `cd ${APPVEYOR_BUILD_FOLDER}\\CodeSignTool && CodeSignTool.bat sign -username=${SSL_USERNAME} -password="${SSL_PASSWORD}" -totp_secret="${SSL_TOTP_SECRET}" -input_file_path="${APPVEYOR_BUILD_FOLDER}\\tmp\\files-to-sign\\${fileName}" -output_dir_path="${filePath}"`,
     { stdio: "inherit" }
   );
 };
