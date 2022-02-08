@@ -25,7 +25,7 @@ const ApplicationUpdateNotification = () => {
   };
 
   const handleUpdateDownloaded = () => {
-    new Notification(t`New Scribe update`, { body: t`A new Scribe update has been downloaded and will be automatically installed now` }).show();
+    new Notification(t`New Scribe update`, { body: t`A new Scribe update has been downloaded and will be automatically installed now` });
     store.set("update_available", false);
     app.relaunch();
     app.quit();
