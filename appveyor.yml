@@ -35,8 +35,8 @@ for:
     - git config --global core.autocrlf input
   install:
     - ps: Install-Product node 14 x64
-    - ps: Start-FileDownload 'https://scribe-desktop-app.s3.eu-west-3.amazonaws.com/CodeSignTool-v1.2.0-windows.zip'
-    - tar -xf CodeSignTool-v1.2.0-windows.zip
+    - ps: Start-FileDownload 'https://scribe-desktop-app.s3.eu-west-3.amazonaws.com/CodeSignTool-v1.2.2-windows.zip'
+    - tar -xf CodeSignTool-v1.2.2-windows.zip
     - yarn
   build_script:
     - yarn dist-win

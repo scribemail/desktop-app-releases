@@ -39,7 +39,7 @@ const SignaturesProvider = ({ children }) => {
   };
 
   const updatedAtForSignature = (signature) => (
-    signatureUpdates[signature.id]
+    signatureUpdates ? signatureUpdates[signature.id] : null
   );
 
   const loadingForSignature = (signature) => (
