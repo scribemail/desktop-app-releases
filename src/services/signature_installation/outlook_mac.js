@@ -1,5 +1,4 @@
 /* eslint-disable string-to-lingui/missing-lingui-transformation */
-
 import applescript from "applescript";
 
 const getOutlookAppleScript = (workspaceId, email, html) => {

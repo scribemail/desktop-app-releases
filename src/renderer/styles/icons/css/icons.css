@@ -1,27 +1,19 @@
-/* --------------------------------
+/*--------------------------------
 
 scribe-desktop-icons Web Font
 Generated using nucleoapp.com
 
 -------------------------------- */
-@icon-font-path: "../fonts";
-
 @font-face {
   font-family: 'scribe-desktop-icons';
-  src: url('@{icon-font-path}/scribe-desktop-icons.eot');
-  src: url('@{icon-font-path}/scribe-desktop-icons.eot') format('embedded-opentype'),
-    url('@{icon-font-path}/scribe-desktop-icons.woff2') format('woff2'),
-    url('@{icon-font-path}/scribe-desktop-icons.woff') format('woff'),
-    url('@{icon-font-path}/scribe-desktop-icons.ttf') format('truetype'),
-    url('@{icon-font-path}/scribe-desktop-icons.svg') format('svg');
+  src: url('../fonts/scribe-desktop-icons.eot');
+  src: url('../fonts/scribe-desktop-icons.eot') format('embedded-opentype'), url('../fonts/scribe-desktop-icons.woff2') format('woff2'), url('../fonts/scribe-desktop-icons.woff') format('woff'), url('../fonts/scribe-desktop-icons.ttf') format('truetype'), url('../fonts/scribe-desktop-icons.svg') format('svg');
   font-weight: normal;
   font-style: normal;
 }
-
 /*------------------------
 	base class definition
 -------------------------*/
-
 .icon {
   display: inline-block;
   font: normal normal normal 1em/1 'scribe-desktop-icons';
@@ -33,14 +25,12 @@ Generated using nucleoapp.com
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 /*------------------------
   change icon size
 -------------------------*/
-
 /* relative units */
 .icon-sm {
-	font-size: 0.8em;
+  font-size: 0.8em;
 }
 .icon-lg {
   font-size: 1.2em;
@@ -56,11 +46,9 @@ Generated using nucleoapp.com
 /*------------------------
   spinning icons
 -------------------------*/
-
 .icon-is-spinning {
   animation: icon-spin 1s infinite linear;
 }
-
 @keyframes icon-spin {
   0% {
     transform: rotate(0deg);
@@ -69,66 +57,53 @@ Generated using nucleoapp.com
     transform: rotate(360deg);
   }
 }
-
 /*------------------------
   rotated/flipped icons
 -------------------------*/
-
-.icon-rotate-90  {
-	transform: rotate(90deg);
+.icon-rotate-90 {
+  transform: rotate(90deg);
 }
-
 .icon-rotate-180 {
-	transform: rotate(180deg);
+  transform: rotate(180deg);
 }
-
 .icon-rotate-270 {
-	transform: rotate(270deg);
+  transform: rotate(270deg);
 }
-
 .icon-flip-y {
-	transform: scaleY(-1);
+  transform: scaleY(-1);
 }
 .icon-flip-x {
-	transform: scaleX(-1);
+  transform: scaleX(-1);
 }
-
 /*------------------------
 	icons
 -------------------------*/
-@icon-cog: "\ea03";
-@icon-button-refresh-arrows: "\ea04";
-@icon-desktop-monitor-download: "\ea05";
-@icon-check-circle-1: "\ea06";
-@icon-pencil-1: "\ea07";
-@icon-shield-lock: "\ea08";
-@icon-loading: "\ea09";
 
 .icon-cog::before {
-  content: @icon-cog;
+  content: "\ea03";
 }
 
 .icon-button-refresh-arrows::before {
-  content: @icon-button-refresh-arrows;
+  content: "\ea04";
 }
 
 .icon-desktop-monitor-download::before {
-  content: @icon-desktop-monitor-download;
+  content: "\ea05";
 }
 
 .icon-check-circle-1::before {
-  content: @icon-check-circle-1;
+  content: "\ea06";
 }
 
 .icon-pencil-1::before {
-  content: @icon-pencil-1;
+  content: "\ea07";
 }
 
 .icon-shield-lock::before {
-  content: @icon-shield-lock;
+  content: "\ea08";
 }
 
 .icon-loading::before {
-  content: @icon-loading;
+  content: "\ea09";
 }
 

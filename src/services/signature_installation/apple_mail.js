@@ -1,7 +1,6 @@
 import { promises as fs, existsSync, mkdirSync } from "fs";
 import Bugsnag                                   from "@bugsnag/electron";
 import { app }                                   from "@electron/remote";
-import log                                       from "electron-log";
 import plist                                     from "plist";
 import findIndex                                 from "lodash/findIndex";
 import { v4 as uuidv4 }                          from "uuid";
@@ -98,13 +97,11 @@ const getSignatureFilePath = (folderPath, workspaceId, email) => (
           SignatureUniqueId: signatureUid
         });
         fs.writeFile(allSignatureFilePath, plist.build(plistData), (writeFileError) => {
-          log.error(`writeFileError ${writeFileError}`);
           reject(writeFileError);
         });
       }
       resolve(`${folderPath}/Signatures/${signatureUid}.mailsignature`);
     }).catch((error) => {
-      log.error(`OpeningAllSignatureFile ${error}`);
       reject(error);
     });
   })
@@ -132,7 +129,7 @@ export const installOnAppleMail = (workspaceId, email, html) => (
           writeHtml(filePath, html).then(() => {
             resolve();
           }).catch((error) => {
-            reject(`writeSignatureFileError ${error}`);
+            reject(error);
           });
         });
       }

@@ -3,15 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="demo/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="demo/css/style.css">
-	<link rel="shortcut icon" href="demo/favicon.ico">
+	<link rel="icon" type="image/svg+xml" href="demo/favicon.svg">
 	<title>scribe-desktop-icons Web Font</title>
 </head>
 <body>
 	<header>
 		<h1>scribe-desktop-icons Web Font</h1>
-		<p>Built with <a href="https://nucleoapp.com">nucleoapp.com</a></p>
+		<p>Generated using <a href="https://nucleoapp.com">nucleoapp.com</a></p>
 	</header>
 
 	<div id="icons-wrapper">
@@ -20,32 +19,44 @@
                 
                     <li>
                         <i class="icon icon-cog"></i>
-                        <p>icon-cog</p>
+                        <p class="js-classname">icon-cog</p>
+												
                     </li>
                 
                     <li>
                         <i class="icon icon-button-refresh-arrows"></i>
-                        <p>icon-button-refresh-arrows</p>
+                        <p class="js-classname">icon-button-refresh-arrows</p>
+												
                     </li>
                 
                     <li>
                         <i class="icon icon-desktop-monitor-download"></i>
-                        <p>icon-desktop-monitor-download</p>
+                        <p class="js-classname">icon-desktop-monitor-download</p>
+												
                     </li>
                 
                     <li>
                         <i class="icon icon-check-circle-1"></i>
-                        <p>icon-check-circle-1</p>
+                        <p class="js-classname">icon-check-circle-1</p>
+												
                     </li>
                 
                     <li>
                         <i class="icon icon-pencil-1"></i>
-                        <p>icon-pencil-1</p>
+                        <p class="js-classname">icon-pencil-1</p>
+												
                     </li>
                 
                     <li>
                         <i class="icon icon-shield-lock"></i>
-                        <p>icon-shield-lock</p>
+                        <p class="js-classname">icon-shield-lock</p>
+												
+                    </li>
+                
+                    <li>
+                        <i class="icon icon-loading"></i>
+                        <p class="js-classname">icon-loading</p>
+												
                     </li>
                 
 				<!-- list of icons here with the proper class-->
@@ -72,30 +83,39 @@
     window.onload = function() {
     	var iconsWrapper = document.getElementById('icons-wrapper'),
     		listItems = iconsWrapper.getElementsByTagName('li');
-        for (var i = 0; i < listItems.length; i++) {
-		    listItems[i].onclick  = function fun(event) {
-		    	var selectedTagName = event.target.tagName.toLowerCase();
-		    	if( selectedTagName == 'p' || selectedTagName == 'em' ) {
-		    		SelectText(event.target);
-		    	} else if( selectedTagName == 'input' ) {
-		    		event.target.setSelectionRange(0, event.target.value.length);
-		    	}
-		    }
+			for (var i = 0; i < listItems.length; i++) {
+				listItems[i].onclick  = function fun(event) {
+					var selectedTagName = event.target.tagName.toLowerCase();
+					if( selectedTagName == 'p' || selectedTagName == 'em' ) {
+						SelectText(event.target);
+					} else if( selectedTagName == 'input' ) {
+						event.target.setSelectionRange(0, event.target.value.length);
+					}
+				}
 
-		    var beforeContentChar = window.getComputedStyle(listItems[i].getElementsByTagName('i')[0], '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, ""),
-		    	beforeContent = beforeContentChar.codePointAt(0).toString(16);
-		    var beforeContentElement = document.createElement("em");
-		    beforeContentElement.textContent = "\\"+beforeContent;
-		    listItems[i].appendChild(beforeContentElement);
+				var nameClass = listItems[i].getElementsByClassName('js-classname'),
+					ligatureEl = listItems[i].getElementsByClassName('js-ligature');
 
-		    //create input element to copy/paste chart
-		    var charCharac = document.createElement('input');
-		    charCharac.setAttribute('type', 'text');
-		    charCharac.setAttribute('maxlength', '1');
-		    charCharac.setAttribute('readonly', 'true');
-		    charCharac.setAttribute('value', beforeContentChar);
-		    listItems[i].appendChild(charCharac);
-		}
+				var beforeContentChar = window.getComputedStyle(listItems[i].getElementsByTagName('i')[0], '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, ""),
+					beforeContent = beforeContentChar.codePointAt(0).toString(16);
+				var beforeContentElement = document.createElement("em");
+				beforeContentElement.textContent = "\\"+beforeContent;
+
+				//create input element to copy/paste chart
+				var charCharac = document.createElement('input');
+				charCharac.setAttribute('type', 'text');
+				charCharac.setAttribute('maxlength', '1');
+				charCharac.setAttribute('readonly', 'true');
+				charCharac.setAttribute('value', beforeContentChar);
+        // insert in DOM
+				nameClass[0].after(charCharac);
+        nameClass[0].after(beforeContentElement);
+
+				// update ligature value
+				if(ligatureEl.length > 0) {
+					ligatureEl[0].innerText = ligatureEl[0].innerText.replace(/-/gu, "_");
+				}
+			}
     }
 </script>
 </body>

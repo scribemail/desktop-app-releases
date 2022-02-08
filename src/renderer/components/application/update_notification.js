@@ -8,7 +8,6 @@ import "./update_notification.scss";
 
 const ApplicationUpdateNotification = () => {
   const [updateAvailable, setUpdateAvailable] = useState(store.get("update_available"));
-  const [updateDownloaded, setUpdateDownloaded] = useState(store.get("update_downloaded"));
   const [downloadProgressPercentage, setDownloadProgressPercentage] = useState(0);
 
   const handleUpdateAvailable = () => {
@@ -18,9 +17,7 @@ const ApplicationUpdateNotification = () => {
 
   const handleUpdateNotAvailable = () => {
     store.set("update_available", false);
-    store.set("update_downloaded", false);
     setUpdateAvailable(false);
-    setUpdateDownloaded(false);
   };
 
   const handleUpdateDownloadProgress = (event, args) => {
@@ -28,14 +25,8 @@ const ApplicationUpdateNotification = () => {
   };
 
   const handleUpdateDownloaded = () => {
-    store.set("update_downloaded", true);
-    setUpdateDownloaded(true);
-    new Notification(t`New Scribe update`, { body: t`A new Scribe update has been downloaded and will be automatically installed on exit` }).show();
-  };
-
-  const handleInstallAndRestartClick = () => {
+    new Notification(t`New Scribe update`, { body: t`A new Scribe update has been downloaded and will be automatically installed now` }).show();
     store.set("update_available", false);
-    store.set("update_downloaded", false);
     app.relaunch();
     app.quit();
   };
@@ -55,21 +46,14 @@ const ApplicationUpdateNotification = () => {
     }
   }, []);
 
-  console.log(updateAvailable, updateDownloaded, downloadProgressPercentage);
-
-  if (!updateAvailable) {
-    return null;
-  }
-
-  if (!updateDownloaded && downloadProgressPercentage === 0) {
+  if (!updateAvailable || downloadProgressPercentage === 0) {
     return null;
   }
 
   return (
     <div className="update-notification text-center">
       <Trans>A new version of Scribe is available</Trans><br />
-      { !updateDownloaded && <Trans>Downloading { downloadProgressPercentage }%</Trans> }
-      { updateDownloaded && <a href="#" onClick={ handleInstallAndRestartClick }><Trans>Install and restart now</Trans></a> }
+      <Trans>Downloading { downloadProgressPercentage }%</Trans>
     </div>
   );
 };

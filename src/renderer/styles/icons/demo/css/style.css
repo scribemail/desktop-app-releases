@@ -14,27 +14,64 @@ Generated using nucleoapp.com
 
 /* --------------------------------
 
-Primary style
+Reset
 
 -------------------------------- */
+
 *, *::after, *::before {
-  box-sizing: border-box;
+  box-sizing: inherit;
+}
+
+* {
+  font: inherit;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, hr {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 html {
-  font-size: 62.5%;
+  box-sizing: border-box;
 }
 
 body {
-  font-size: 1.6rem;
-  font-family: sans-serif;
-  color: #333333;
-  background: white;
+  background-color: white;
+  font-family: system-ui, sans-serif;
+  color: hsl(240, 4%, 20%);
+  padding: 1em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, main, form legend {
+  display: block;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+button, input, textarea, select {
+  margin: 0;
 }
 
 a {
-  color: #608CEE;
-  text-decoration: none;
+  color: hsl(230, 93%, 66%);
 }
 
 /* --------------------------------
@@ -44,31 +81,29 @@ Main components
 -------------------------------- */
 header {
   text-align: center;
-  padding: 80px 0 48px;
+  margin: 3em auto;
 }
 
 header h1 {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
+  font-weight: 600;
 }
 
 header p {
-  font-size: 1.4rem;
+  font-size: 1rem;
   margin-top: 1em;
-}
-
-header a:hover {
-  text-decoration: underline;
+  color: hsla(0, 0%, 0%, 0.5);
 }
 
 ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 ul li {
-  border-radius: .25em;
-  transition: background 0.2s;
+  border-radius: .4em;
+  transition: background-color .2s;
   user-select: none;
   overflow: hidden;
   text-align: center;
@@ -76,40 +111,37 @@ ul li {
 }
 
 ul li:hover {
-  background: #f8f8f8;
+  background: hsla(0, 0%, 0%, 0.05);
 }
 
 ul p, ul em, ul input {
   display: block;
-  font-size: 1.1rem;
-  color: rgba(0,0,0,0.6);
-  -webkit-user-select: auto;
-  -moz-user-select: auto;
-  -ms-user-select: auto;
+  font-size: 0.75rem;
+  color: hsla(0, 0%, 0%, 0.5);
   user-select: auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  max-width: 11rem;
+  max-width: 6rem;
 }
 
 ul p {
-  padding: 10px 0;
+  padding: 8px 0 4px;
 }
 
 ul p::selection, ul em::selection {
-  background: #608CEE;
+  background: hsl(230, 93%, 66%);
   color: #fff;
 }
 
 ul p::-moz-selection, ul em::-moz-selection {
-  background: #608CEE;
+  background: hsl(230, 93%, 66%);
   color: #fff;
 }
 
 ul em {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 ul em::before {
@@ -125,6 +157,7 @@ ul input {
   border: none;
   box-shadow: none;
   outline: none;
+  font-family: auto;
 }
 
 /* --------------------------------
@@ -147,26 +180,30 @@ icons
 -------------------------*/
 
 .icon-cog::before {
-    content: "\ea03";
+  content: "\ea03";
 }
 
 .icon-button-refresh-arrows::before {
-    content: "\ea04";
+  content: "\ea04";
 }
 
 .icon-desktop-monitor-download::before {
-    content: "\ea05";
+  content: "\ea05";
 }
 
 .icon-check-circle-1::before {
-    content: "\ea06";
+  content: "\ea06";
 }
 
 .icon-pencil-1::before {
-    content: "\ea07";
+  content: "\ea07";
 }
 
 .icon-shield-lock::before {
-    content: "\ea08";
+  content: "\ea08";
+}
+
+.icon-loading::before {
+  content: "\ea09";
 }
 

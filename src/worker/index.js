@@ -3,7 +3,6 @@ import ActionCable               from "actioncable";
 import { app }                   from "@electron/remote";
 import Store                     from "electron-store";
 import { getAuthorizationToken } from "services/authorization_token";
-import { updateSignature }       from "services/signature";
 import { startBugsnag }          from "services/bugsnag";
 
 startBugsnag(app, { process: { name: "worker" } });
@@ -13,31 +12,8 @@ const store = new Store({ watch: true });
 let currentCable = null;
 let currentCableSubscription = null;
 
-const isSubscriptionActiveForWorkspaceId = (workspaceId) => {
-  if (!store.get("workspaces")) {
-    return false;
-  }
-
-  const workspaceinfos = store.get("workspaces").filter((storeWorkspace) => storeWorkspace.id === workspaceId)[0];
-  if (!workspaceinfos) {
-    return false;
-  }
-
-  return workspaceinfos.isSubscriptionActive;
-};
-
-const message2UI = (command, payload) => {
-  ipcRenderer.send("message-from-worker", {
-    command, payload
-  });
-};
-
 const handleUpdateSignature = (data) => {
-  if (isSubscriptionActiveForWorkspaceId(data.workspace.id)) {
-    updateSignature(data.workspace.id, data.signature.id, data.signature.email, () => {
-      message2UI("signatureUpdated", {});
-    });
-  }
+  ipcRenderer.send("message-from-worker", { command: "update-signature", payload: { id: data.signature.id } });
 };
 
 const handleDisconnected = () => {
@@ -46,7 +22,7 @@ const handleDisconnected = () => {
 
 const handleConnected = () => {
   if (store.get("update_after_socket_connection")) {
-    message2UI("updateSignatures", {});
+    ipcRenderer.send("message-from-worker", { command: "update-all-signatures" });
     store.delete("update_after_socket_connection");
   }
 };
@@ -76,12 +52,6 @@ store.onDidChange("authorization_token", (newValue) => {
   }
 });
 
-store.onDidChange("is_subscription_active", (newValue) => {
-  if (getAuthorizationToken() && newValue) {
-    createSocket(getAuthorizationToken());
-  }
-});
-
 setInterval(() => {
-  message2UI("updateSignatures", {});
+  ipcRenderer.send("message-from-worker", { command: "update-all-signatures" });
 }, 1000 * 60 * 60 * 12);

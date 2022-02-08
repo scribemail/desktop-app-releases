@@ -10,7 +10,7 @@ import { Checkbox }                 from "renderer/components/ui";
 
 import "./container.scss";
 
-const ConfigurationContainer = ({ onHide }) => {
+const ConfigurationContainer = () => {
   const [launchAtStartup, setLaunchAtStartup] = useState(store.get("launch_at_startup"));
   const [updateOutlook, setUpdateOutlook] = useState(store.get("update_outlook"));
   const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
@@ -21,8 +21,6 @@ const ConfigurationContainer = ({ onHide }) => {
     deleteAuthorizationToken();
     deleteCurrentWorkspaces();
     deleteCurrentUser();
-    store.delete("is_subscription_active");
-    onHide();
   };
 
   const openScribeWebsite = () => {
@@ -98,8 +96,8 @@ const ConfigurationContainer = ({ onHide }) => {
   );
 };
 
-ConfigurationContainer.propTypes = {
-  onHide: PropTypes.func.isRequired,
-};
+ConfigurationContainer.defaultProps = {};
+
+ConfigurationContainer.propTypes = {};
 
 export default ConfigurationContainer;

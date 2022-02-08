@@ -18,11 +18,21 @@ const SessionProvider = ({ children }) => {
     setCurrentWorkspaces(null);
   };
 
+  const refresh = () => (
+    new Promise((resolve, reject) => {
+      getSession().then((response) => {
+        setCurrentUser(response.data.user);
+        setCurrentWorkspaces(response.data.workspaces);
+        setBugsnagUser(response.data.user.id, response.data.user.email, response.data.user.display_name);
+        resolve();
+      }).catch(() => {
+        reject();
+      });
+    })
+  );
+
   useEffect(() => {
-    getSession().then((response) => {
-      setCurrentUser(response.data.user);
-      setCurrentWorkspaces(response.data.workspaces);
-      setBugsnagUser(response.data.user.id, response.data.user.email, response.data.user.display_name);
+    refresh().then(() => {
       setLoading(false);
     }).catch(() => {
       setLoading(false);
@@ -43,7 +53,8 @@ const SessionProvider = ({ children }) => {
         setCurrentUser,
         setCurrentWorkspaces,
         deleteCurrentUser,
-        deleteCurrentWorkspaces
+        deleteCurrentWorkspaces,
+        refresh
       } }
     >
       { children }

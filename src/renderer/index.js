@@ -2,6 +2,7 @@ import React                from "react";
 import ReactDOM             from "react-dom";
 import { app }              from "@electron/remote";
 import Bugsnag              from "@bugsnag/electron";
+import { HashRouter }       from "react-router-dom";
 import ApplicationContainer from "renderer/components/application/container";
 import jquery               from "jquery";
 import SessionProvider      from "renderer/contexts/session/provider";
@@ -38,7 +39,9 @@ const RootComponent = () => (
   <ErrorBoundary>
     <I18nProvider i18n={ i18n }>
       <SessionProvider>
-        <ApplicationContainer />
+        <HashRouter>
+          <ApplicationContainer />
+        </HashRouter>
       </SessionProvider>
     </I18nProvider>
   </ErrorBoundary>

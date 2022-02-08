@@ -6,7 +6,6 @@ import os                                                   from "os";
 import Bugsnag                                              from "@bugsnag/electron";
 import { installOnOutlookWindows }                          from "services/signature_installation/outlook_windows";
 import { app }                                              from "@electron/remote";
-import log                                                  from "electron-log";
 
 const getComputerName = () => os.hostname();
 
@@ -20,44 +19,73 @@ const getMetaData = () => {
   };
 };
 
-const writeFileForSignature = (workspaceId, id, email, html) => {
+const writeFilesForSignature = (workspaceId, id, email, html) => {
+  const promises = [];
   if (process.platform === "darwin") {
     if (store.get("update_outlook")) {
-      installOnOutlookMac(workspaceId, email, html).then(() => {
-        createSignatureInstallation(id, { email_client: "outlook_mac", device_name: getComputerName(), metadata: getMetaData() }).catch((error) => {
+      const outlookMacPromise = new Promise((resolve, reject) => {
+        installOnOutlookMac(workspaceId, email, html).then(() => {
+          createSignatureInstallation(id, { email_client: "outlook_mac", device_name: getComputerName(), metadata: getMetaData() }).then(() => {
+            resolve();
+          }).catch((error) => {
+            Bugsnag.notify(error);
+            reject(error);
+          });
+        }).catch((error) => {
           Bugsnag.notify(error);
+          reject(error);
         });
-      }).catch((error) => {
-        log.error(error);
       });
+      promises.push(outlookMacPromise);
     }
     if (store.get("update_apple_mail")) {
-      installOnAppleMail(workspaceId, email, html).then(() => {
-        createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).catch((error) => {
+      const appleMailPromise = new Promise((resolve, reject) => {
+        installOnAppleMail(workspaceId, email, html).then(() => {
+          createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).then(() => {
+            resolve();
+          }).catch((error) => {
+            Bugsnag.notify(error);
+            reject(error);
+          });
+        }).catch((error) => {
           Bugsnag.notify(error);
+          reject(error);
         });
-      }).catch((error) => {
-        log.error(error);
       });
+      promises.push(appleMailPromise);
     }
   }
   if (process.platform === "win32") {
-    installOnOutlookWindows(workspaceId, id, email, html).then(() => {
-      createSignatureInstallation(id, { email_client: "outlook_windows", device_name: getComputerName(), metadata: getMetaData() }).catch((error) => {
+    const outlookWindowsPromise = new Promise((resolve, reject) => {
+      installOnOutlookWindows(workspaceId, id, email, html).then(() => {
+        createSignatureInstallation(id, { email_client: "outlook_windows", device_name: getComputerName(), metadata: getMetaData() }).then(() => {
+          resolve();
+        }).catch((error) => {
+          Bugsnag.notify(error);
+          reject(error);
+        });
+      }).catch((error) => {
         Bugsnag.notify(error);
+        reject(error);
       });
-    }).catch((error) => {
-      Bugsnag.notify(error);
     });
+    promises.push(outlookWindowsPromise);
   }
+
+  return promises;
 };
 
-export const updateSignature = (workspaceId, id, email, callback) => {
-  getSignatureRawHtml(id).then((response) => {
-    writeFileForSignature(workspaceId, id, email, response.data.raw_html);
-    store.set(`signature_updates.${id}`, Date.now());
-    if (callback) {
-      callback();
-    }
-  }).catch(() => {});
-};
+export const updateSignature = (workspaceId, id, email) => (
+  new Promise((resolve, reject) => {
+    getSignatureRawHtml(id).then((response) => {
+      Promise.all(writeFilesForSignature(workspaceId, id, email, response.data.raw_html)).then(() => {
+        store.set(`signature_updates.${id}`, Date.now());
+        resolve();
+      }).catch(() => {
+        reject();
+      });
+    }).catch(() => {
+      reject();
+    });
+  })
+);

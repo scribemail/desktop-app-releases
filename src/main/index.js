@@ -8,6 +8,7 @@ import { autoUpdater }                                            from "electron
 import Registry                                                   from "rage-edit";
 import debug                                                      from "electron-debug";
 import log                                                        from "electron-log";
+import Bugsnag                                                    from "@bugsnag/electron";
 import { startBugsnag }                                           from "services/bugsnag";
 import { format as formatUrl }                                    from "url";
 import { createWorkerWindow }                                     from "./worker_window";
@@ -118,20 +119,6 @@ app.on("ready", () => {
     }, 1000 * 60 * 60 * 24); // Check every 24 hours
   }
 
-  // setTimeout(() => {
-  //   sendWindowMessage(mainWindow, "update-not-available");
-  //   sendWindowMessage(mainWindow, "update-available");
-  //   let percentage = 0;
-  //   const interval = setInterval(() => {
-  //     sendWindowMessage(mainWindow, "update-download-progress", { progressPercentage: percentage });
-  //     percentage += 1;
-  //     if (percentage === 100) {
-  //       sendWindowMessage(mainWindow, "update-downloaded");
-  //       clearInterval(interval);
-  //     }
-  //   }, 100);
-  // }, 5000);
-
   ///
   // Menu bar configuration
   ///
@@ -142,7 +129,7 @@ app.on("ready", () => {
     updateMainWindow();
     mainWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html` : formatUrl({ pathname: path.join(__dirname, "index.html"), protocol: "file", slashes: true }),);
     ipcMain.on("message-from-worker", (event, arg) => {
-      sendWindowMessage(menubar.window, "message-from-worker", arg);
+      sendWindowMessage(menubar.window, arg.command, arg.payload);
     });
     ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
     ipcMain.on("open-sso-login", openSsoLoginWindow);
@@ -176,8 +163,8 @@ app.on("ready", () => {
     const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Setup";
     const keyName = "DisableRoamingSignaturesTemporaryToggle";
 
-    Registry.set(keyPath, keyName, 1).then((response) => {
-      log.error(`Registry.set ${response}`);
+    Registry.set(keyPath, keyName, 1).catch((error) => {
+      Bugsnag.notify(error);
     });
   }
 });

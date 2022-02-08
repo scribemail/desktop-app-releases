@@ -19,5 +19,5 @@ export const startBugsnag = (app, metadata, plugins = []) => {
 };
 
 export const setBugsnagUser = (id, email, name) => {
-  Bugsnag.setUser(id, email, name);
+  Bugsnag.setUser(`${id}`, email, name);
 };

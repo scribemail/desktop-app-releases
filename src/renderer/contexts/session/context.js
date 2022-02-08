@@ -6,7 +6,8 @@ const SessionContext = React.createContext({
   setCurrentUser:          () => {},
   setCurrentWorkspaces:    () => {},
   deleteCurrentUser:       () => {},
-  deleteCurrentWorkspaces: () => {}
+  deleteCurrentWorkspaces: () => {},
+  refresh:                 () => {}
 });
 
 export default SessionContext;
