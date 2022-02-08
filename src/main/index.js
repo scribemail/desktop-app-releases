@@ -104,6 +104,9 @@ app.on("ready", () => {
 
     autoUpdater.on("update-downloaded", () => {
       sendWindowMessage(mainWindow, "update-downloaded");
+      setTimeout(() => {
+        autoUpdater.quitAndInstall(true, true);
+      }, 1500);
     });
 
     setTimeout(() => {

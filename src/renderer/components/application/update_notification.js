@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { autoUpdater }                from "electron-updater";
 import { Trans, t }                   from "@lingui/macro";
 import store                          from "services/store";
 import { ipcRenderer }                from "electron";
@@ -27,9 +26,6 @@ const ApplicationUpdateNotification = () => {
   const handleUpdateDownloaded = () => {
     new Notification(t`New Scribe update`, { body: t`A new Scribe update has been downloaded and will be automatically installed now` });
     store.set("update_available", false);
-    setImmediate(() => {
-      autoUpdater.quitAndInstall(true, true);
-    });
   };
 
   useEffect(() => {
