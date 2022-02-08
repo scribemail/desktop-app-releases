@@ -21,10 +21,8 @@ const getMetaData = () => {
 
 const writeFilesForSignature = (workspaceId, id, email, html) => {
   const promises = [];
-  const updateOutlook = store.get("update_outlook");
-  const updateAppleMail = store.get("update_apple_mail");
   if (process.platform === "darwin") {
-    if (updateOutlook) {
+    if (store.get("update_outlook")) {
       const outlookMacPromise = new Promise((resolve, reject) => {
         installOnOutlookMac(workspaceId, email, html).then(() => {
           createSignatureInstallation(id, { email_client: "outlook_mac", device_name: getComputerName(), metadata: getMetaData() }).then(() => {
@@ -40,7 +38,7 @@ const writeFilesForSignature = (workspaceId, id, email, html) => {
       });
       promises.push(outlookMacPromise);
     }
-    if (updateAppleMail) {
+    if (store.get("update_apple_mail")) {
       const appleMailPromise = new Promise((resolve, reject) => {
         installOnAppleMail(workspaceId, email, html).then(() => {
           createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).then(() => {
@@ -81,7 +79,6 @@ export const updateSignature = (workspaceId, id, email) => (
   new Promise((resolve, reject) => {
     getSignatureRawHtml(id).then((response) => {
       Promise.all(writeFilesForSignature(workspaceId, id, email, response.data.raw_html)).then(() => {
-        store.set(`signature_updates.${id}`, Date.now());
         resolve();
       }).catch(() => {
         reject();

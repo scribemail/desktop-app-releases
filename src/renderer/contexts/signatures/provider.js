@@ -24,18 +24,28 @@ const SignaturesProvider = ({ children }) => {
   const [signatureUpdates, setSignatureUpdates] = useState(store.get("signature_updates"));
   const [signatureLoadings, setSignatureLoadings] = useState([]);
 
-  const updateOnDiskForSignature = (signature) => {
+  const updateOnDiskForSignature = (signature, updateStore = true) => {
     setSignatureLoadings((oldIds) => uniq(concat(oldIds, signature.id)));
     return updateSignature(signature.workspace.id, signature.id, signature.email.email).then(() => {
-      setSignatureUpdates(store.get("signature_updates"));
+      if (updateStore) {
+        store.set(`signature_updates.${signature.id}`, Date.now());
+        setSignatureUpdates(store.get("signature_updates"));
+      }
       setSignatureLoadings((oldIds) => pull(oldIds, signature.id));
     });
   };
 
   const updateAllOnDisk = () => {
     signatures.map((signature) => (
-      updateOnDiskForSignature(signature)
+      updateOnDiskForSignature(signature, false)
     ));
+    const value = signatures.reduce((acc, signature) => {
+      const obj = {};
+      obj[signature.id] = Date.now();
+      return { ...acc, ...obj };
+    }, {});
+    store.set("signature_updates", value);
+    setSignatureUpdates(store.get("signature_updates"));
   };
 
   const updatedAtForSignature = (signature) => (
