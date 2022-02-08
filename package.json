@@ -58,6 +58,7 @@
       "certificateSubjectName": "Scribe",
       "verifyUpdateCodeSignature": false,
       "sign": "build/windows-sign.js",
+      "signingHashAlgorithms": ["sha256"],
       "target": [
         {
           "target": "nsis",

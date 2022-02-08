@@ -21,7 +21,7 @@ const ApplicationUpdateNotification = () => {
   };
 
   const handleUpdateDownloadProgress = (event, args) => {
-    setDownloadProgressPercentage(args.progressPercentage);
+    setDownloadProgressPercentage(args.progressPercentage.toFixed());
   };
 
   const handleUpdateDownloaded = () => {
