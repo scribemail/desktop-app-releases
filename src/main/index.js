@@ -5,7 +5,7 @@ import isDev                                                      from "electron
 import * as path                                                  from "path";
 import unhandled                                                  from "electron-unhandled";
 import { autoUpdater }                                            from "electron-updater";
-import Registry                                                   from "rage-edit";
+import regedit                                                    from "services/regedit_main";
 import debug                                                      from "electron-debug";
 import log                                                        from "electron-log";
 import Bugsnag                                                    from "@bugsnag/electron";
@@ -138,6 +138,7 @@ app.on("ready", () => {
     ipcMain.on("open-sso-login", openSsoLoginWindow);
     ipcMain.on("open-menu-bar-window", openMenuBarWindow);
     menubar.app.commandLine.appendSwitch("disable-backgrounding-occluded-windows", "true");
+
     if (process.platform === "darwin") {
       app.dock.hide();
     }
@@ -166,8 +167,10 @@ app.on("ready", () => {
     const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Setup";
     const keyName = "DisableRoamingSignaturesTemporaryToggle";
 
-    Registry.set(keyPath, keyName, 1).catch((error) => {
-      Bugsnag.notify(error);
+    regedit.putValue({ [keyPath]: { [keyName]: { value: 1, type: "REG_DWORD" } } }, (err) => {
+      if (err) {
+        Bugsnag.notify(err);
+      }
     });
   }
 });

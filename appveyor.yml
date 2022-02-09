@@ -1,11 +1,11 @@
 image:
-  - macOS-BigSur
   - Visual Studio 2019
+  - macOS-BigSur
 
 platform:
   - x64
 
-skip_non_tags: true
+skip_non_tags: false
 
 for:
 -

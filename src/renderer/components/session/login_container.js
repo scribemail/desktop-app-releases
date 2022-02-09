@@ -4,7 +4,7 @@ import { setAuthorizationToken }              from "services/authorization_token
 import { createDomainTokenSession }           from "requests/session";
 import { useNavigate }                        from "react-router-dom";
 import { exec }                               from "child_process";
-import Registry                               from "rage-edit";
+import regedit                                from "services/regedit_renderer";
 import store                                  from "services/store";
 import { Trans }                              from "@lingui/macro";
 import SessionGoogleLoginButton               from "renderer/components/session/google_login_button";
@@ -35,32 +35,32 @@ const SessionLoginContainer = () => {
   };
 
   const tryDomainTokenAuthentication = () => {
-    if (process.platform === "win32") {
-      /* eslint-disable string-to-lingui/missing-lingui-transformation */
-      const keyPath = "HKLM\\Software\\Policies\\Scribe\\Config";
-      const keyName = "DomainToken";
-      Registry.get(keyPath, keyName).then((value) => {
-        if (value) {
-          exec("whoami /upn", (error, stdout) => {
-            if (!error) {
-              const name = stdout.split("@")[0];
-              createDomainTokenSession(value, name).then((response) => {
-                if (azureAdAuthenticationInterval.current) {
-                  clearInterval(azureAdAuthenticationInterval.current);
-                }
-                handleLoginSuccess(response, true);
-              }).catch(() => {});
-            }
-          });
-        }
-      });
-      /* eslint-enable string-to-lingui/missing-lingui-transformation */
-    }
+    /* eslint-disable string-to-lingui/missing-lingui-transformation */
+    const keyPath = "HKLM\\Software\\Policies\\Scribe\\Config";
+    const keyName = "DomainToken";
+    regedit.list(keyPath, (err, result) => {
+      if (!err && result[keyPath].exists && result[keyPath].values[keyName]) {
+        exec("whoami /upn", (error, stdout) => {
+          if (!error) {
+            const name = stdout.split("@")[0];
+            createDomainTokenSession(result[keyPath].values[keyName].value, name).then((response) => {
+              if (azureAdAuthenticationInterval.current) {
+                clearInterval(azureAdAuthenticationInterval.current);
+              }
+              handleLoginSuccess(response, true);
+            }).catch(() => {});
+          }
+        });
+      }
+    });
+    /* eslint-enable string-to-lingui/missing-lingui-transformation */
   };
 
   useEffect(() => {
-    azureAdAuthenticationInterval.current = setInterval(tryDomainTokenAuthentication, 30000);
-    tryDomainTokenAuthentication();
+    if (process.platform === "win32") {
+      azureAdAuthenticationInterval.current = setInterval(tryDomainTokenAuthentication, 30000);
+      tryDomainTokenAuthentication();
+    }
     return () => {
       if (azureAdAuthenticationInterval.current) {
         clearInterval(azureAdAuthenticationInterval.current);

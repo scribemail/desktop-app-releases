@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -58,7 +58,18 @@
       "certificateSubjectName": "Scribe",
       "verifyUpdateCodeSignature": false,
       "sign": "build/windows-sign.js",
-      "signingHashAlgorithms": ["sha256"],
+      "extraResources": [
+        {
+          "from": "node_modules/regedit/vbs",
+          "to": "vbs",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ],
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
       "target": [
         {
           "target": "nsis",
@@ -131,7 +142,6 @@
     "plist": "^3.0.2",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.1",
-    "rage-edit": "^1.2.0",
     "rc-switch": "^3.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -141,11 +151,11 @@
     "react-time-ago": "^6.2.2",
     "react-uuid": "^1.0.2",
     "reactstrap": "^8.9.0",
+    "regedit": "^5.0.0",
     "source-map-support": "^0.5.16",
     "timeago-react": "^3.0.2",
     "uuid": "^8.3.2",
     "validate.js": "^0.13.1",
-    "winreg-vbs": "^1.0.0",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {

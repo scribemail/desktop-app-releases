@@ -1,26 +1,31 @@
 /* eslint-disable string-to-lingui/missing-lingui-transformation */
 /* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { app }                              from "@electron/remote";
 import { existsSync, mkdirSync, writeFile } from "fs";
 import Bugsnag                              from "@bugsnag/electron";
-import Registry                             from "rage-edit";
+import regedit                              from "services/regedit_renderer";
 
 async function updateDefaultSignatureInRegistrySync(email, finalSignatureName) {
-  const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Profiles\\Outlook\\9375CFF0413111d3B88A00104B2A6676";
-  const nextAccountId = await Registry.get(keyPath, "NextAccountId");
   const accountNames = [];
   let accountNameFound = false;
-  for (let i = 1; i < nextAccountId; i += 1) {
-    const keyName = `${i}`.padStart(8, "0");
-    const localKeyPath = `${keyPath}\\${keyName}`;
-    const accountName = await Registry.get(localKeyPath, "Account Name");
-    if (accountName === email) {
-      await Registry.set(localKeyPath, "New Signature", finalSignatureName);
-      await Registry.set(localKeyPath, "Reply-Forward Signature", finalSignatureName);
+
+  const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Profiles\\Outlook\\9375CFF0413111d3B88A00104B2A6676";
+  const result = await regedit.promisified.list(keyPath);
+  const keyResult = result[keyPath];
+  const allKeysResult = await regedit.promisified.list(keyResult.keys.map((key) => `${keyPath}\\${key}`));
+  for (const [key, content] of Object.entries(allKeysResult)) {
+    if (content.values["Account Name"] && content.values["Account Name"].value === email) {
+      await regedit.promisified.putValue({
+        [key]: {
+          "New Signature":           { value: finalSignatureName, type: "REG_SZ" },
+          "Reply-Forward Signature": { value: finalSignatureName, type: "REG_SZ" }
+        }
+      });
       accountNameFound = true;
       break;
     } else {
-      accountNames.push(accountName);
+      accountNames.push(content.values["Account Name"].value);
     }
   }
   if (!accountNameFound) {
