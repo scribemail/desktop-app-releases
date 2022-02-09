@@ -1,29 +1,32 @@
+/* eslint-disable string-to-lingui/missing-lingui-transformation */
+/* eslint-disable no-await-in-loop */
 import { app }                              from "@electron/remote";
 import { existsSync, mkdirSync, writeFile } from "fs";
+import Bugsnag                              from "@bugsnag/electron";
 import Registry                             from "rage-edit";
 
-const updateDefaultSignatureInRegistry = (email, finalSignatureName) => {
+async function updateDefaultSignatureInRegistrySync(email, finalSignatureName) {
   const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Profiles\\Outlook\\9375CFF0413111d3B88A00104B2A6676";
-  return new Promise((resolve, reject) => {
-    for (let i = 1; i < 10; i++) {
-      const keyName = `0000000${i}`;
-      const localKeyPath = `${keyPath}\\${keyName}`;
-      Registry.get(localKeyPath, "Account Name").then((value) => {
-        if (value === email) {
-          Registry.set(localKeyPath, "New Signature", finalSignatureName).then(() => {
-            Registry.set(localKeyPath, "Reply-Forward Signature", finalSignatureName).then((response) => {
-              resolve(response);
-            }).catch((error) => {
-              reject(error);
-            });
-          }).catch((error) => {
-            reject(error);
-          });
-        }
-      });
+  const nextAccountId = await Registry.get(keyPath, "NextAccountId");
+  const accountNames = [];
+  let accountNameFound = false;
+  for (let i = 1; i < nextAccountId; i += 1) {
+    const keyName = `${i}`.padStart(8, "0");
+    const localKeyPath = `${keyPath}\\${keyName}`;
+    const accountName = await Registry.get(localKeyPath, "Account Name");
+    if (accountName === email) {
+      await Registry.set(localKeyPath, "New Signature", finalSignatureName);
+      await Registry.set(localKeyPath, "Reply-Forward Signature", finalSignatureName);
+      accountNameFound = true;
+      break;
+    } else {
+      accountNames.push(accountName);
     }
-  });
-};
+  }
+  if (!accountNameFound) {
+    Bugsnag.notify({ email, accountNames });
+  }
+}
 
 export const installOnOutlookWindows = (workspaceId, id, email, html) => {
   const oldSignatureName = `Scribe - ${email}`;
@@ -42,11 +45,12 @@ export const installOnOutlookWindows = (workspaceId, id, email, html) => {
       if (error) {
         reject(error);
       } else {
-        updateDefaultSignatureInRegistry(email, finalSignatureName).then(() => {
+        try {
+          updateDefaultSignatureInRegistrySync(email, finalSignatureName);
           resolve();
-        }).catch((error2) => {
-          reject(error2);
-        });
+        } catch (updateRegistryError) {
+          reject(updateRegistryError);
+        }
       }
     });
   });
