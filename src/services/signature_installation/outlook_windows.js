@@ -29,7 +29,7 @@ async function updateDefaultSignatureInRegistrySync(email, finalSignatureName) {
     }
   }
   if (!accountNameFound) {
-    Bugsnag.notify({ email, accountNames });
+    Bugsnag.notify({ email, accountNames, result });
   }
 }
 

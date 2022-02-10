@@ -22,8 +22,8 @@ const handleDisconnected = () => {
 
 const handleConnected = () => {
   if (store.get("update_after_socket_connection")) {
-    ipcRenderer.send("message-from-worker", { command: "update-all-signatures" });
     store.delete("update_after_socket_connection");
+    ipcRenderer.send("message-from-worker", { command: "update-all-signatures" });
   }
 };
 

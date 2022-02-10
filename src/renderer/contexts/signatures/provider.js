@@ -32,6 +32,8 @@ const SignaturesProvider = ({ children }) => {
         setSignatureUpdates(store.get("signature_updates"));
       }
       setSignatureLoadings((oldIds) => pull(oldIds, signature.id));
+    }).catch(() => {
+      setSignatureLoadings((oldIds) => pull(oldIds, signature.id));
     });
   };
 
