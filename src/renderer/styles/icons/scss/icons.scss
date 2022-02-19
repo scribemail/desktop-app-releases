@@ -107,6 +107,7 @@ $icon-check-circle-1: unicode(ea06);
 $icon-pencil-1: unicode(ea07);
 $icon-shield-lock: unicode(ea08);
 $icon-loading: unicode(ea09);
+$icon-information-circle: unicode(ea0a);
 
 .icon-cog::before {
   content: $icon-cog;
@@ -134,5 +135,9 @@ $icon-loading: unicode(ea09);
 
 .icon-loading::before {
   content: $icon-loading;
+}
+
+.icon-information-circle::before {
+  content: $icon-information-circle;
 }
 

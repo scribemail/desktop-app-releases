@@ -6,7 +6,7 @@ import { Trans, t }                 from "@lingui/macro";
 import { deleteAuthorizationToken } from "services/authorization_token";
 import { useSession }               from "renderer/contexts/session/hooks";
 import store                        from "services/store";
-import { Checkbox }                 from "renderer/components/ui";
+import { Icon, Checkbox }           from "renderer/components/ui";
 
 import "./container.scss";
 
@@ -14,6 +14,7 @@ const ConfigurationContainer = () => {
   const [launchAtStartup, setLaunchAtStartup] = useState(store.get("launch_at_startup"));
   const [updateOutlook, setUpdateOutlook] = useState(store.get("update_outlook"));
   const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
+  const [usingiCloudDrive, setUsingiCloudDrive] = useState(store.get("using_icloud_drive"));
 
   const { currentUser, deleteCurrentWorkspaces, deleteCurrentUser } = useSession();
 
@@ -53,6 +54,16 @@ const ConfigurationContainer = () => {
   const handleUpdateAppleMailChange = (event) => {
     setUpdateAppleMail(event.target.checked);
     store.set("update_apple_mail", event.target.checked);
+    store.set("using_icloud_drive", event.target.checked);
+  };
+
+  const handleUsingiCloudDriveChange = (event) => {
+    setUsingiCloudDrive(event.target.checked);
+    store.set("using_icloud_drive", event.target.checked);
+  };
+
+  const openUsingiCloudExplanation = () => {
+    window.open("https://github.com", "_blank", "top=500,left=200,nodeIntegration=no");
   };
 
   return (
@@ -63,6 +74,14 @@ const ConfigurationContainer = () => {
             <h3><Trans>Update signatures for</Trans></h3>
             <Checkbox label={ t`Microsoft outlook` } className="mb-1" onChange={ handleUpdateOutlookChange } checked={ updateOutlook } />
             <Checkbox label={ t`Apple Mail` } onChange={ handleUpdateAppleMailChange } checked={ updateAppleMail } />
+            { updateAppleMail && (
+              <div className="ml-4 mt-1 d-flex">
+                <Checkbox label={ t`I'm using mail in iCloud` } onChange={ handleUsingiCloudDriveChange } checked={ usingiCloudDrive } />
+                <a href="#" onClick={ openUsingiCloudExplanation }>
+                  <Icon className="ml-1" icon="information-circle" />
+                </a>
+              </div>
+            ) }
           </div>
         ) }
         <h3><Trans>Configuration</Trans></h3>

@@ -1,6 +1,7 @@
 import { Tray, Menu, app, nativeTheme } from "electron";
 import { menubar }                      from "menubar";
 import * as path                        from "path";
+import is                               from "electron-is";
 
 let tray;
 
@@ -10,8 +11,16 @@ const contextMenu = Menu.buildFromTemplate([
   { role: "quit", label: "Quit Scribe" }
 ]);
 
+const iconPath = () => {
+  let icon = "white";
+  if (process.platform === "darwin" && !nativeTheme.shouldUseDarkColors && is.ltRelease("12.0.0")) {
+    icon = "dark";
+  }
+  return path.join(__static, `tray-icon-${icon}.png`);
+};
+
 const createTray = () => {
-  tray = new Tray(path.join(__static, nativeTheme.shouldUseDarkColors || process.platform !== "darwin" ? "tray-icon.png" : "tray-icon-dark.png"));
+  tray = new Tray(iconPath());
   tray.setToolTip("Scribe");
 
   return tray;
@@ -43,6 +52,10 @@ export const createMenuBar = () => {
     } else {
       setTimeout(() => { mb.showWindow(); }, 500);
     }
+  });
+
+  nativeTheme.on("updated", () => {
+    tray.setImage(iconPath());
   });
 
   return mb;

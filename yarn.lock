@@ -5417,6 +5417,11 @@ electron-is-accelerator@^0.1.0:
   resolved "https://registry.yarnpkg.com/electron-is-accelerator/-/electron-is-accelerator-0.1.2.tgz#509e510c26a56b55e17f863a4b04e111846ab27b"
   integrity sha1-UJ5RDCala1Xhf4Y6SwThEYRqsns=
 
+electron-is-dev@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.3.0.tgz#14e6fda5c68e9e4ecbeff9ccf037cbd7c05c5afe"
+  integrity sha1-FOb9pcaOnk7L7/nM8DfL18BcWv4=
+
 electron-is-dev@^1.0.1, electron-is-dev@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.2.0.tgz#2e5cea0a1b3ccf1c86f577cee77363ef55deb05e"
@@ -5426,6 +5431,14 @@ electron-is-dev@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-2.0.0.tgz#833487a069b8dad21425c67a19847d9064ab19bd"
   integrity sha512-3X99K852Yoqu9AcW50qz3ibYBWY79/pBhlMCab8ToEWS48R0T9tyxRiQhwylE7zQdXrMnx2JKqUJyMPmt5FBqA==
+
+electron-is@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/electron-is/-/electron-is-3.0.0.tgz#bd4c27651fbe03f243f3607c2a098be884f9ed50"
+  integrity sha512-aQv1y3WrDZ+mtO8acbhiiip/8fa0Et7cvZyvlqJm2H7fih4hiJWEFRyYxzLgDG2kmiLdF8l3y5tbek5JFOPQkQ==
+  dependencies:
+    electron-is-dev "^0.3.0"
+    semver "^5.5.0"
 
 electron-localshortcut@^3.1.0:
   version "3.2.1"
@@ -8883,6 +8896,11 @@ node-addon-api@^1.6.3:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.7.2.tgz#3df30b95720b53c24e59948b49532b662444f54d"
   integrity sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==
 
+node-addon-api@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.2.tgz#432cfa82962ce494b132e9d72a15b29f71ff5d32"
+  integrity sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==
+
 node-fetch@^2.3.0:
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
@@ -8940,6 +8958,14 @@ node-loader@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/node-loader/-/node-loader-0.6.0.tgz#c797ef51095ed5859902b157f6384f6361e05ae8"
   integrity sha1-x5fvUQle1YWZArFX9jhPY2HgWug=
+
+node-mac-permissions@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/node-mac-permissions/-/node-mac-permissions-2.2.0.tgz#9e30af329df86335a19882cb6c2e02ce4fc157ab"
+  integrity sha512-oLEZY46M47A/rcMacPEqo/5z6u7alXdMXhtE7xPDyMixZF35Grl9KGx3N2adE3//lEtGL6Tig98p+1gkonkwQg==
+  dependencies:
+    bindings "^1.5.0"
+    node-addon-api "^2.0.0"
 
 node-releases@^1.1.53:
   version "1.1.53"

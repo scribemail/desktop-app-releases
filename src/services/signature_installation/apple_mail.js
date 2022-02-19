@@ -2,28 +2,24 @@ import { promises as fs, existsSync, mkdirSync } from "fs";
 import Bugsnag                                   from "@bugsnag/electron";
 import { app }                                   from "@electron/remote";
 import plist                                     from "plist";
+import store                                     from "services/store";
 import findIndex                                 from "lodash/findIndex";
+import { askForFullDiskAccess, getAuthStatus }   from "node-mac-permissions";
 import { v4 as uuidv4 }                          from "uuid";
 
 const sendFileListsToBugsnag = () => {
-  const path1 = `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data`;
-  fs.readdir(path1).then((files) => {
-    const path2 = `${app.getPath("home")}/Library/Mail`;
-    fs.readdir(path2).then((files2) => {
-      Bugsnag.notify({
-        mobile_documents: files,
-        mail:             files2
-      });
-    }).catch(() => {
-      Bugsnag.notify({
-        mobile_documents: files,
-        mail:             "no-access"
-      });
+  const path = store.get("using_icloud_drive") ? `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data` : `${app.getPath("home")}/Library/Mail`;
+  fs.readdir(path).then((files) => {
+    console.log("azdazd", files);
+    Bugsnag.notify({
+      using_icloud_drive: store.get("using_icloud_drive"),
+      files
     });
   }).catch(() => {
+    console.log("azdaz2");
     Bugsnag.notify({
-      mobile_documents: "no-access",
-      mail:             "no-access"
+      using_icloud_drive: store.get("using_icloud_drive"),
+      files:              "no-access"
     });
   });
 };
@@ -39,12 +35,15 @@ const signatureName = (plistData, workspaceId, email) => {
 
 const signatureDirectoryCandidates = () => {
   const directories = [];
-  [6, 5, 4, 3].forEach((version) => {
-    directories.push(`${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data/V${version}`);
-  });
-  [9, 8, 7, 6, 5, 4, 3].forEach((version) => {
-    directories.push(`${app.getPath("home")}/Library/Mail/V${version}/MailData`);
-  });
+  if (store.get("using_icloud_drive")) {
+    [6, 5, 4, 3].forEach((version) => {
+      directories.push(`${app.getPath("home")}/Library/Mobile Documents/com~apple~mail/Data/V${version}`);
+    });
+  } else {
+    [9, 8, 7, 6, 5, 4, 3].forEach((version) => {
+      directories.push(`${app.getPath("home")}/Library/Mail/V${version}/MailData`);
+    });
+  }
   return directories;
 };
 
@@ -120,6 +119,10 @@ ${html}`;
 
 export const installOnAppleMail = (workspaceId, email, html) => (
   new Promise((resolve, reject) => {
+    console.log("access", getAuthStatus("full-disk-access"));
+    if (!store.get("using_icloud_drive") && getAuthStatus("full-disk-access") !== "authorized") {
+      askForFullDiskAccess();
+    }
     getSignaturesFolder().then((folderPath) => {
       if (folderPath === undefined) {
         sendFileListsToBugsnag();

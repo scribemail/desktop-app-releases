@@ -1,6 +1,7 @@
 import { app, ipcMain, BrowserWindow }                            from "electron";
 import { initialize as remoteInitialize, enable as remoteEnable } from "@electron/remote/main";
 import Store                                                      from "electron-store";
+import { promises as fs }                                         from "fs";
 import isDev                                                      from "electron-is-dev";
 import * as path                                                  from "path";
 import unhandled                                                  from "electron-unhandled";
@@ -160,7 +161,16 @@ app.on("ready", () => {
   }
 
   if (store.get("update_apple_mail") === undefined) {
-    store.set("update_apple_mail", false);
+    store.set("update_apple_mail", true);
+  }
+
+  if (store.get("using_icloud_drive") === undefined) {
+    const iCloudFolderPath = `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data`;
+    fs.readdir(iCloudFolderPath).then(() => {
+      store.set("using_icloud_drive", true);
+    }).catch(() => {
+      store.set("using_icloud_drive", false);
+    });
   }
 
   if (process.platform === "win32") {
@@ -173,4 +183,6 @@ app.on("ready", () => {
       }
     });
   }
+
+  console.log(app.getPath("userData"));
 });

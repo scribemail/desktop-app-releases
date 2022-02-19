@@ -207,3 +207,7 @@ icons
   content: "\ea09";
 }
 
+.icon-information-circle::before {
+  content: "\ea0a";
+}
+
