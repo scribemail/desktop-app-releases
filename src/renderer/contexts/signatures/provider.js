@@ -24,17 +24,18 @@ const SignaturesProvider = ({ children }) => {
   const [signatureUpdates, setSignatureUpdates] = useState(store.get("signature_updates"));
   const [signatureLoadings, setSignatureLoadings] = useState([]);
 
-  const updateOnDiskForSignature = (signature, updateStore = true) => {
+  const updateOnDiskForSignature = async (signature, updateStore = true) => {
     setSignatureLoadings((oldIds) => uniq(concat(oldIds, signature.id)));
-    return updateSignature(signature.workspace.id, signature.id, signature.email.email).then(() => {
+    try {
+      await updateSignature(signature.workspace.id, signature.id, signature.email.email);
       if (updateStore) {
         store.set(`signature_updates.${signature.id}`, Date.now());
         setSignatureUpdates(store.get("signature_updates"));
       }
       setSignatureLoadings((oldIds) => pull(oldIds, signature.id));
-    }).catch(() => {
+    } catch (error) {
       setSignatureLoadings((oldIds) => pull(oldIds, signature.id));
-    });
+    }
   };
 
   const updateAllOnDisk = () => {

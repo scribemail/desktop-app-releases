@@ -119,7 +119,6 @@ ${html}`;
 
 export const installOnAppleMail = (workspaceId, email, html) => (
   new Promise((resolve, reject) => {
-    console.log("access", getAuthStatus("full-disk-access"));
     if (!store.get("using_icloud_drive") && getAuthStatus("full-disk-access") !== "authorized") {
       askForFullDiskAccess();
     }
