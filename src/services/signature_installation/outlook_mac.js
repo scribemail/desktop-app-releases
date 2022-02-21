@@ -1,5 +1,18 @@
 /* eslint-disable string-to-lingui/missing-lingui-transformation */
 import applescript from "applescript";
+import * as path   from "path";
+
+export const isOutlookInstalled = () => (
+  new Promise((resolve, reject) => {
+    applescript.execFile(path.join(__static, "outlook_exists.applescript"), (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response === "true");
+      }
+    });
+  })
+);
 
 const getOutlookAppleScript = (workspaceId, email, html) => {
   const oldSignatureName = `Scribe - ${email}`;

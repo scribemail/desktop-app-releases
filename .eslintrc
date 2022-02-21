@@ -32,6 +32,7 @@
         "ignoreFunction": []
       }
     ],
+    "no-alert": "off",
     "string-to-lingui/t-call-in-function": 2,
     "string-to-lingui/macro-inside-t-and-i18": 2,
     "string-to-lingui/t-should-be-before-macro": 2,
@@ -142,6 +143,7 @@
     "Cypress": true,
     "gapi": true,
     "Image": true,
-    "Notification": true
+    "Notification": true,
+    "alert": true
   }
 }

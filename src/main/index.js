@@ -1,7 +1,6 @@
 import { app, ipcMain, BrowserWindow }                            from "electron";
 import { initialize as remoteInitialize, enable as remoteEnable } from "@electron/remote/main";
-import Store                                                      from "electron-store";
-import { promises as fs }                                         from "fs";
+import store, { initRenderer, initialize as initializeStore }     from "services/store";
 import isDev                                                      from "electron-is-dev";
 import * as path                                                  from "path";
 import unhandled                                                  from "electron-unhandled";
@@ -25,9 +24,7 @@ debug({ isEnabled: process.env.ELECTRON_WEBPACK_APP_ENV !== "production" });
 
 remoteInitialize();
 
-Store.initRenderer();
-
-const store = new Store();
+initRenderer();
 
 startBugsnag(app, { process: { name: "main" } });
 
@@ -35,14 +32,14 @@ let mainWindow;
 let workerWindow;
 let menubar;
 
-function sendWindowMessage(targetWindow, message, payload) {
+const sendWindowMessage = (targetWindow, message, payload) => {
   if (!targetWindow) {
     return;
   }
   targetWindow.webContents.send(message, payload);
-}
+};
 
-function updateMainWindow() {
+const updateMainWindow = () => {
   remoteEnable(mainWindow.webContents);
 
   mainWindow.on("closed", () => {
@@ -55,7 +52,7 @@ function updateMainWindow() {
       mainWindow.focus();
     });
   });
-}
+};
 
 const openMicrosoftLoginWindow = () => {
   const authWindow = new BrowserWindow({ width: 400, height: 600 });
@@ -67,7 +64,31 @@ const openMicrosoftLoginWindow = () => {
   });
 };
 
-const openSsoLoginWindow = (eventj, args) => {
+const openWindow = (event, args) => {
+  const localWindow = new BrowserWindow({
+    width:          args.width,
+    height:         args.height,
+    resizable:      args.resizable,
+    webPreferences: {
+      nodeIntegration:    true,
+      contextIsolation:   false,
+      enableRemoteModule: true
+    }
+  });
+  remoteEnable(localWindow.webContents);
+  localWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html#${args.path}` : formatUrl({ pathname: path.join(__dirname, `index.html#${args.path}`), protocol: "file", slashes: true }));
+  if (process.platform === "darwin") {
+    app.dock.show();
+  }
+  localWindow.on("close", () => {
+    menubar.showWindow();
+    if (process.platform === "darwin") {
+      app.dock.hide();
+    }
+  });
+};
+
+const openSsoLoginWindow = (event, args) => {
   const authWindow = new BrowserWindow({ width: 400, height: 600 });
   authWindow.loadURL(args.redirectUrl);
   authWindow.webContents.on("will-redirect", (event, responseUrl) => {
@@ -131,11 +152,12 @@ app.on("ready", () => {
   menubar.on("after-create-window", () => {
     mainWindow = menubar.window;
     updateMainWindow();
-    mainWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html` : formatUrl({ pathname: path.join(__dirname, "index.html"), protocol: "file", slashes: true }),);
+    mainWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html` : formatUrl({ pathname: path.join(__dirname, "index.html"), protocol: "file", slashes: true }));
     ipcMain.on("message-from-worker", (event, arg) => {
       sendWindowMessage(menubar.window, arg.command, arg.payload);
     });
     ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
+    ipcMain.on("open-window", openWindow);
     ipcMain.on("open-sso-login", openSsoLoginWindow);
     ipcMain.on("open-menu-bar-window", openMenuBarWindow);
     menubar.app.commandLine.appendSwitch("disable-backgrounding-occluded-windows", "true");
@@ -153,25 +175,9 @@ app.on("ready", () => {
       openAsHidden: true,
       name:         "Scribe"
     });
-    store.set("launch_at_startup", true);
   }
 
-  if (store.get("update_outlook") === undefined) {
-    store.set("update_outlook", true);
-  }
-
-  if (store.get("update_apple_mail") === undefined) {
-    store.set("update_apple_mail", true);
-  }
-
-  if (store.get("using_icloud_drive") === undefined) {
-    const iCloudFolderPath = `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data`;
-    fs.readdir(iCloudFolderPath).then(() => {
-      store.set("using_icloud_drive", true);
-    }).catch(() => {
-      store.set("using_icloud_drive", false);
-    });
-  }
+  initializeStore();
 
   if (process.platform === "win32") {
     const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Setup";
@@ -183,6 +189,4 @@ app.on("ready", () => {
       }
     });
   }
-
-  console.log(app.getPath("userData"));
 });

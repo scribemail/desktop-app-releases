@@ -1,8 +1,9 @@
 import React, { useState }          from "react";
-import { shell }                    from "electron";
+import { shell, ipcRenderer }       from "electron";
 import { app }                      from "@electron/remote";
 import PropTypes                    from "prop-types";
 import { Trans, t }                 from "@lingui/macro";
+import { isOutlookInstalled }       from "services/signature_installation/outlook_mac";
 import { deleteAuthorizationToken } from "services/authorization_token";
 import { useSession }               from "renderer/contexts/session/hooks";
 import store                        from "services/store";
@@ -48,7 +49,21 @@ const ConfigurationContainer = () => {
 
   const handleUpdateOutlookChange = (event) => {
     setUpdateOutlook(event.target.checked);
-    store.set("update_outlook", event.target.checked);
+    if (event.target.checked) {
+      isOutlookInstalled().then((exists) => {
+        if (exists) {
+          store.set("update_outlook", true);
+        } else {
+          setUpdateOutlook(false);
+          store.set("update_outlook", false);
+          alert(t`It seems that Outlook is not installed on this computer`);
+        }
+      }).catch(() => {
+        alert(t`Error while activating Outlook installation`);
+      });
+    } else {
+      store.set("update_outlook", false);
+    }
   };
 
   const handleUpdateAppleMailChange = (event) => {
@@ -63,7 +78,12 @@ const ConfigurationContainer = () => {
   };
 
   const openUsingiCloudExplanation = () => {
-    window.open("https://github.com", "_blank", "top=500,left=200,nodeIntegration=no");
+    ipcRenderer.send("open-window", {
+      path:      "/help/using-icloud",
+      width:     900,
+      height:    600,
+      resizable: false
+    });
   };
 
   return (

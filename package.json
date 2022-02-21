@@ -46,6 +46,7 @@
       "extendInfo": {
         "LSUIElement": "true"
       },
+      "icon": "icon-mac.png",
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
