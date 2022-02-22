@@ -1,5 +1,5 @@
 image:
-  - Visual Studio 2022
+  - Previous Visual Studio 2019
   - macOS-BigSur
 
 platform:
@@ -26,7 +26,7 @@ for:
 -
   matrix:
     only:
-      - image: Visual Studio 2022
+      - image: Previous Visual Studio 2019
   cache:
     - node_modules
     - "%USERPROFILE%\\.electron"
