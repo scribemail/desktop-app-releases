@@ -2189,7 +2189,7 @@
     global-agent "^3.0.0"
     global-tunnel-ng "^2.7.1"
 
-"@electron/remote@^2.0.1":
+"@electron/remote@^2.0.5":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@electron/remote/-/remote-2.0.5.tgz#d38bcd2ad2825cca42c5ea4c92efafa99720c52a"
   integrity sha512-Ot8VsYCwAJ+9DgqRuYCiAobS8TVKvnXJMncR14/28ORso1iWFG0X6geyk3hc13N48Oc/WJnPYlYI3o7g5Ja2Qg==
@@ -5619,7 +5619,7 @@ electron@^11.0.2:
     "@types/node" "^12.0.12"
     extract-zip "^1.0.3"
 
-electron@^17.0.0:
+electron@^17.0.1:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/electron/-/electron-17.0.1.tgz#e6c7ad2be26e7be8a5a9bac16b21920ad2671224"
   integrity sha512-CBReR/QEOpgwMdt59lWCtj9wC8oHB6aAjMF1lhXcGew132xtp+C5N6EaXb/fmDceVYLouziYjbNcpeXsWrqdpA==
@@ -9000,9 +9000,9 @@ node-loader@^0.6.0:
   resolved "https://registry.yarnpkg.com/node-loader/-/node-loader-0.6.0.tgz#c797ef51095ed5859902b157f6384f6361e05ae8"
   integrity sha1-x5fvUQle1YWZArFX9jhPY2HgWug=
 
-"node-mac-permissions@https://github.com/codebytere/node-mac-permissions.git":
+"node-mac-permissions@https://github.com/mmaietta/node-mac-permissions.git#misc/conditional-binding":
   version "2.2.0"
-  resolved "https://github.com/codebytere/node-mac-permissions.git#ccba7f2f00a658e14fba5185332414efdec88af4"
+  resolved "https://github.com/mmaietta/node-mac-permissions.git#371a44c7eb0f78602c187c1b18fbedb73435fd74"
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^3.0.2"
