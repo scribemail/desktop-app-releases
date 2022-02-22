@@ -75,7 +75,7 @@ const openMenuBarWindow = () => {
 
 const openWindow = (event, args) => {
   if (localWindow) {
-    localWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html#${args.path}` : formatUrl({ pathname: path.join(__dirname, `index.html#${args.path}`), protocol: "file", slashes: true }));
+    localWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html#${args.path}` : formatUrl({ pathname: path.join(__dirname, "index.html"), hash: args.path, protocol: "file", slashes: true }));
     localWindow.show();
   } else {
     localWindow = new BrowserWindow({
@@ -89,7 +89,7 @@ const openWindow = (event, args) => {
       }
     });
     remoteEnable(localWindow.webContents);
-    localWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html#${args.path}` : formatUrl({ pathname: path.join(__dirname, `index.html#${args.path}`), protocol: "file", slashes: true }));
+    localWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html#${args.path}` : formatUrl({ pathname: path.join(__dirname, "index.html"), hash: args.path, protocol: "file", slashes: true }));
     localWindow.on("closed", () => {
       localWindow = null;
       openMenuBarWindow();
