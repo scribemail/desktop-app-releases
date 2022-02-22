@@ -207,7 +207,7 @@ app.on("ready", () => {
     });
   }
 
-  initializeStore();
+  initializeStore(app);
 
   if (process.platform === "win32") {
     const keyPath = "HKCU\\Software\\Microsoft\\Office\\16.0\\Outlook\\Setup";
