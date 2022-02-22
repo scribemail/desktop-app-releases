@@ -104,7 +104,7 @@
     "@babel/preset-env": "^7.15.6",
     "@bugsnag/electron": "^7.16.1",
     "@bugsnag/plugin-react": "^7.16.1",
-    "@electron/remote": "^2.0.5",
+    "@electron/remote": "^2.0.1",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
     "@getstation/electron-google-oauth2": "https://github.com/scribemail/electron-google-oauth2.git",
@@ -166,7 +166,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",
     "@electron/universal": "^1.1.0",
-    "electron": "^17.0.1",
+    "electron": "^17.0.0",
     "electron-builder": "^22.14.13",
     "electron-notarize": "^1.1.1",
     "electron-webpack": "^2.8.2",
