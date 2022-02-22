@@ -64,6 +64,10 @@ const openMicrosoftLoginWindow = () => {
   });
 };
 
+const openMenuBarWindow = () => {
+  menubar.showWindow();
+};
+
 const openWindow = (event, args) => {
   const localWindow = new BrowserWindow({
     width:          args.width,
@@ -77,31 +81,21 @@ const openWindow = (event, args) => {
   });
   remoteEnable(localWindow.webContents);
   localWindow.loadURL(isDev ? `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/index.html#${args.path}` : formatUrl({ pathname: path.join(__dirname, `index.html#${args.path}`), protocol: "file", slashes: true }));
-  if (process.platform === "darwin") {
-    app.dock.show();
-  }
-  localWindow.on("close", () => {
-    menubar.showWindow();
-    if (process.platform === "darwin") {
-      app.dock.hide();
-    }
+  localWindow.on("closed", () => {
+    openMenuBarWindow();
   });
 };
 
 const openSsoLoginWindow = (event, args) => {
   const authWindow = new BrowserWindow({ width: 400, height: 600 });
   authWindow.loadURL(args.redirectUrl);
-  authWindow.webContents.on("will-redirect", (event, responseUrl) => {
+  authWindow.webContents.on("will-redirect", (redirectEvent, responseUrl) => {
     const parsedUrl = new URL(responseUrl);
     const code = parsedUrl.searchParams.get("code");
     sendWindowMessage(mainWindow, "logged-in-with-sso", { code });
-    menubar.showWindow();
+    openMenuBarWindow();
     authWindow.close();
   });
-};
-
-const openMenuBarWindow = () => {
-  menubar.showWindow();
 };
 
 app.on("ready", () => {
