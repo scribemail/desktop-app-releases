@@ -1,6 +1,8 @@
 import React                   from "react";
 import PropTypes               from "prop-types";
 import { clientNames }         from "services/client";
+import store                   from "services/store";
+import { ipcRenderer }         from "electron";
 import { useSignatures }       from "renderer/contexts/signatures/hooks";
 import { Trans }               from "@lingui/macro";
 import { Icon }                from "renderer/components/ui";
@@ -9,6 +11,14 @@ import TimeAgo                 from "timeago-react";
 
 const SignaturesListItem = ({ signature }) => {
   const { updatedAtForSignature, loadingForSignature, updateOnDiskForSignature } = useSignatures();
+
+  const handleUpdateOnDiskForSignature = (event) => {
+    event.preventDefault();
+    if (!store.get("using_icloud_drive") && process.platform === "darwin") {
+      ipcRenderer.send("try-restart-apple-mail");
+    }
+    updateOnDiskForSignature(signature);
+  };
 
   return (
     <div key={ `email-${signature.id}` } className="mb-2 d-flex align-items-center">
@@ -26,7 +36,7 @@ const SignaturesListItem = ({ signature }) => {
       <div className="ml-auto">
         { !loadingForSignature(signature) && (
           <>
-            <a href="#" onClick={ () => { updateOnDiskForSignature(signature); } } className="ml-1">
+            <a href="#" onClick={ handleUpdateOnDiskForSignature } className="ml-1">
               <Icon icon="desktop-monitor-download" className="icon-install" id={ `install-signature-${signature.id}` } />
             </a>
             <UncontrolledTooltip placement="left" target={ `install-signature-${signature.id}` }>

@@ -29,7 +29,9 @@ async function updateDefaultSignatureInRegistrySync(email, finalSignatureName) {
     }
   }
   if (!accountNameFound) {
-    Bugsnag.notify({ email, accountNames, result });
+    Bugsnag.addMetadata("data", { email, accountNames, result });
+    Bugsnag.notify(new Error("Registry key not found"));
+    Bugsnag.clearMetadata("data");
   }
 }
 

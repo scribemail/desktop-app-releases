@@ -4,23 +4,18 @@ import { app }                                   from "@electron/remote";
 import plist                                     from "plist";
 import store                                     from "services/store";
 import findIndex                                 from "lodash/findIndex";
-import { askForFullDiskAccess, getAuthStatus }   from "node-mac-permissions";
 import { v4 as uuidv4 }                          from "uuid";
 
 const sendFileListsToBugsnag = () => {
   const path = store.get("using_icloud_drive") ? `${app.getPath("home")}/Library/Mobile\ Documents/com~apple~mail/Data` : `${app.getPath("home")}/Library/Mail`;
   fs.readdir(path).then((files) => {
-    console.log("azdazd", files);
-    Bugsnag.notify({
-      using_icloud_drive: store.get("using_icloud_drive"),
-      files
-    });
+    Bugsnag.addMetadata("files", { using_icloud_drive: store.get("using_icloud_drive"), files });
+    Bugsnag.notify(new Error("No folder for Apple Mail"));
+    Bugsnag.clearMetadata("files");
   }).catch(() => {
-    console.log("azdaz2");
-    Bugsnag.notify({
-      using_icloud_drive: store.get("using_icloud_drive"),
-      files:              "no-access"
-    });
+    Bugsnag.addMetadata("files", { using_icloud_drive: store.get("using_icloud_drive"), files: "no-access" });
+    Bugsnag.notify(new Error("No folder for Apple Mail"));
+    Bugsnag.clearMetadata("files");
   });
 };
 
@@ -119,18 +114,16 @@ ${html}`;
 
 export const installOnAppleMail = (workspaceId, email, html) => (
   new Promise((resolve, reject) => {
-    if (!store.get("using_icloud_drive") && getAuthStatus("full-disk-access") !== "authorized") {
-      askForFullDiskAccess();
-    }
     getSignaturesFolder().then((folderPath) => {
       if (folderPath === undefined) {
         sendFileListsToBugsnag();
-        reject("No folder for Apple Mail");
+        reject();
       } else {
         getSignatureFilePath(folderPath, workspaceId, email).then((filePath) => {
           writeHtml(filePath, html).then(() => {
             resolve();
           }).catch((error) => {
+            Bugsnag.notify(error);
             reject(error);
           });
         });

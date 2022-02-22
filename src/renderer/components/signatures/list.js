@@ -2,6 +2,8 @@ import React, { useState }              from "react";
 import { useSession }                   from "renderer/contexts/session/hooks";
 import { Trans }                        from "@lingui/macro";
 import { clientNames }                  from "services/client";
+import store                            from "services/store";
+import { ipcRenderer }                  from "electron";
 import { useSignatures }                from "renderer/contexts/signatures/hooks";
 import { Loader, Icon, WorkspaceImage } from "renderer/components/ui";
 import { UncontrolledTooltip }          from "reactstrap";
@@ -15,13 +17,22 @@ const SignaturesList = () => {
 
   const { workspacesWithSignatures, updateAllOnDisk } = useSignatures();
 
-  const handleRefresh = () => {
+  const handleRefresh = (event) => {
+    event.preventDefault();
     setLoading(true);
     refresh().then(() => {
       setLoading(false);
     }).catch(() => {
       setLoading(false);
     });
+  };
+
+  const handleUpdateAll = (event) => {
+    event.preventDefault();
+    updateAllOnDisk();
+    if (!store.get("using_icloud_drive") && process.platform === "darwin") {
+      ipcRenderer.send("try-restart-apple-mail");
+    }
   };
 
   return (
@@ -33,7 +44,7 @@ const SignaturesList = () => {
           <UncontrolledTooltip placement="left" target="refresh-icon">
             <Trans>Refresh signature list</Trans>
           </UncontrolledTooltip>
-          <a href="#" onClick={ updateAllOnDisk } id="install-all" aria-label="Refresh" className="ml-2"><Icon icon="desktop-monitor-download" className="icon-refresh" /></a>
+          <a href="#" onClick={ handleUpdateAll } id="install-all" aria-label="Refresh" className="ml-2"><Icon icon="desktop-monitor-download" className="icon-refresh" /></a>
           <UncontrolledTooltip placement="left" target="install-all">
             <Trans>Install all signatures in { clientNames() }</Trans>
           </UncontrolledTooltip>

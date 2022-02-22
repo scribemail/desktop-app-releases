@@ -65,6 +65,9 @@ const SignaturesProvider = ({ children }) => {
         const signature = find(signatures, (localSignature) => localSignature.id === args.id);
         if (signature) {
           updateOnDiskForSignature(signature);
+          if (!store.get("using_icloud_drive") && process.platform === "darwin") {
+            ipcRenderer.send("try-restart-apple-mail");
+          }
         }
       });
     }

@@ -44,11 +44,9 @@ const writeFilesForSignature = (workspaceId, id, email, html) => {
           createSignatureInstallation(id, { email_client: "apple_mail", device_name: getComputerName(), metadata: getMetaData() }).then(() => {
             resolve();
           }).catch((error) => {
-            Bugsnag.notify(error);
             reject(error);
           });
         }).catch((error) => {
-          Bugsnag.notify(error);
           reject(error);
         });
       });

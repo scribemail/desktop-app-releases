@@ -3,6 +3,7 @@ import { shell, ipcRenderer }       from "electron";
 import { app }                      from "@electron/remote";
 import PropTypes                    from "prop-types";
 import { Trans, t }                 from "@lingui/macro";
+import { getAuthStatus }            from "node-mac-permissions";
 import { isOutlookInstalled }       from "services/signature_installation/outlook_mac";
 import { deleteAuthorizationToken } from "services/authorization_token";
 import { useSession }               from "renderer/contexts/session/hooks";
@@ -19,17 +20,20 @@ const ConfigurationContainer = () => {
 
   const { currentUser, deleteCurrentWorkspaces, deleteCurrentUser } = useSession();
 
-  const handleLogout = () => {
+  const handleLogout = (event) => {
+    event.preventDefault();
     deleteAuthorizationToken();
     deleteCurrentWorkspaces();
     deleteCurrentUser();
   };
 
-  const openScribeWebsite = () => {
+  const openScribeWebsite = (event) => {
+    event.preventDefault();
     shell.openExternal(`${process.env.ELECTRON_WEBPACK_APP_WEBSITE_BASE_URL}?utm_source=Scribe+app&utm_medium=scribe+assets&utm_campaign=Scribe+app`);
   };
 
-  const handleQuit = () => {
+  const handleQuit = (event) => {
+    event.preventDefault();
     app.quit();
   };
 
@@ -77,11 +81,22 @@ const ConfigurationContainer = () => {
     store.set("using_icloud_drive", event.target.checked);
   };
 
-  const openUsingiCloudExplanation = () => {
+  const openUsingiCloudExplanation = (event) => {
+    event.preventDefault();
     ipcRenderer.send("open-window", {
       path:      "/help/using-icloud",
-      width:     900,
-      height:    600,
+      width:     720,
+      height:    750,
+      resizable: false
+    });
+  };
+
+  const openFullDiskAccessExplanation = (event) => {
+    event.preventDefault();
+    ipcRenderer.send("open-window", {
+      path:      "/help/full-disk-access",
+      width:     720,
+      height:    750,
       resizable: false
     });
   };
@@ -95,12 +110,20 @@ const ConfigurationContainer = () => {
             <Checkbox label={ t`Microsoft outlook` } className="mb-1" onChange={ handleUpdateOutlookChange } checked={ updateOutlook } />
             <Checkbox label={ t`Apple Mail` } onChange={ handleUpdateAppleMailChange } checked={ updateAppleMail } />
             { updateAppleMail && (
-              <div className="ml-4 mt-1 d-flex">
-                <Checkbox label={ t`I'm using mail in iCloud` } onChange={ handleUsingiCloudDriveChange } checked={ usingiCloudDrive } />
-                <a href="#" onClick={ openUsingiCloudExplanation }>
-                  <Icon className="ml-1" icon="information-circle" />
-                </a>
-              </div>
+              <>
+                <div className="ml-4 mt-1 d-flex">
+                  <Checkbox label={ t`I am using iCloud Drive for Mail` } onChange={ handleUsingiCloudDriveChange } checked={ usingiCloudDrive } />
+                  <a href="#" onClick={ openUsingiCloudExplanation }>
+                    <Icon className="ml-1" icon="information-circle" />
+                  </a>
+                </div>
+                { !usingiCloudDrive && getAuthStatus("full-disk-access") !== "authorized" && (
+                  <div className="ml-4 mt-1 text-danger text-s">
+                    <Trans>Scribe need you to enable Full Disk Access in order to update your signatures.</Trans><br />
+                    <a href="#" onClick={ openFullDiskAccessExplanation }><Trans>Enable Full Disk Access</Trans></a>
+                  </div>
+                ) }
+              </>
             ) }
           </div>
         ) }

@@ -6,6 +6,7 @@ import { Helmet }                                        from "react-helmet";
 import SignaturesProvider                                from "renderer/contexts/signatures/provider";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import HelpUsingIcloud                                   from "renderer/components/help/using_icloud";
+import HelpFullDiskAccess                                from "renderer/components/help/full_disk_access";
 import { Icon }                                          from "renderer/components/ui";
 import SessionLoginContainer                             from "renderer/components/session/login_container";
 import SessionLoginSuccess                               from "renderer/components/session/login_success";
@@ -23,7 +24,8 @@ const ApplicationContainer = () => {
 
   const { currentUser, currentWorkspaces } = useSession();
 
-  const openScribeWebsite = () => {
+  const openScribeWebsite = (event) => {
+    event.preventDefault();
     if (location.pathname === "/configuration") {
       navigate("/");
     } else {
@@ -38,6 +40,7 @@ const ApplicationContainer = () => {
       </Helmet>
       <Routes>
         <Route path="/help/using-icloud" element={ <HelpUsingIcloud /> } />
+        <Route path="help/full-disk-access" element={ <HelpFullDiskAccess /> } />
         <Route
           path="*"
           element={ (
