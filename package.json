@@ -142,7 +142,7 @@
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.21",
     "menubar": "^9.1.1",
-    "node-mac-permissions": "^2.2.0",
+    "node-mac-permissions": "https://github.com/codebytere/node-mac-permissions.git",
     "plist": "^3.0.2",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.1",
