@@ -22,8 +22,8 @@ if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
   unhandled();
 }
 
-debug({ isEnabled: process.env.ELECTRON_WEBPACK_APP_ENV !== "production" });
-// debug({ isEnabled: false });
+// debug({ isEnabled: process.env.ELECTRON_WEBPACK_APP_ENV !== "production" });
+debug({ isEnabled: true });
 
 remoteInitialize();
 
