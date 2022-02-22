@@ -26,7 +26,9 @@ for:
 -
   matrix:
     only:
-      - image: Previous Visual Studio 2019
+      - image: Visual Studio 2019
+  environment:
+    PYTHON: "C:\\Python39"
   cache:
     - node_modules
     - "%USERPROFILE%\\.electron"
