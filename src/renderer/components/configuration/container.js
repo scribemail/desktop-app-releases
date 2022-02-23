@@ -1,14 +1,14 @@
-import React, { useState }          from "react";
-import { shell, ipcRenderer }       from "electron";
-import { app }                      from "@electron/remote";
-import PropTypes                    from "prop-types";
-import { Trans, t }                 from "@lingui/macro";
-import { getAuthStatus }            from "node-mac-permissions";
-import { isOutlookInstalled }       from "services/signature_installation/outlook_mac";
-import { deleteAuthorizationToken } from "services/authorization_token";
-import { useSession }               from "renderer/contexts/session/hooks";
-import store                        from "services/store";
-import { Icon, Checkbox }           from "renderer/components/ui";
+import React, { useState, useEffect } from "react";
+import { shell, ipcRenderer }         from "electron";
+import { app }                        from "@electron/remote";
+import PropTypes                      from "prop-types";
+import { Trans, t }                   from "@lingui/macro";
+import { getAuthStatus }              from "node-mac-permissions";
+import { isOutlookInstalled }         from "services/signature_installation/outlook_mac";
+import { deleteAuthorizationToken }   from "services/authorization_token";
+import { useSession }                 from "renderer/contexts/session/hooks";
+import store                          from "services/store";
+import { Icon, Checkbox }             from "renderer/components/ui";
 
 import "./container.scss";
 
@@ -17,8 +17,23 @@ const ConfigurationContainer = () => {
   const [updateOutlook, setUpdateOutlook] = useState(store.get("update_outlook"));
   const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
   const [usingiCloudDrive, setUsingiCloudDrive] = useState(store.get("using_icloud_drive"));
+  const [haveFullDiskAccess, setHaveFullDiskAccess] = useState(getAuthStatus("full-disk-access"));
 
   const { currentUser, deleteCurrentWorkspaces, deleteCurrentUser } = useSession();
+
+  useEffect(() => {
+    let interval = null;
+    if (!usingiCloudDrive) {
+      interval = setInterval(() => {
+        setHaveFullDiskAccess(getAuthStatus("full-disk-access"));
+      }, 1000);
+    }
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [usingiCloudDrive]);
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -117,7 +132,7 @@ const ConfigurationContainer = () => {
                     <Icon className="ml-1" icon="information-circle" />
                   </a>
                 </div>
-                { !usingiCloudDrive && getAuthStatus("full-disk-access") !== "authorized" && (
+                { !usingiCloudDrive && haveFullDiskAccess !== "authorized" && (
                   <div className="ml-4 mt-1 text-danger text-s">
                     <Trans>Scribe need you to enable Full Disk Access in order to update your signatures.</Trans><br />
                     <a href="#" onClick={ openFullDiskAccessExplanation }><Trans>Enable Full Disk Access</Trans></a>
