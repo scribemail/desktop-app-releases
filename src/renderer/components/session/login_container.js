@@ -20,6 +20,7 @@ const SessionLoginContainer = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
+  const [isDomainAuthenticating, setIsDomainAuthenticating] = useState(false);
 
   const azureAdAuthenticationInterval = useRef();
 
@@ -35,6 +36,9 @@ const SessionLoginContainer = () => {
   };
 
   const tryDomainTokenAuthentication = () => {
+    if (isDomainAuthenticating) {
+      return;
+    }
     /* eslint-disable string-to-lingui/missing-lingui-transformation */
     const keyPath = "HKLM\\Software\\Policies\\Scribe\\Config";
     const keyName = "DomainToken";
@@ -43,12 +47,15 @@ const SessionLoginContainer = () => {
         exec("whoami /upn", (error, stdout) => {
           if (!error) {
             const name = stdout.split("@")[0];
+            setIsDomainAuthenticating(true);
             createDomainTokenSession(result[keyPath].values[keyName].value, name).then((response) => {
               if (azureAdAuthenticationInterval.current) {
                 clearInterval(azureAdAuthenticationInterval.current);
               }
               handleLoginSuccess(response, true);
-            }).catch(() => {});
+            }).catch(() => {
+              setIsDomainAuthenticating(false);
+            });
           }
         });
       }

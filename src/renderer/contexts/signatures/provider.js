@@ -59,24 +59,23 @@ const SignaturesProvider = ({ children }) => {
     includes(signatureLoadings, signature.id)
   );
 
-  useEffect(() => {
-    if (ipcRenderer.rawListeners("update-signature").length === 0) {
-      ipcRenderer.on("update-signature", (event, args) => {
-        const signature = find(signatures, (localSignature) => localSignature.id === args.id);
-        if (signature) {
-          updateOnDiskForSignature(signature);
-          if (!store.get("using_icloud_drive") && process.platform === "darwin") {
-            ipcRenderer.send("try-restart-apple-mail");
-          }
-        }
-      });
+  const handleUpdateSignature = (event, args) => {
+    const signature = find(signatures, (localSignature) => localSignature.id === args.id);
+    if (signature) {
+      updateOnDiskForSignature(signature);
+      if (!store.get("using_icloud_drive") && process.platform === "darwin") {
+        ipcRenderer.send("try-restart-apple-mail");
+      }
     }
+  };
 
-    if (ipcRenderer.rawListeners("update-all-signatures").length === 0) {
-      ipcRenderer.on("update-all-signatures", () => {
-        updateAllOnDisk();
-      });
-    }
+  useEffect(() => {
+    ipcRenderer.on("update-signature", handleUpdateSignature);
+    ipcRenderer.on("update-all-signatures", updateAllOnDisk);
+    return () => {
+      ipcRenderer.removeListener("update-signature", handleUpdateSignature);
+      ipcRenderer.removeListener("update-all-signatures", updateAllOnDisk);
+    };
   }, []);
 
   return (

@@ -18,8 +18,18 @@ const ConfigurationContainer = () => {
   const [updateAppleMail, setUpdateAppleMail] = useState(store.get("update_apple_mail"));
   const [usingiCloudDrive, setUsingiCloudDrive] = useState(store.get("using_icloud_drive"));
   const [haveFullDiskAccess, setHaveFullDiskAccess] = useState(getAuthStatus("full-disk-access"));
+  const [outlookSignaturesFolder, setOutlookSignaturesFolder] = useState(store.get("outlook_signatures_folder") !== undefined ? store.get("outlook_signatures_folder") : null);
+  const [outlookSignaturesFolderPersonalized, setOutlookSignaturesFolderPersonalized] = useState(store.get("outlook_signatures_folder") !== undefined);
 
   const { currentUser, deleteCurrentWorkspaces, deleteCurrentUser } = useSession();
+
+  const handleFolderSelected = (event, args) => {
+    if (args.folderPath !== undefined) {
+      setOutlookSignaturesFolderPersonalized(true);
+      setOutlookSignaturesFolder(args.folderPath);
+      store.set("outlook_signatures_folder", args.folderPath);
+    }
+  };
 
   useEffect(() => {
     let interval = null;
@@ -34,6 +44,13 @@ const ConfigurationContainer = () => {
       }
     };
   }, [usingiCloudDrive]);
+
+  useEffect(() => {
+    ipcRenderer.on("folder-selected", handleFolderSelected);
+    return () => {
+      ipcRenderer.removeListener("folder-selected", handleFolderSelected);
+    };
+  }, []);
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -116,6 +133,16 @@ const ConfigurationContainer = () => {
     });
   };
 
+  const handleOutlookFolderChange = (event) => {
+    if (event.target.checked) {
+      ipcRenderer.send("open-select-folder-window");
+    } else {
+      setOutlookSignaturesFolderPersonalized(false);
+      setOutlookSignaturesFolder(null);
+      store.delete("outlook_signatures_folder");
+    }
+  };
+
   return (
     <div className="config-container">
       <div className="mt-3">
@@ -143,6 +170,16 @@ const ConfigurationContainer = () => {
           </div>
         ) }
         <h3><Trans>Configuration</Trans></h3>
+        { process.platform === "win32" && (
+          <div className="mb-1">
+            <Checkbox key={ `check-outlook-folder-${outlookSignaturesFolderPersonalized}` } label={ t`Personalize Outlook signatures folder` } onChange={ handleOutlookFolderChange } checked={ outlookSignaturesFolderPersonalized } />
+            { outlookSignaturesFolderPersonalized && (
+              <div className="outlook-folder-path">
+                { outlookSignaturesFolder }
+              </div>
+            ) }
+          </div>
+        ) }
         <Checkbox label={ t`Launch at startup` } onChange={ handleLaunchAtStartupChange } checked={ launchAtStartup } />
       </div>
       <div className="text-center bottom-block">

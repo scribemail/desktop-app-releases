@@ -5,6 +5,8 @@ import { app }                              from "@electron/remote";
 import { existsSync, mkdirSync, writeFile } from "fs";
 import Bugsnag                              from "@bugsnag/electron";
 import regedit                              from "services/regedit_renderer";
+import store                                from "services/store";
+import log                                  from "electron-log";
 
 async function updateDefaultSignatureInRegistrySync(email, finalSignatureName) {
   const accountNames = [];
@@ -38,7 +40,8 @@ async function updateDefaultSignatureInRegistrySync(email, finalSignatureName) {
 export const installOnOutlookWindows = (workspaceId, id, email, html) => {
   const oldSignatureName = `Scribe - ${email}`;
   const signatureName = `Scribe - ${email} - W${workspaceId}`;
-  const dirPath = `${app.getPath("home")}/appdata/roaming/Microsoft/Signatures`;
+
+  const dirPath = store.get("outlook_signatures_folder") !== undefined ? store.get("outlook_signatures_folder") : `${app.getPath("home")}/appdata/roaming/Microsoft/Signatures`;
 
   const finalSignatureName = existsSync(`${dirPath}/${oldSignatureName}.htm`) ? oldSignatureName : signatureName;
   const finalSignatureFileName = `${finalSignatureName}.htm`;

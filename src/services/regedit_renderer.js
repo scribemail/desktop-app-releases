@@ -2,7 +2,7 @@ import regedit   from "regedit";
 import { app }   from "@electron/remote";
 import * as path from "path";
 
-export const vbsDirectory = path.join(path.dirname(app.getPath("exe")), "./resources/vbs");
+const vbsDirectory = path.join(path.dirname(app.getPath("exe")), "./resources/vbs");
 
 regedit.setExternalVBSLocation(vbsDirectory);
 

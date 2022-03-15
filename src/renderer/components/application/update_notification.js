@@ -29,18 +29,16 @@ const ApplicationUpdateNotification = () => {
   };
 
   useEffect(() => {
-    if (ipcRenderer.rawListeners("update-available").length === 0) {
-      ipcRenderer.on("update-available", handleUpdateAvailable);
-    }
-    if (ipcRenderer.rawListeners("update-not-available").length === 0) {
-      ipcRenderer.on("update-not-available", handleUpdateNotAvailable);
-    }
-    if (ipcRenderer.rawListeners("update-download-progress").length === 0) {
-      ipcRenderer.on("update-download-progress", handleUpdateDownloadProgress);
-    }
-    if (ipcRenderer.rawListeners("update-downloaded").length === 0) {
-      ipcRenderer.on("update-downloaded", handleUpdateDownloaded);
-    }
+    ipcRenderer.on("update-available", handleUpdateAvailable);
+    ipcRenderer.on("update-not-available", handleUpdateNotAvailable);
+    ipcRenderer.on("update-download-progress", handleUpdateDownloadProgress);
+    ipcRenderer.on("update-downloaded", handleUpdateDownloaded);
+    return () => {
+      ipcRenderer.removeListener("update-available", handleUpdateAvailable);
+      ipcRenderer.removeListener("update-not-available", handleUpdateNotAvailable);
+      ipcRenderer.removeListener("update-download-progress", handleUpdateDownloadProgress);
+      ipcRenderer.removeListener("update-downloaded", handleUpdateDownloaded);
+    };
   }, []);
 
   if (!updateAvailable || downloadProgressPercentage === 0) {

@@ -23,9 +23,10 @@ const SessionMicrosoftLoginButton = ({ children, block, provider, onError, onLog
   };
 
   useEffect(() => {
-    if (ipcRenderer.rawListeners("logged-in-with-microsoft").length === 0) {
-      ipcRenderer.on("logged-in-with-microsoft", logInUser);
-    }
+    ipcRenderer.on("logged-in-with-microsoft", logInUser);
+    return () => {
+      ipcRenderer.removeListener("logged-in-with-microsoft", logInUser);
+    };
   }, []);
 
   const logIn = () => {

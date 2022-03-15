@@ -16,6 +16,17 @@
     text-align: center;
     color: $content-subtle-color;
   }
+
+  .outlook-folder-path {
+    margin-top: 6px;
+    margin-left: 38px;
+    font-size: 14px;
+    width: 265px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: $content-subtle-color;
+  }
 }
 
 .text-s {

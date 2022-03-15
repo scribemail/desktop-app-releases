@@ -5,10 +5,8 @@ import applescript                                                from "applescr
 import isDev                                                      from "electron-is-dev";
 import * as path                                                  from "path";
 import unhandled                                                  from "electron-unhandled";
-import { autoUpdater }                                            from "electron-updater";
 import regedit                                                    from "services/regedit_main";
 import debug                                                      from "electron-debug";
-import log                                                        from "electron-log";
 import { openSystemPreferences }                                  from "electron-util";
 import Bugsnag                                                    from "@bugsnag/electron";
 import { startBugsnag }                                           from "services/bugsnag";
@@ -16,6 +14,7 @@ import { format as formatUrl }                                    from "url";
 import { createWorkerWindow }                                     from "./worker_window";
 import { createMenuBar }                                          from "./menubar";
 import AuthProvider                                               from "./microsoft_auth/AuthProvider";
+import { enableIfNeeded as enableAutoUpdaterIfNeeded }            from "./auto_update";
 
 if (process.env.ELECTRON_WEBPACK_APP_ENV !== "production") {
   app.commandLine.appendSwitch("ignore-certificate-errors");
@@ -31,7 +30,6 @@ initRenderer();
 startBugsnag(app, { process: { name: "main" } });
 
 let mainWindow;
-let workerWindow;
 let menubar;
 let localWindow;
 let restartAppleMailDialogOpen = false;
@@ -96,6 +94,14 @@ const openWindow = (event, args) => {
   }
 };
 
+const openSelectFolderWindow = async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ["openDirectory"]
+  });
+  openMenuBarWindow();
+  sendWindowMessage(mainWindow, "folder-selected", { folderPath: result.filePaths[0] });
+};
+
 const openSsoLoginWindow = (event, args) => {
   const authWindow = new BrowserWindow({ width: 400, height: 600 });
   authWindow.loadURL(args.redirectUrl);
@@ -135,41 +141,7 @@ app.on("ready", () => {
   ///
   // Auto update configuration
   ///
-  if (!isDev) {
-    autoUpdater.logger = log;
-    autoUpdater.logger.transports.file.level = "info";
-
-    autoUpdater.on("update-available", () => {
-      sendWindowMessage(mainWindow, "update-available");
-    });
-
-    autoUpdater.on("update-not-available", () => {
-      sendWindowMessage(mainWindow, "update-not-available");
-    });
-
-    autoUpdater.on("download-progress", (progressObj) => {
-      sendWindowMessage(mainWindow, "update-download-progress", { progressPercentage: progressObj.percent });
-    });
-
-    autoUpdater.on("update-downloaded", () => {
-      sendWindowMessage(mainWindow, "update-downloaded");
-      setTimeout(() => {
-        autoUpdater.quitAndInstall(true, true);
-      }, 1500);
-    });
-
-    setTimeout(() => {
-      autoUpdater.checkForUpdates().catch((err) => {
-        log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
-      });
-    }, 30000);
-
-    setInterval(() => {
-      autoUpdater.checkForUpdates().catch((err) => {
-        log.error(`[initApp.checkForUpdates] Update failed: ${err}`);
-      });
-    }, 1000 * 60 * 60 * 24); // Check every 24 hours
-  }
+  enableAutoUpdaterIfNeeded(mainWindow, sendWindowMessage);
 
   ///
   // Menu bar configuration
@@ -186,6 +158,7 @@ app.on("ready", () => {
     ipcMain.on("open-microsoft-login", openMicrosoftLoginWindow);
     ipcMain.on("open-preferences", openSystemPreferences);
     ipcMain.on("open-window", openWindow);
+    ipcMain.on("open-select-folder-window", openSelectFolderWindow);
     ipcMain.on("open-sso-login", openSsoLoginWindow);
     ipcMain.on("open-menu-bar-window", openMenuBarWindow);
     ipcMain.on("try-restart-apple-mail", tryRestartAppleMail);
@@ -196,7 +169,7 @@ app.on("ready", () => {
     }
   });
 
-  workerWindow = createWorkerWindow();
+  createWorkerWindow();
 
   if (store.get("launch_at_startup") === undefined) {
     app.setLoginItemSettings({

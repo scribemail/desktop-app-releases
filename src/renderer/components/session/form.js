@@ -41,17 +41,20 @@ const SessionForm = ({ onError, onLoginSuccess }) => {
     ipcRenderer.send("open-sso-login", { redirectUrl: ssoUrl });
   };
 
+  const handleLoggedInWithSso = (event, args) => {
+    setNextLoading(true);
+    createSsoSession(args.code).then((response) => {
+      onLoginSuccess(response);
+    }).catch(() => {
+      setNextLoading(false);
+    });
+  };
+
   useEffect(() => {
-    if (ipcRenderer.rawListeners("logged-in-with-sso").length === 0) {
-      ipcRenderer.on("logged-in-with-sso", (event, args) => {
-        setNextLoading(true);
-        createSsoSession(args.code).then((response) => {
-          onLoginSuccess(response);
-        }).catch(() => {
-          setNextLoading(false);
-        });
-      });
-    }
+    ipcRenderer.on("logged-in-with-sso", handleLoggedInWithSso);
+    return () => {
+      ipcRenderer.removeListener("logged-in-with-sso", handleLoggedInWithSso);
+    };
   }, []);
 
   useEffect(() => {
