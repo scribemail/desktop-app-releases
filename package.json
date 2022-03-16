@@ -1,6 +1,6 @@
 {
   "name": "Scribe",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "license": "MIT",
   "author": "hello@scribe-mail.com",
   "description": "Scribe Desktop",
@@ -36,10 +36,9 @@
     "appId": "com.scribe-mail.scribe",
     "productName": "Scribe",
     "publish": {
-      "provider": "github",
-      "releaseType": "draft",
-      "owner": "scribemail",
-      "repo": "desktop-app-releases"
+      "provider": "s3",
+      "bucket": "scribe-desktop-app-releases",
+      "region": "eu-west-3"
     },
     "mac": {
       "hardenedRuntime": true,
